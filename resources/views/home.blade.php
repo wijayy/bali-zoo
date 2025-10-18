@@ -33,9 +33,13 @@
 
     <div class="">
         <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
-            <div class="text-center font-semibold text-lg">Our Products</div>
+            <div class="text-center font-semibold text-lg">Our Recomendation</div>
+            <div class="text-sm text-center w-4/5 mx-auto">Step into the world of Bali Zoo through our handpicked recommendations —
+                featuring merchandise inspired by the animals you love and the moments you cherish. From sustainable
+                lifestyle products to adorable keepsakes, each item tells a story of nature, conservation, and the joy
+                of connecting with wildlife</div>
 
-            <form action="{{ route('shop.index') }}" method="GET" class="w-full justify-center flex ">
+            <form action="{{ route('shop.index') }}" method="GET" class="w-full mt-4 justify-center flex ">
                 <x-input name="search" class="w-full sm:w-3/4 md:w-1/4" class="self-center"
                     placeholder="Search a product here"></x-input>
                 <button class="border-b-2 px-2 cursor-pointer" type="submit"><i class="bx bx-search-alt"></i></button>
@@ -79,6 +83,9 @@
 
         </div>
     </div>
+
+    @livewire('follow-instagram')
+    @livewire('newslatter')
 
 
 

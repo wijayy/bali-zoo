@@ -17,9 +17,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
-        $products = Product::withCount('review')->latest()->filters(request(['category', 'search', 'sort']))->paginate()->appends(request()->all());
-        return view("product.index", compact("categories", "products"));
+        $products = Product::all();
+        return view("product.index", compact( "products"));
     }
 
     /**

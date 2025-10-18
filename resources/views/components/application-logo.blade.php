@@ -1,1 +1,1 @@
-<img src="{{ asset('build/assets/balizoo.jpg') }}" {{ $attributes->merge(['class' => 'aspect-square']) }} alt="">
+<img src="{{ asset('assets/balizoo.jpg') }}" {{ $attributes->merge(['class' => 'aspect-square']) }} alt="">

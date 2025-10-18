@@ -172,6 +172,6 @@ class UpdateAddress extends Component
      */
     public function render()
     {
-        return view('livewire.update-address');
+        return view('livewire.update-address')->layout('layouts.auth', ['title' => "Address"]);
     }
 }

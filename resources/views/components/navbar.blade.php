@@ -23,7 +23,7 @@
                 <x-nav-link href="{{ route('shop.index') }}" :active="request()->is('shop')">Shop</x-nav-link>
                 <x-nav-link href="{{ route('about') }}" :active="request()->routeIs('about')">About</x-nav-link>
                 <x-nav-link href="{{ route('contact') }}" :active="request()->routeIs('contact')">Contact</x-nav-link>
-                <x-nav-link href="{{ route('transaction.index') }}" :active="request()->is('transaction')">Transaction
+                <x-nav-link href="{{ route('history.index') }}" :active="request()->is('history.*')">History
                 </x-nav-link>
             </div>
             <div class="flex items-center gap-4">

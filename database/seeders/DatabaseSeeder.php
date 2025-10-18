@@ -25,15 +25,26 @@ class DatabaseSeeder extends Seeder
             'is_admin' => 1,
         ]);
 
-        Category::factory(5)->create();
+        foreach (range(1, 5) as $key => $item) {
+            Category::factory()->create([
+                'name' => "Category $item",
+            ]);
 
-        Supplier::factory(5)->create();
+            Supplier::factory()->create([
+                'name' => "Supplier $item",
+            ]);
+        }
 
-        Product::factory(20)->recycle([Category::all(), Supplier::all()])->create();
+
+        $this->call(ProductSeeder::class);
+
+        // Product::factory(20)->recycle([Category::all(), Supplier::all()])->create();
 
         Review::factory(100)->recycle([User::all(), Product::all()])->create();
 
-        $this->call(IndoRegionSeeder::class);
+        $this->call(IndoRegionProvinceSeeder::class);
+
+        $this->call(TransactionSeeder::class);
 
         $this->call(CouponSeeder::class);
     }

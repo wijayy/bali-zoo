@@ -11,7 +11,7 @@ extract(Flux::forwardedAttributes($attributes, [
 @php $descriptionTrailing = $descriptionTrailing ??= $attributes->pluck('description:trailing'); @endphp
 
 @props([
-    'name' => $attributes->whereStartsWith('wire:model')->first(),
+    'name' => $attributes->whereStartsWith('wire:model.live')->first(),
     'descriptionTrailing' => null,
     'description' => null,
     'label' => null,

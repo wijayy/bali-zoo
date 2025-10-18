@@ -7,6 +7,7 @@
  *
  */
 
+use App\Models\Province;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -22,7 +23,7 @@ class CreateRegenciesTables extends Migration
     {
         Schema::create('regencies', function(Blueprint $table){
             $table->char('id', 4)->index();
-            $table->char('province_id', 2);
+            $table->foreignIdFor(Province::class);
             $table->string('name', 50);
             $table->foreign('province_id')
                 ->references('id')

@@ -70,13 +70,12 @@ class Product extends Model
             return $query->where("name", "like", "%$search%")->orWhere("description", "LIKE", "%$search%");
         });
 
-        $query->when($filters["sort"] ?? 'popular', function ($query, $search) {
-            if ($search == 'popular') {
-                return $query->withAvg('review', 'rate')
-                    ->orderByDesc(DB::raw('(review_count * review_avg_rate)'));
-            } elseif ($search == 'newest') {
-                return $query->orderByDesc('created_at');
-            }
+        $query->when($filters["min"] ?? false, function ($query, $search) {
+            return $query->where("price", ">=", $search);
+        });
+
+        $query->when($filters["max"] ?? false, function ($query, $search) {
+            return $query->where("price", "<=", $search);
         });
 
         $query->when($filters["category"] ?? false, function ($query, $search) {

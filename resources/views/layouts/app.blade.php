@@ -2,7 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-   <x-header :$title></x-header>
+   <x-header :$title ></x-header>
 </head>
 
 <body class="font-sans antialiased">

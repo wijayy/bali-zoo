@@ -1,5 +1,5 @@
 @props([
-    'name' => $attributes->whereStartsWith('wire:model')->first(),
+    'name' => $attributes->whereStartsWith('wire:model.live')->first(),
 ])
 
 @php

@@ -11,4 +11,4 @@ $variant = $variant !== 'default' && Flux::componentExists('radio.variants.' . $
     : 'default';
 @endphp
 
-<flux:delegate-component :component="'radio.variants.' . $variant">{{ $slot }}</flux:delegate-component>
+<flux:delegate-component :component="'radio.variants.' . $variant">{{ $slot }} fasdfad</flux:delegate-component>

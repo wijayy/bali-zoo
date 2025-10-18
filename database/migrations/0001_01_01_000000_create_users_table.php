@@ -27,10 +27,6 @@ return new class extends Migration
             $table->string('profile_photo_path', 2048)->nullable();
             $table->string('phone')->nullable();
             $table->string('address')->nullable();
-            $table->foreignIdFor(Province::class)->nullable();
-            $table->foreignIdFor(Regency::class)->nullable();
-            $table->foreignIdFor(District::class)->nullable();
-            $table->foreignIdFor(Village::class)->nullable();
             $table->timestamps();
         });
 

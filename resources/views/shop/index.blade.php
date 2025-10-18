@@ -1,63 +1,32 @@
-<x-app-layout title="Shop" header="true">
+<x-app-layout title="Shop" header="{{ false }}">
     <div class="">
-        <x-secondary-header :image="asset('assets/jerry-wang-qBrF1yu5Wys-unsplash.jpg')" text="Shop"></x-secondary-header>
-        <form class="" action="" method="GET" x-data="{ filter: false }">
-            <div class="bg-mine-200">
-                <div class="w-full px-4 mx-auto max-w-7xl h-16 sm:px-6 lg:px-8 flex gap-4 items-center">
-                    <div class="cursor-pointer space-x-2 text-nowrap" @click="filter = !filter"><i
-                            class='bx pr-2 bx-slider'></i>Filters
-                    </div>
-                    <button type="reset" class="cursor-pointer text-nowrap space-x-2"><i
-                            class='bx pr-2 bx-reset'></i>Reset
-                    </button>
-                    <div class=" w-full flex items-center justify-between">
-                        <p class="text-center border-l-2 pl-4">
-                            Showing {{ $products->firstItem() }}-{{ $products->lastItem() }} of {{ $products->total() }}
-                            results
-                        </p>
-                        <div class="flex gap-4">
-                            <div class="">
-                                <label for="paginate">Show</label>
-                                <x-input min="5" class="w-10 text-center" type="number" name="paginate"
-                                    value="{{ request('paginate', 24) }}" id="paginate" />
-                            </div>
-                            <div class="">
-                                <label for="sort">Sort by</label>
-                                <select class="border-b-2" name="sort" id="sort">
-                                    <option @if (request('sort') == 'popular') selected @endif value="popular">Popular
-                                    </option>
-                                    <option @if (request('sort') == 'newest') selected @endif value="newest">Newest
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-            </div>
-            <div class=" px-4 mx-auto max-w-7xl sm:px-6 lg:px-8" x-show="filter"
-                x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-90"
-                x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-300"
-                x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-90">
-                <x-label>Category</x-label>
-                <select class="border-b-2" name="sort" id="sort">
-                    <option @if (request('sort') == 'popular') selected @endif value="popular">Popular
-                    </option>
-                    <option @if (request('sort') == 'newest') selected @endif value="newest">Newest
-                    </option>
-                </select>
-
-            </div>
-            <div action="" method="GET" class="w-full mt-4 justify-center flex ">
-                <x-input name="search" value="{{ request('search') ?? '' }}" class="w-full sm:w-1/2 md:w-1/3"
-                    placeholder="Search a product here"></x-input>
-                <button class="border-b-2 px-2 cursor-pointer" type="submit"><i class="bx bx-search-alt"></i></button>
-            </div>
-        </form>
+        {{-- <x-secondary-header :image="asset('assets/jerry-wang-qBrF1yu5Wys-unsplash.jpg')" text="Shop"></x-secondary-header> --}}
+        <div class="pt-20">
+            <div class="text-center font-semibold text-lg">Our Products</div>
+            <div class="text-sm text-center">Wildlife-Inspired Merchandise You’ll Love.</div>
+        </div>
     </div>
-    <div class="">
-        <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+    <flux:container class="flex justify-center ">
+        <div class="w-full md:w-3/5 ">
+            <flux:input wire:model.live='search' placeholder="Search a product here"></flux:input>
+        </div>
+    </flux:container>
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-2 lg:gap-4 px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+        <div class="">
+            <div class="text-center font-semibold text-lg">Filters</div>
+
+
+                @foreach ($categories as $item)
+                <label for="category" class="flex gap-2 items-center cursor-pointer">
+                    <input type="radio" name="category" value="{{ $item->slug }}">
+                    <div class="">{{ $item->name }}</div>
+                </label>
+                @endforeach
+
+
+
+        </div>
+        <div class=" md:col-span-4">
             <div class="grid grid-cols-2 mt-4 sm:grid-cols-3 md:grid-cols-4 gap-2 lg:gap-4">
                 @foreach ($products as $item)
                     <a href="{{ route('shop.show', ['shop' => $item->slug]) }}"
@@ -96,4 +65,7 @@
         </div>
     </div>
     <div class="">{{ $products->links() }} </div>
+
+    @livewire('follow-instagram')
+    @livewire('newslatter')
 </x-app-layout>

@@ -22,23 +22,25 @@ Route::get('/', function () {
 // Route::get('/shop', fn() => view('home'))->name('shop');
 Route::get('/about', fn() => view('home'))->name('about');
 Route::get('/contact', fn() => view('contact'))->name('contact');
-Route::get('/transaction', fn() => view('home'))->name('transaction.index');
+// Route::get('/history', fn() => view('home'))->name('history.index');
 
-Route::resource('cart', CartController::class)->middleware('auth');
+Route::resource('cart', CartController::class)->except(['index'])->middleware('auth');
 
-Route::resource('shop', ShopController::class)->only(['index', 'show']);
+Route::resource('shop', ShopController::class)->only(['show']);
+
+Volt::route('shop', 'shop-index')->name('shop.index');
+Volt::route('history', 'history-index')->name('history.index');
 
 
 Route::middleware(['auth', config('jetstream.auth_session'), 'verified'])
     ->group(
         function () {
-            Route::post('checkout', [CheckoutController::class, 'index'])->name('chekout.index');
+            // Route::post('checkout', [CheckoutController::class, 'index'])->name('checkout.index');
             Route::redirect('settings', 'settings/profile');
 
-            Volt::route('settings/profile', 'settings.profile')->name('settings.profile');
-            Volt::route('settings/password', 'settings.password')->name('settings.password');
-            Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
-
+            // Volt::route('settings/profile', 'settings.profile')->name('settings.profile');
+            // Volt::route('settings/password', 'settings.password')->name('settings.password');
+            // Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
         }
     );
 
@@ -58,5 +60,16 @@ Route::middleware(['auth', config('jetstream.auth_session'), 'verified', 'admin'
         Volt::route('coupon', 'coupon-index')->name('coupon.index');
         Volt::route('coupon/add', 'coupon-create')->name('coupon.create');
         Volt::route('coupon/{slug}/edit', 'coupon-create')->name('coupon.edit');
+
+        Volt::route('settings/profile', 'profile')->name('settings.profile');
+        Volt::route('settings/address', 'update-address')->name('settings.address');
+        Volt::route('settings/password', 'update-password')->name('settings.password');
+        Volt::route('settings/appearance', 'appearence')->name('settings.appearance');
+
+        Volt::route('cart', 'cart')->name('cart.index');
+        Volt::route('checkout', componentName: 'checkout')->name('checkout.index');
+        Volt::route('payment/{slug}', componentName: 'payment')->name('payment.index');
+
+        Volt::route('transaction', 'transaction-index')->name('transaction.index');
     }
 );

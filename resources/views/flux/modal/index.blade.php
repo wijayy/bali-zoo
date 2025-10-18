@@ -23,12 +23,12 @@ $classes = Flux::classes()
         'bare' => '',
     })
     ->add(match ($variant) {
-        default => 'bg-white dark:bg-zinc-800 border border-transparent dark:border-zinc-700',
+        default => 'bg-gray-200 dark:bg-zinc-800 border border-transparent dark:border-zinc-700',
         'flyout' => 'bg-white dark:bg-zinc-800 border-transparent dark:border-zinc-700',
         'bare' => 'bg-transparent',
     });
 
-// Support adding the .self modifier to the wire:model directive...
+// Support adding the .self modifier to the wire:model.live directive...
 if (($wireModel = $attributes->wire('model')) && $wireModel->directive && ! $wireModel->hasModifier('self')) {
     unset($attributes[$wireModel->directive]);
 

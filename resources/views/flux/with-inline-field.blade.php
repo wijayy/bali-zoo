@@ -7,7 +7,7 @@ extract(flux::forwardedattributes($attributes, [
 @endphp
 
 @props([
-    'name' => $attributes->whereStartsWith('wire:model')->first(),
+    'name' => $attributes->whereStartsWith('wire:model.live')->first(),
     'description' => null,
     'label' => null,
 ])

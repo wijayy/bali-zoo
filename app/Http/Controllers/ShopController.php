@@ -15,8 +15,8 @@ class ShopController extends Controller
     {
         // dd(request('paginate'));
         $categories = Category::all();
-        $products = Product::withCount('review')->filters(request(['category', 'search', 'sort']))->paginate(request('paginate', 24))->appends(request()->all());
-        return view("shop.index", compact("products"));
+        $products = Product::withCount('review')->filters(request(['category', 'min', 'max', 'search']))->paginate(12);
+        return view("shop.index", compact("products", "categories"));
     }
 
     /**
@@ -25,6 +25,7 @@ class ShopController extends Controller
     public function show(Product $shop)
     {
         $product = $shop;
-        return view("shop.show", compact("product"));
+        $products = Product::whereNot('id', $product->id)->filters(['category' => $product->category->slug])->take(4)->get();
+        return view("shop.show", compact("product", "products"));
     }
 }

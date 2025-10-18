@@ -34,19 +34,19 @@
                             <flux:button icon="trash" size="sm" variant="primary" color="rose">
                             </flux:button>
                         </flux:modal.trigger>
-                        <flux:modal name="delete-{{ $key }}">
-                            <form action="{{ route('products.destroy', ['product' => $item->slug]) }}" method="post">
-                                @csrf
-                                @method('delete')
-                                <x-button class="pb-0! border-b! hover:border-rose-400">
-                                    Delete</x-button>
-
-                            </form>
-                        </flux:modal>
+                <flux:modal name="delete-{{ $key }}">
+                    <form class="mt-4" action="{{ route('products.destroy', $item->slug) }}" method="post">
+                        @csrf
+                        @method('delete')
+                        <div class="">Delete {{ $item->name }}? Once removed, it`s gone for good.</div>
+                        <div class="flex justify-end">
+                            <flux:button variant="danger" type="submit">Delete</flux:button>
+                        </div>
+                    </form>
+                </flux:modal>
                     </div>
                 </div>
             @endforeach
         </div>
     </div>
-    <div class="mt-4">{{ $products->links() }} </div>
 </x-auth-layout>

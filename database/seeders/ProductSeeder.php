@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Supplier;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -14,6 +15,10 @@ class ProductSeeder extends Seeder
      */
     public function run(): void
     {
-        Product::factory(20)->recycle(Category::all())->create();
+        foreach (range(1, 20) as $key => $item) {
+            Product::factory()->recycle([Category::all(), Supplier::all()])->create([
+                'name' => "Product $item",
+            ]);
+        }
     }
 }
