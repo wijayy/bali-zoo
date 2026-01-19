@@ -1,6 +1,6 @@
 <x-app-layout title="Home" header="true">
     <div class="w-full h-screen bg-center bg-cover bg-no-repeat"
-        style="background-image: url({{ asset('assets/mohit-suthar-J5dg1V2FHD4-unsplash.jpg') }})">
+        style="background-image: url({{ asset('assets/home.jpeg') }})">
         <div class="px-4 mx-auto h-full max-w-7xl sm:px-6 lg:px-8 flex p-4 md:p-8 items-end md:items-center justify-end">
             <div class="aspect-3/2 w-8/12 sm:w-1/2 md:w-1/3 space-y-2 bg-white rounded-lg p-4">
                 <div class="text-xs font-bold">New Arrival</div>
