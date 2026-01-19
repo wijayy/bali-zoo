@@ -25,6 +25,11 @@
                 @auth
                 <x-nav-link href="{{ route('history.index') }}" :active="request()->is('history.*')">History
                 </x-nav-link>
+                @if (Auth::user()->is_admin)
+                <x-nav-link href="{{ route('dashboard') }}">Dashboard
+                </x-nav-link>
+
+                @endif
                 @endauth
             </div>
             <div class="flex items-center gap-4">

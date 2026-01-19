@@ -16,7 +16,7 @@
                     <x-app-logo-icon class="me-2 h-7 fill-current text-white" />
                 </span>
                 <div class="">
-                    7AM Bakers Club
+                    Bali Zoo Merchandise
                 </div>
             </a>
 

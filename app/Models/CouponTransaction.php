@@ -9,4 +9,7 @@ class CouponTransaction extends Model
 {
     /** @use HasFactory<\Database\Factories\CouponTransactionFactory> */
     use HasFactory;
+
+        protected $guarded = ['id'];
+
 }

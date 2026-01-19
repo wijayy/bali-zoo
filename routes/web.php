@@ -41,14 +41,18 @@ Route::middleware(['auth', config('jetstream.auth_session'), 'verified'])
             // Volt::route('settings/profile', 'settings.profile')->name('settings.profile');
             // Volt::route('settings/password', 'settings.password')->name('settings.password');
             // Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
+
+            Volt::route('cart', 'cart')->name('cart.index');
+            Volt::route('checkout', componentName: 'checkout')->name('checkout.index');
+            Volt::route('payment/{slug}', componentName: 'payment')->name('payment.index');
+            Volt::route('invoice/{slug}', componentName: 'payment')->name('invoice');
+
         }
     );
 
 Route::middleware(['auth', config('jetstream.auth_session'), 'verified', 'admin'])->group(
     function () {
-        Route::get('/dashboard', function () {
-            return view('dashboard');
-        })->name('dashboard');
+        Route::get('dashboard', App\Livewire\Dashboard::class)->name('dashboard');
 
         Route::resource('dashboard/products', ProductController::class);
         Route::get('analytics', [AnalyticsController::class, 'index'])->name('analytics');
@@ -66,9 +70,7 @@ Route::middleware(['auth', config('jetstream.auth_session'), 'verified', 'admin'
         Volt::route('settings/password', 'update-password')->name('settings.password');
         Volt::route('settings/appearance', 'appearence')->name('settings.appearance');
 
-        Volt::route('cart', 'cart')->name('cart.index');
-        Volt::route('checkout', componentName: 'checkout')->name('checkout.index');
-        Volt::route('payment/{slug}', componentName: 'payment')->name('payment.index');
+
 
         Volt::route('transaction', 'transaction-index')->name('transaction.index');
     }

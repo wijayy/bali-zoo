@@ -13,6 +13,7 @@ use App\Models\Pembayaran;
 use App\Models\Pengiriman;
 use App\Models\Province;
 use App\Models\Transaction;
+use AzisHapidin\IndoRegion\RawDataGetter;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
@@ -21,8 +22,8 @@ use Livewire\Attributes\Validate;
 class Checkout extends Component
 {
 
-    public $title = "Checkout", $carts, $subtotal, $shipment = 0, $client, $shipment_id = null;
-    public $chargeable_weight = 0, $coupon, $message = '', $c, $weight = 0, $length = 0, $width = 0, $height = 0, $total_actual_weight = 0, $total_volumetric_weight = 0;
+    public $title = "Checkout", $carts, $subtotal, $shipment = null, $client;
+    public $chargeable_weight = 0, $coupon, $message = '', $c, $weight = 0, $length = 0, $width = 0, $height = 0, $total_actual_weight = 0, $total_volumetric_weight = 0, $province, $city, $district, $village;
     public $totalLength = 0, $maxWidth = 0, $maxHeight = 0;
 
     #[Validate('required|string|max:255')]
@@ -36,7 +37,7 @@ class Checkout extends Component
 
 
     #[Validate('required')]
-    public $address = '', $province = '', $city = '', $district = '', $village = '', $postal_code;
+    public $shipment_id = '', $province_id, $regency_id, $district_id, $village_id, $address, $postal_code;
 
     public function updatedCoupon()
     {
@@ -84,47 +85,7 @@ class Checkout extends Component
     }
 
     public $shipments = [
-        [
-            "name" => "Jalur Nugraha Ekakurir (JNE)",
-            "code" => "jne",
-            "service" => "REG",
-            "description" => "Layanan Reguler",
-            "cost" => 12000,
-            "etd" => "2 day",
-        ],
-        [
-            "name" => "Ninja Xpress",
-            "code" => "ninja",
-            "service" => "STANDARD",
-            "description" => "Standard Service",
-            "cost" => 13000,
-            "etd" => "",
-        ],
-        [
-            "name" => "POS Indonesia (POS)",
-            "code" => "pos",
-            "service" => "Pos Reguler",
-            "description" => "240",
-            "cost" => 13000,
-            "etd" => "3 day",
-        ],
-        [
-            "name" => "POS Indonesia (POS)",
-            "code" => "pos",
-            "service" => "Pos Nextday",
-            "description" => "447",
-            "cost" => 19000,
-            "etd" => "1 day",
-        ],
-    ];
 
-    public $state = [
-        'province_id' => null,
-        'regency_id' => null,
-        'district_id' => null,
-        'village_id' => null,
-        'address' => '',
-        'postal_code' => '',
     ];
 
     /**
@@ -162,6 +123,7 @@ class Checkout extends Component
      */
     public function mount()
     {
+        // dd(RawDataGetter::getProvinces());
         $user = Auth::user();
 
         $this->name = $user->name;
@@ -184,7 +146,7 @@ class Checkout extends Component
         // dd($result);
 
         // Ambil bagian data
-        $this->provinces = $result['data'];
+        $this->provinces = collect($result['data']);
 
         // $this->provinces = [];
 
@@ -197,7 +159,7 @@ class Checkout extends Component
      * @param  int|null  $value
      * @return void
      */
-    public function updatedStateProvinceId($value)
+    public function updatedProvinceId($value)
     {
 
         // dd($value);
@@ -218,18 +180,17 @@ class Checkout extends Component
         // Decode ke array
         $result = json_decode($body, true);
 
-        // dd($result);
 
 
         // Ambil bagian data
-        $this->regencies = $result['data'];
+        $this->regencies = collect($result['data']);
 
         // $this->regencies = Regency::where('province_id', $value)->get();
-        $this->state['regency_id'] = null;
+        $this->regency_id = null;
         $this->districts = [];
-        $this->state['district_id'] = null;
+        $this->district_id = null;
         $this->villages = [];
-        $this->state['village_id'] = null;
+        $this->village_id = null;
     }
 
     /**
@@ -238,7 +199,7 @@ class Checkout extends Component
      * @param  int|null  $value
      * @return void
      */
-    public function updatedStateRegencyId($value)
+    public function updatedRegencyId($value)
     {
         $client = new \GuzzleHttp\Client();
         $response = $client->request('GET', 'https://rajaongkir.komerce.id/api/v1/destination/district/' . $value, [
@@ -257,10 +218,10 @@ class Checkout extends Component
 
 
         // Ambil bagian data
-        $this->districts = $result['data'];
-        $this->state['district_id'] = null;
+        $this->districts = collect($result['data']);
+        $this->district_id = null;
         $this->villages = [];
-        $this->state['village_id'] = null;
+        $this->village_id = null;
     }
 
     /**
@@ -269,9 +230,37 @@ class Checkout extends Component
      * @param  int|null  $value
      * @return void
      */
-    public function updatedStateDistrictId($value)
+    public function updatedDistrictId($value)
     {
         $this->getShipment();
+
+        $client = new \GuzzleHttp\Client();
+        $response = $client->request('GET', 'https://rajaongkir.komerce.id/api/v1/destination/sub-district/' . $value, [
+            'headers' => [
+                'accept' => 'application/json',
+                'key' => env('RAJAONGKIR_SHIPPING_COST'),
+
+            ],
+        ]);
+
+        // Ambil body JSON
+        $body = $response->getBody()->getContents();
+
+        // Decode ke array
+        $result = json_decode($body, true);
+
+
+        // Ambil bagian data
+        $this->villages = collect($result['data']);
+        // dd($this->villages);
+        $this->village_id = null;
+    }
+
+    public function updatedVillageId($value)
+    {
+        // dd($this->province_id, $this->regency_id, $this->district_id, $value);
+        $village =$this->villages->firstWhere('id', $value);
+        $this->postal_code = $village ? $village['zip_code'] : '';
     }
 
 
@@ -330,7 +319,7 @@ class Checkout extends Component
             ],
             'form_params' => [ // <-- ini penting, karena content-type x-www-form-urlencoded
                 'origin' => '2193',
-                'destination' => $this->state['district_id'],
+                'destination' => $this->district_id,
                 'weight' => "$this->chargeable_weight",
                 'courier' => 'jne:ninja:pos',
             ],
@@ -362,31 +351,48 @@ class Checkout extends Component
     {
         $this->validate();
 
+        // dd($this->all());
+
         try {
             DB::beginTransaction();
             $transaksi = Transaction::create([
                 'transaction_number' => Transaction::transactionNumberGenerator(),
                 'total' => $this->subtotal + $this->shipment - $this->countDiscount(),
-                'status' => 'ordered'
+                'user_id' => Auth::id(),
+                'status' => 'ordered',
+                'subtotal' => $this->subtotal,
+                'shipping_cost' => $this->shipment,
+                'discount' => $this->countDiscount(),
             ]);
+
+            foreach ($this->carts as $key => $value) {
+                $transaksi->items()->create([
+                    'product_id' => $value->product->id,
+                    'qty' => $value->qty,
+                    'price' => $value->product->price,
+                    'subtotal' => $value->product->price * $value->qty,
+                ]);
+            }
 
             Pengiriman::create([
                 'transaction_id' => $transaksi->id,
                 'name' => $this->name,
                 'phone' => $this->phone,
                 'address' => $this->address,
-                'province' => $this->province,
-                'city' => $this->city,
-                'district' => $this->district,
+                'province' => $this->provinces->firstWhere('id', $this->province_id)['name'],
+                'city' => $this->regencies->firstWhere('id', $this->regency_id)['name'],
+                'district' => $this->districts->firstWhere('id', $this->district_id)['name'],
                 'district_id' => $this->district_id,
-                'village' => $this->village,
+                'village' => $this->villages->firstWhere('id', $this->village_id)['name'],
                 'postal_code' => $this->postal_code,
                 'status' => 'ordered'
             ]);
 
             DB::commit();
 
-            return redirect(route('payment.index'));
+            Cart::where('user_id', Auth::id())->delete();
+
+            return redirect(route('payment.index', $transaksi->slug));
         } catch (\Throwable $th) {
             DB::rollBack();
             if (config('app.debug') == true) {

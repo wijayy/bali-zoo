@@ -3,13 +3,25 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Transaction extends Model
 {
     /** @use HasFactory<\Database\Factories\TransactionFactory> */
-    use HasFactory;
+    use HasFactory, Sluggable;
+
+    public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'transaction_number'
+            ]
+        ];
+    }
+
+    protected $guarded = ['id'];
 
     public static function transactionNumberGenerator()
     {
@@ -41,5 +53,20 @@ class Transaction extends Model
     public function items()
     {
         return $this->hasMany(TransactionItem::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function payment()
+    {
+        return $this->hasOne(Pembayaran::class);
+    }
+
+    public function couponUsage()
+    {
+        return $this->hasOne(CouponTransaction::class);
     }
 }

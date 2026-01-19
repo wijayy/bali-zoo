@@ -32,6 +32,13 @@
                     wire:navigate>
                     {{ __('History') }}
                 </flux:navbar.item>
+
+                @if (Auth::user()->is_admin)
+                    <flux:navbar.item icon="chart-bar" :href="route('dashboard')"
+                        :current="request()->routeIs('dashboard')" wire:navigate>
+                        {{ __('Dashboard') }}
+                    </flux:navbar.item>
+                @endif
             @endauth
         </flux:navbar>
 

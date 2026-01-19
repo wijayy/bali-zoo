@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignIdFor(User::class);
             $table->string('transaction_number');
+            $table->string('slug');
             $table->string('snap_token')->nullable();
             $table->integer('total');
             $table->string('status');

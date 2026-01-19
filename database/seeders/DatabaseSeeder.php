@@ -42,9 +42,9 @@ class DatabaseSeeder extends Seeder
 
         Review::factory(100)->recycle([User::all(), Product::all()])->create();
 
-        $this->call(IndoRegionProvinceSeeder::class);
+        $this->call(IndoRegionSeeder::class);
 
-        $this->call(TransactionSeeder::class);
+        // $this->call(TransactionSeeder::class);
 
         $this->call(CouponSeeder::class);
     }

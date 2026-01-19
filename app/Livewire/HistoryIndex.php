@@ -9,18 +9,66 @@ use Livewire\Attributes\Url;
 
 class HistoryIndex extends Component
 {
+    public $transactions;
+    public $title = "Order History";
+    public $perPage = 10;
+    public $page = 1;
+    public $hasMore = true;
+    public $isLoading = false;
 
-    #[Url(except: '')]
-    public $date;
-
-    public $transactions, $title = "Transaction History";
+    protected $listeners = [
+        'loadMoreHistory' => 'loadMore',
+    ];
 
     public function mount()
     {
-        $this->date = $this->date ?? date("Y-m-d");
-        $this->transactions = Transaction::where('user_id', Auth::user()->id)->whereDate('created_at', $this->date)->get();
+        $this->transactions = collect();
+        $this->loadTransactions();
+    }
 
-        // dd($this->date,$this->transactions);
+    protected function loadTransactions()
+    {
+        if (!Auth::check()) {
+            $this->transactions = collect();
+            $this->hasMore = false;
+            return;
+        }
+
+        $this->isLoading = true;
+
+        $query = Transaction::with(['pengiriman', 'items.product'])
+            ->where('user_id', Auth::id())
+            ->orderBy('created_at', 'desc');
+
+        $chunk = $query->skip(($this->page - 1) * $this->perPage)
+            ->take($this->perPage)
+            ->get();
+
+        $this->transactions = $this->transactions->concat($chunk);
+
+        if ($chunk->count() < $this->perPage) {
+            $this->hasMore = false;
+        }
+
+        $this->isLoading = false;
+    }
+
+    public function loadMore()
+    {
+        if (!$this->hasMore || $this->isLoading) {
+            return;
+        }
+
+        $this->page++;
+        $this->loadTransactions();
+    }
+
+    public function cancel($id) {
+        $transaction = Transaction::find($id);
+        if ($transaction && $transaction->user_id == Auth::id() && $transaction->status == 'ordered') {
+            $transaction->update(['status' => 'canceled']);
+        }
+        $this->loadTransactions();
     }
 
 

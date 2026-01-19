@@ -5,37 +5,47 @@
             Zoo merchandise.
         </flux:text>
 
-        <div class="mt-4 grid gri1 md:grid-cols-2 gap-4 rounded p-4 bg-white dark:bg-neutral-700">
-            <div class="">
+        @if ($errors->any())
+            <div class="mt-4 p-4 bg-rose-200 text-rose-800 rounded">
+                <ul class="list-disc list-inside">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <div class="mt-4 grid grid-cols-1 md:grid-cols-6 gap-4 rounded p-4 bg-white dark:bg-neutral-700">
+            <div class="md:col-span-2">
                 <flux:input wire:model.blur='name' label="Name"></flux:input>
             </div>
-            <div class="">
+            <div class="md:col-span-2">
                 <flux:input wire:model.blur='phone' label="Phone Number"></flux:input>
             </div>
-            <div class="">
+            <div class="md:col-span-2">
                 <flux:input wire:model.blur='email' label="Email"></flux:input>
             </div>
-            <div class="">
+            <div class="md:col-span-3">
                 <flux:input wire:model.live='address' label="Address"></flux:input>
             </div>
-            <div class="">
-                <flux:select wire:model.live='state.province_id' label="Province">
+            <div class="md:col-span-3">
+                <flux:select wire:model.live='province_id' label="Province">
                     <flux:select.option value="">-- Select Province --</flux:select.option>
                     @foreach ($provinces as $item)
                         <flux:select.option value="{{ $item['id'] }}">{{ $item['name'] }}</flux:select.option>
                     @endforeach
                 </flux:select>
             </div>
-            <div class="">
-                <flux:select wire:model.live='state.regency_id' label="City/Regency">
+            <div class="md:col-span-3">
+                <flux:select wire:model.live='regency_id' label="City/Regency">
                     <flux:select.option value="">-- Select City/Regency --</flux:select.option>
                     @foreach ($regencies as $item)
                         <flux:select.option value="{{ $item['id'] }}">{{ $item['name'] }}</flux:select.option>
                     @endforeach
                 </flux:select>
             </div>
-            <div class="">
-                <flux:select wire:model.live='state.district_id' label="District">
+            <div class="md:col-span-3">
+                <flux:select wire:model.live='district_id' label="District">
                     <flux:select.option value="">-- Select District --</flux:select.option>
                     @foreach ($districts as $item)
                         <flux:select.option value="{{ $item['id'] }}">{{ $item['name'] }}
@@ -43,8 +53,17 @@
                     @endforeach
                 </flux:select>
             </div>
-            <div class="">
-                <flux:input wire:model.live='state.postal_code' only_number label="Postal Code"></flux:input>
+            <div class="md:col-span-3">
+                <flux:select wire:model.live='village_id' label="District">
+                    <flux:select.option value="">-- Select Village --</flux:select.option>
+                    @foreach ($villages as $item)
+                        <flux:select.option value="{{ $item['id'] }}">{{ $item['name'] }}
+                        </flux:select.option>
+                    @endforeach
+                </flux:select>
+            </div>
+            <div class="md:col-span-3">
+                <flux:input wire:model.live='postal_code' readonly label="Postal Code"></flux:input>
             </div>
         </div>
 
@@ -67,15 +86,18 @@
             @endforeach
         </div>
 
-        <div class="mt-8 flex justify-center flex-wrap gap-4 p-4 bg-white dark:bg-neutral-700">
-            @foreach ($shipments as $key => $item)
-                <button
-                    class="rounded p-4 space-y-4 text-center cursor-pointer {{ $shipment_id == $key ? 'bg-mine-200' : 'bg-gray-200 dark:bg-neutral-600' }}"
-                    wire:click='setShipment({{ $key }})'>
-                    <div class="uppercase"> {{ $item['code'] }} {{ $item['service'] }}</div>
-                    <div class="">Rp. {{ number_format($item['cost'], 0, ',', '.') }}</div>
-                </button>
-            @endforeach
+        <div class="mt-8 p-4 bg-white dark:bg-neutral-700">
+            <div class=" text-center font-semibold text-xl">Shipping</div>
+            <div class=" flex justify-center mt-4 flex-wrap gap-4 ">
+                @foreach ($shipments as $key => $item)
+                    <button
+                        class="rounded p-4 space-y-4 text-center cursor-pointer {{ $shipment_id == $key ? 'bg-mine-200' : 'bg-gray-200 dark:bg-neutral-600' }}"
+                        wire:click='setShipment({{ $key }})'>
+                        <div class="uppercase"> {{ $item['code'] }} {{ $item['service'] }}</div>
+                        <div class="">Rp. {{ number_format($item['cost'], 0, ',', '.') }}</div>
+                    </button>
+                @endforeach
+            </div>
         </div>
 
         <div class="mt-8 flex justify-center">
@@ -88,7 +110,8 @@
                     <div class="">Coupon: {{ $c->code }}</div>
                     <div class="">Discount: Rp. {{ number_format($this->countDiscount(), 0, ',', '.') }}</div>
                 @endif
-                <div class="">Total: Rp. {{ number_format($subtotal + $shipment - $this->countDiscount(), 0, ',', '.') }}</div>
+                <div class="">Total: Rp.
+                    {{ number_format($subtotal + $shipment - $this->countDiscount(), 0, ',', '.') }}</div>
 
                 <flux:button wire:click='save'>Pay</flux:button>
             </div>

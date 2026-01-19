@@ -20,7 +20,6 @@ return new class extends Migration {
             $table->string('province');
             $table->string('city');
             $table->string('district');
-            $table->integer('district_id');
             $table->string('village');
             $table->string('postal_code');
             $table->string(column: 'awb')->nullable();
