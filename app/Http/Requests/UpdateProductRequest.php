@@ -28,14 +28,14 @@ class UpdateProductRequest extends FormRequest
             'stock'=> 'required|integer',
             'length'=> 'required|integer',
             'width'=> 'required|integer',
-            'height'=> 'required|integer',
+            'height'=> 'required|numeric',
             'weight'=> 'required|integer',
             'category_id'=> 'required',
+            'supplier_id'=> 'required',
             'image1'=> 'nullable|file|image',
             'image2'=> 'nullable|file|image',
             'image3'=> 'nullable|file|image',
             'image4'=> 'nullable|file|image',
-            'image5'=> 'nullable|file|image',
         ];
     }
 }
