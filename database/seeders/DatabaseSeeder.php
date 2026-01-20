@@ -25,10 +25,19 @@ class DatabaseSeeder extends Seeder
             'is_admin' => 1,
         ]);
 
-        foreach (range(1, 5) as $key => $item) {
+        $categories = [
+            ['name' => "Boneka", 'image' => "category/swee.jpeg"],
+            ['name' => "Payung", 'image' => "category/folded.jpeg"],
+            ['name' => "Sandal", 'image' => "category/sandal.jpeg"],
+        ];
+
+        foreach ($categories as $item) {
             Category::factory()->create([
-                'name' => "Category $item",
+                'name' => $item['name'],
+                'image' => $item['image'],
             ]);
+        }
+        foreach (range(1, 1) as $key => $item) {
 
             Supplier::factory()->create([
                 'name' => "Supplier $item",

@@ -89,7 +89,7 @@ class CategoryController extends Controller
             $category->update($validated);
             DB::commit();
             Storage::delete($oldImage);
-            return redirect(route('products.index'))->with('success', 'Category successfully edited');
+            return redirect(route('categories.index'))->with('success', 'Category successfully edited');
         } catch (\Throwable $th) {
             DB::rollBack();
             Storage::delete($newImage);
