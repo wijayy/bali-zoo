@@ -13,7 +13,7 @@
             <div class="absolute inset-0 bg-center bg-cover bg-no-repeat bg-[url(/public/assets/auth.jpg)]"></div>
             <a href="{{ route('b2b-home') }}" class="relative z-20 flex items-center gap-2 text-lg font-medium" wire:navigate>
                 <span class="flex items-center justify-center rounded-md">
-                    <x-app-logo-icon class="me-2 h-7 fill-current text-white" />
+                    <x-application-logo-icon class="me-2 h-7 fill-current text-white" />
                 </span>
                 <div class="">
                     Bali Zoo Merchandise
@@ -38,7 +38,7 @@
                 <a href="{{ route('b2b-home') }}" class="z-20 flex flex-col items-center gap-2 font-medium lg:hidden"
                     wire:navigate>
                     <span class="flex h-9 w-9 items-center justify-center rounded-md">
-                        <x-app-logo-icon class="size-9 fill-current text-black dark:text-white" />
+                        <x-application-logo-icon class="size-9 fill-current text-black dark:text-white" />
                     </span>
 
                     <span class="sr-only">{{ config('app.name', 'Laravel') }}</span>

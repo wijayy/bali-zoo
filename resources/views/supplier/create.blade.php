@@ -1,25 +1,13 @@
-@php
-    $title = $supplier ?? false ? "Edit Supplier $supplier->name" : 'Add Supplier';
-@endphp
+<form enctype="multipart/form-data" wire:submit='save' class="bg-white rounded-lg p-4">
+    <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+        <flux:input wire:model='name' label="Name" type="text" required></flux:input>
+        <flux:input wire:model='address' label="Address" type="text" required></flux:input>
+        <flux:input wire:model='person' label="Contact Person" type="text" required></flux:input>
+        <flux:input wire:model='email' label="Email" type="text" required></flux:input>
+        <flux:input wire:model='phone' label="Phone Number" type="text" required></flux:input>
+    </div>
 
-<x-auth-layout title="{{ $title }}">
-    <form enctype="multipart/form-data"
-        action="{{ $supplier ?? false ? route('suppliers.update', ['supplier' => $supplier->slug]) : route('suppliers.store') }}"
-        method="post">
-        @csrf
-        @if ($supplier ?? false)
-            @method('put')
-        @endif
-
-        <div class="mt-4">
-            <x-label required="true" for="name" value="{{ __('supplier Name') }}" />
-            <x-input value="{{ old('name', $supplier->name ?? false) }}" id="name" type="text"
-                class="mt-1 block w-full" name="name" required autocomplete="name" />
-            <x-input-error for="name" class="mt-2" />
-        </div>
-
-        <div class="mt-4">
-            <flux:button type="submit">Submit</flux:button>
-        </div>
-    </form>
-</x-auth-layout>
+    <div class="mt-4">
+        <flux:button type="submit">Submit</flux:button>
+    </div>
+</form>

@@ -12,7 +12,7 @@
 
         <a href="{{ route('b2b-home') }}" class="ms-2 me-5 flex items-center space-x-2 rtl:space-x-reverse lg:ms-0"
             wire:navigate>
-            <x-app-logo />
+            <x-application-logo />
         </a>
 
         <flux:navbar class="-mb-px max-lg:hidden">
@@ -88,7 +88,7 @@
         <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
         <a href="{{ route('dashboard') }}" class="ms-1 flex items-center space-x-2 rtl:space-x-reverse" wire:navigate>
-            <x-app-logo />
+            <x-application-logo />
         </a>
 
         <flux:navlist variant="outline">

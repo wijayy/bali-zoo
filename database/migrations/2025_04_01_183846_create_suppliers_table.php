@@ -14,6 +14,10 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->string('slug');
+            $table->string('address');
+            $table->string('person');
+            $table->string('email');
+            $table->string('phone');
             $table->timestamps();
         });
     }

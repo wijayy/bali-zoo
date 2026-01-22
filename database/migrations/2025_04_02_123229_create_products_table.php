@@ -23,7 +23,8 @@ return new class extends Migration {
             $table->string('image2')->nullable();
             $table->string('image3')->nullable();
             $table->string('image4')->nullable();
-            $table->integer('price');
+            $table->integer('sell_price');
+            $table->integer('buy_price');
             $table->integer('stock');
             $table->integer('weight');
             $table->integer('length');

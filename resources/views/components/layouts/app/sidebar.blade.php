@@ -1,50 +1,45 @@
+@props(['title'])
+
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
 
 <head>
-    @include('partials.head')
+    <x-header :$title></x-header>
 </head>
 
 <body class="min-h-screen bg-mine-100 dark:bg-zinc-800">
     <flux:sidebar sticky stashable class="border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
         <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
-        <a href="{{ route('b2b-home') }}" class="me-5 flex items-center space-x-2 rtl:space-x-reverse"
-            wire:navigate='false'>
-            <x-app-logo />
+        <a href="{{ route('dashboard') }}" class="me-5 flex items-center justify-center space-x-2 rtl:space-x-reverse"
+            wire:navigate>
+            <img class="size-12" src="{{ asset('assets/balizoo.jpg') }}" alt="">
+            <div class="font-semibold w-fit text-sm text-black dark:text-white">Bali Zoo Merchandise</div>
         </a>
 
         <flux:navlist variant="outline">
             <flux:navlist.group :heading="__('Platform')" class="grid">
-                <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')"
-                    wire:navigate='false'>{{ __('Dashboard') }}</flux:navlist.item>
-                <flux:navlist.item icon="home" :href="route('reservation.index')"
-                    :current="request()->routeIs('reservation.index')" wire:navigate='false'>{{ __('Reservation') }}
-                </flux:navlist.item>
-                <flux:navlist.item icon="home" :href="route('category.index')"
-                    :current="request()->routeIs('category.*')" wire:navigate='false'>{{ __('Categories') }}
-                </flux:navlist.item>
-                <flux:navlist.item icon="home" :href="route('product.index')"
-                    :current="request()->routeIs('product.*')" wire:navigate='false'>{{ __('Products') }}
-                </flux:navlist.item>
-                <flux:navlist.item icon="banknotes" :href="route('coupon.index')"
-                    :current="request()->routeIs('coupon.*')" wire:navigate='false'>{{ __('Coupon') }}
-                </flux:navlist.item>
-                <flux:navlist.item icon="home" :href="route('transaction.index')"
-                    :current="request()->routeIs('transaction.*')" wire:navigate='false'>{{ __('Transaction') }}
-                </flux:navlist.item>
-                <flux:navlist.item icon="envelope-open" :href="route('newsletter.index')"
-                    :current="request()->routeIs('newsletter.*')" wire:navigate='false'>{{ __('Newsletters') }}
-                </flux:navlist.item>
+                <flux:navlist.item :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
+                    {{ __('Dashboard') }}</flux:navlist.item>
+                <flux:navlist.item :href="route('suppliers.index')" :current="request()->routeIs('suppliers.*')"
+                    wire:navigate>{{ __('Supplier') }}</flux:navlist.item>
+                <flux:navlist.item :href="route('categories.index')" :current="request()->routeIs('categories.*')"
+                    wire:navigate>{{ __('Categories') }}</flux:navlist.item>
+                <flux:navlist.item :href="route('products.index')" :current="request()->routeIs('products.*')"
+                    wire:navigate>{{ __('Products') }}</flux:navlist.item>
+                <flux:navlist.item :href="route('transaction.index')" :current="request()->routeIs('transaction.*')"
+                    wire:navigate>{{ __('Transaction') }}</flux:navlist.item>
+                <flux:navlist.item :href="route('coupon.index')" :current="request()->routeIs('coupon.*')"
+                    wire:navigate>{{ __('Coupon') }}</flux:navlist.item>
             </flux:navlist.group>
         </flux:navlist>
 
         <flux:spacer />
 
+
         <!-- Desktop User Menu -->
         <flux:dropdown class="hidden lg:block" position="bottom" align="start">
-            <flux:profile :name="auth()->user()->name" :initials="auth()->user()->initials()"
-                icon:trailing="chevrons-up-down" />
+            <flux:profile :name="auth()->user()->name" :initials="auth()->user()->initials()" />
 
             <flux:menu class="w-[220px]">
                 <flux:menu.radio.group>
@@ -60,7 +55,6 @@
                             <div class="grid flex-1 text-start text-sm leading-tight">
                                 <span class="truncate font-semibold">{{ auth()->user()->name }}</span>
                                 <span class="truncate text-xs">{{ auth()->user()->email }}</span>
-                                <span class="truncate text-xs">{{ auth()->user()->role }}</span>
                             </div>
                         </div>
                     </div>
@@ -69,8 +63,9 @@
                 <flux:menu.separator />
 
                 <flux:menu.radio.group>
-                    <flux:menu.item :href="route('settings.profile')" icon="cog" wire:navigate='false'>
-                        {{ __('Settings') }}</flux:menu.item>
+                    <flux:menu.item :href="route('settings.profile')" icon="cog" wire:navigate>
+                        {{ __('Settings') }}
+                    </flux:menu.item>
                 </flux:menu.radio.group>
 
                 <flux:menu.separator />
@@ -108,7 +103,6 @@
                             <div class="grid flex-1 text-start text-sm leading-tight">
                                 <span class="truncate font-semibold">{{ auth()->user()->name }}</span>
                                 <span class="truncate text-xs">{{ auth()->user()->email }}</span>
-                                <span class="truncate text-xs">{{ auth()->user()->role }}</span>
                             </div>
                         </div>
                     </div>
@@ -117,7 +111,7 @@
                 <flux:menu.separator />
 
                 <flux:menu.radio.group>
-                    <flux:menu.item :href="route('settings.profile')" icon="cog" wire:navigate='false'>
+                    <flux:menu.item :href="route('settings.profile')" icon="cog" wire:navigate>
                         {{ __('Settings') }}</flux:menu.item>
                 </flux:menu.radio.group>
 
@@ -135,6 +129,7 @@
 
     {{ $slot }}
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/trix/1.3.1/trix.min.js"></script>
     @fluxScripts
 </body>
 

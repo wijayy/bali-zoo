@@ -9,6 +9,7 @@ use App\Http\Controllers\ShopController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
 use App\Livewire\Products;
+use App\Livewire\Supplier\Create as SupplierCreate;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
@@ -58,7 +59,10 @@ Route::middleware(['auth', config('jetstream.auth_session'), 'verified', 'admin'
         Route::get('analytics', [AnalyticsController::class, 'index'])->name('analytics');
         Route::resource('/products', ProductController::class);
         Route::resource('/categories', CategoryController::class);
-        Route::resource('/suppliers', SupplierController::class);
+        Route::resource('/suppliers', SupplierController::class)->only(['index', 'destroy']);
+        Volt::route('suppliers/add', SupplierCreate::class)->name('suppliers.create');
+        Volt::route('suppliers/{slug}/edit', SupplierCreate::class)->name('suppliers.edit');
+
         Route::resource('/admin', UserController::class)->except(['edit', 'update']);
 
         Volt::route('coupon', 'coupon-index')->name('coupon.index');
