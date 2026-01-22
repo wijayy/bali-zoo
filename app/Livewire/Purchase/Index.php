@@ -11,6 +11,7 @@ class Index extends Component
     {
         $this->purchases = \App\Models\Purchase::with('items.product')->latest()->get();
     }
+
     public function render()
     {
         return view('livewire.purchase.index')->layout('components.layouts.app', ['title' => 'Purchase']);

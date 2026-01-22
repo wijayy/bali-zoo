@@ -31,4 +31,21 @@ class Purchase extends Model
     {
         return $this->hasMany(PurchaseItem::class);
     }
+
+    public static function generatePurchaseNumber()
+    {
+        $date = now()->format('Ymd');
+        $lastPurchase = self::where('purchase_number', 'like', "PO-{$date}-%")
+            ->orderBy('id', 'desc')
+            ->first();
+
+        if ($lastPurchase) {
+            $lastNumber = (int) substr($lastPurchase->purchase_number, -3);
+            $newNumber = str_pad($lastNumber + 1, 3, '0', STR_PAD_LEFT);
+        } else {
+            $newNumber = '001';
+        }
+
+        return "PO-{$date}-{$newNumber}";
+    }
 }

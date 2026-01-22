@@ -9,21 +9,25 @@
             <div class="w-1/5 text-center">Product Purchased</div>
             <div class="w-1/5 text-center">Price</div>
             <div class="w-1/5 text-center">Quantity</div>
-            <div class="w-1/5 text-center">Total</div>
+            <div class="w-1/5 text-center">Subtotal</div>
         </div>
+        <div class="w-1/5 text-center">Total</div>
     </div>
     @foreach ($purchases as $item)
-        <div class="flex w-full gap-4 mt-2">
+        <div class="flex w-full items-center gap-4 mt-2">
             <div class="w-10">{{ $loop->iteration }}</div>
             <div class="w-1/5">{{ $item->purchase_number }}</div>
-            <div class="">
-                <div class="flex gap-4">
-                    <div class="w-1/5 text-center">{{ $item->items->first()->product->name }}</div>
-                    <div class="w-1/5 text-center">{{ $item->items->first()->price }}</div>
-                    <div class="w-1/5 text-center">{{ $item->items->first()->quantity }}</div>
-                    <div class="w-1/5 text-center">{{ $item->total }}</div>
-                </div>
+            <div class="w-full">
+                @foreach ($item->items as $itm)
+                    <div class="flex gap-4 w-full mt-1">
+                        <div class="w-1/5 text-center">{{ $itm->product->name }}</div>
+                        <div class="w-1/5 text-center">{{ number_format($itm->price, 2) }}</div>
+                        <div class="w-1/5 text-center">{{ $itm->qty }}</div>
+                        <div class="w-1/5 text-center">{{ number_format($itm->subtotal, 2) }}</div>
+                    </div>
+                @endforeach
             </div>
+            <div class="w-1/5 text-center">{{ number_format($item->total, 2) }}</div>
         </div>
     @endforeach
 </div>
