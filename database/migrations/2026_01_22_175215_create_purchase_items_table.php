@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('purchase_items', function (Blueprint $table) {
+        Schema::connection('mysql')->create('purchase_items', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Purchase::class)->constrained();
             $table->foreignIdFor(Product::class)->constrained();
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('purchase_items');
+        Schema::connection('mysql')->dropIfExists('purchase_items');
     }
 };

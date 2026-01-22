@@ -11,7 +11,7 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('transactions', function (Blueprint $table) {
+        Schema::connection('mysql')->create('transactions', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class);
             $table->string('transaction_number');
@@ -28,6 +28,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('transactions');
+        Schema::connection('mysql')->dropIfExists('transactions');
     }
 };

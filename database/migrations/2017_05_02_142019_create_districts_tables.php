@@ -21,7 +21,7 @@ class CreateDistrictsTables extends Migration
      */
     public function up()
     {
-        Schema::create('districts', function (Blueprint $table) {
+        Schema::connection('mysql')->create('districts', function (Blueprint $table) {
             $table->char('id', 7)->index();
             $table->foreignIdFor(Regency::class);
             $table->string('name', 50);
@@ -35,6 +35,6 @@ class CreateDistrictsTables extends Migration
      */
     public function down()
     {
-        Schema::drop('districts');
+        Schema::connection('mysql')->drop('districts');
     }
 }

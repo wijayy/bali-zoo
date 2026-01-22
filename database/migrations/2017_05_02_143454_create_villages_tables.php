@@ -21,7 +21,7 @@ class CreateVillagesTables extends Migration
      */
     public function up()
     {
-        Schema::create('villages', function(Blueprint $table){
+        Schema::connection('mysql')->create('villages', function (Blueprint $table) {
             $table->char('id', 10)->index();
             $table->foreignIdFor(District::class);
             $table->string('name', 50);
@@ -35,6 +35,6 @@ class CreateVillagesTables extends Migration
      */
     public function down()
     {
-        Schema::drop('villages');
+        Schema::connection('mysql')->drop('villages');
     }
 }

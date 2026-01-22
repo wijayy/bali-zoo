@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('purchases', function (Blueprint $table) {
+        Schema::connection('mysql')->create('purchases', function (Blueprint $table) {
             $table->id();
             $table->string('purchase_number')->unique();
             $table->string('slug')->unique();
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('purchases');
+        Schema::connection('mysql')->dropIfExists('purchases');
     }
 };

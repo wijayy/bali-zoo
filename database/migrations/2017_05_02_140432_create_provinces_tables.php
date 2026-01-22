@@ -20,7 +20,7 @@ class CreateProvincesTables extends Migration
      */
     public function up()
     {
-        Schema::create('provinces', function (Blueprint $table) {
+        Schema::connection('mysql')->create('provinces', function (Blueprint $table) {
             $table->id();
             $table->string('name');
         });
@@ -33,6 +33,6 @@ class CreateProvincesTables extends Migration
      */
     public function down()
     {
-        Schema::drop('provinces');
+        Schema::connection('mysql')->drop('provinces');
     }
 }

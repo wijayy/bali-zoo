@@ -21,7 +21,7 @@ class CreateRegenciesTables extends Migration
      */
     public function up()
     {
-        Schema::create('regencies', function(Blueprint $table){
+        Schema::connection('mysql')->create('regencies', function (Blueprint $table) {
             $table->char('id', 4)->index();
             $table->foreignIdFor(Province::class);
             $table->string('name', 50);
@@ -39,6 +39,6 @@ class CreateRegenciesTables extends Migration
      */
     public function down()
     {
-        Schema::drop('regencies');
+        Schema::connection('mysql')->drop('regencies');
     }
 }

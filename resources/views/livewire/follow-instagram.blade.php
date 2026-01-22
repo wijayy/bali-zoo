@@ -6,19 +6,19 @@
 
         <div class="grid grid-cols-7 items-center mt-4">
             <div class="bg-center bg-cover bg-no-repeat w-full odd:aspect-square even:aspect-9/16"
-                style="background-image: url({{ asset('assets/ins1.jpg') }})"></div>
+                style="background-image: url({{ asset('assets/1.jpeg') }})"></div>
             <div class="bg-center bg-cover bg-no-repeat w-full odd:aspect-square even:aspect-9/16"
-                style="background-image: url({{ asset('assets/ins2.jpg') }})"></div>
+                style="background-image: url({{ asset('assets/2.jpeg') }})"></div>
             <div class="bg-center bg-cover bg-no-repeat w-full odd:aspect-square even:aspect-9/16"
-                style="background-image: url({{ asset('assets/ins3.jpg') }})"></div>
+                style="background-image: url({{ asset('assets/3.jpeg') }})"></div>
             <div class="bg-center bg-cover bg-no-repeat w-full odd:aspect-square even:aspect-9/16"
-                style="background-image: url({{ asset('assets/ins4.jpg') }})"></div>
+                style="background-image: url({{ asset('assets/4.jpeg') }})"></div>
             <div class="bg-center bg-cover bg-no-repeat w-full odd:aspect-square even:aspect-9/16"
-                style="background-image: url({{ asset('assets/ins5.jpg') }})"></div>
+                style="background-image: url({{ asset('assets/5.jpeg') }})"></div>
             <div class="bg-center bg-cover bg-no-repeat w-full odd:aspect-square even:aspect-9/16"
-                style="background-image: url({{ asset('assets/ins6.jpg') }})"></div>
+                style="background-image: url({{ asset('assets/6.jpeg') }})"></div>
             <div class="bg-center bg-cover bg-no-repeat w-full odd:aspect-square even:aspect-9/16"
-                style="background-image: url({{ asset('assets/ins7.jpg') }})"></div>
+                style="background-image: url({{ asset('assets/7.jpeg') }})"></div>
         </div>
     </flux:container>
 </div>

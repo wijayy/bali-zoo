@@ -12,7 +12,7 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('transaction_items', function (Blueprint $table) {
+        Schema::connection('mysql')->create('transaction_items', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Product::class)->constrained();
             $table->foreignIdFor(Transaction::class)->constrained();
@@ -28,6 +28,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('transaction_items');
+        Schema::connection('mysql')->dropIfExists('transaction_items');
     }
 };
