@@ -83,7 +83,6 @@ class Create extends Component
             'total' => $this->total,
             'payment_method' => $this->payment_method,
             'status' => 'pending', // or whatever default
-            'supplier_name' => $this->name, // assuming name is supplier name
         ]);
 
         foreach ($this->items as $item) {
