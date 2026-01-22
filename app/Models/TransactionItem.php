@@ -10,12 +10,16 @@ class TransactionItem extends Model
     /** @use HasFactory<\Database\Factories\TransactionItemFactory> */
     use HasFactory;
 
+    protected $connection = 'mysql';
+
     protected $guarded = ['id'];
 
-    public function transacction() {
+    public function transacction()
+    {
         return $this->belongsTo(Transaction::class);
     }
-    public function product() {
+    public function product()
+    {
         return $this->belongsTo(Product::class);
     }
 }

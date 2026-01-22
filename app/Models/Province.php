@@ -18,6 +18,8 @@ use Illuminate\Database\Eloquent\Model;
 class Province extends Model
 {
     use ProvinceTrait;
+
+    protected $connection = 'mysql';
     /**
      * Table name.
      *

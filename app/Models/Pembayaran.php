@@ -10,6 +10,7 @@ class Pembayaran extends Model
     /** @use HasFactory<\Database\Factories\PembayaranFactory> */
     use HasFactory;
 
-        protected $guarded = ['id'];
+    protected $connection = 'mysql';
 
+    protected $guarded = ['id'];
 }

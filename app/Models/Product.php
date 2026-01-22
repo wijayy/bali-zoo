@@ -15,6 +15,8 @@ class Product extends Model
     /** @use HasFactory<\Database\Factories\ProductFactory> */
     use HasFactory, Sluggable;
 
+    protected $connection = 'mysql';
+
     /**
      * Return the sluggable configuration array for this model.
      *

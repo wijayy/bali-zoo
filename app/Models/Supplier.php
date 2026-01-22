@@ -11,6 +11,8 @@ class Supplier extends Model
     /** @use HasFactory<\Database\Factories\SupplierFactory> */
     use HasFactory, Sluggable;
 
+    protected $connection = 'mysql';
+
     /**
      * Return the sluggable configuration array for this model.
      *
@@ -29,7 +31,8 @@ class Supplier extends Model
 
     protected $with = ['product'];
 
-    public function getRouteKeyName() {
+    public function getRouteKeyName()
+    {
         return 'slug';
     }
 

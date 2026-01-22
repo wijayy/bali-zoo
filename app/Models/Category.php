@@ -12,6 +12,8 @@ class Category extends Model
     /** @use HasFactory<\Database\Factories\CategoryFactory> */
     use HasFactory, Sluggable;
 
+    protected $connection = 'mysql';
+
     /**
      * Return the sluggable configuration array for this model.
      *
@@ -30,7 +32,8 @@ class Category extends Model
 
     protected $with = ['product'];
 
-    public function getRouteKeyName() {
+    public function getRouteKeyName()
+    {
         return 'slug';
     }
 

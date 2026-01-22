@@ -21,6 +21,8 @@ class District extends Model
 {
     use DistrictTrait;
 
+    protected $connection = 'mysql';
+
     /**
      * Table name.
      *

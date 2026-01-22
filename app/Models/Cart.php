@@ -11,6 +11,8 @@ class Cart extends Model
     /** @use HasFactory<\Database\Factories\CartFactory> */
     use HasFactory;
 
+    protected $connection = 'mysql';
+
     protected $guarded = ['id'];
 
     public function user(): BelongsTo

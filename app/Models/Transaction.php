@@ -12,6 +12,8 @@ class Transaction extends Model
     /** @use HasFactory<\Database\Factories\TransactionFactory> */
     use HasFactory, Sluggable;
 
+    protected $connection = 'mysql';
+
     public function sluggable(): array
     {
         return [

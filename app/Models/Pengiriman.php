@@ -10,5 +10,7 @@ class Pengiriman extends Model
     /** @use HasFactory<\Database\Factories\PengirimanFactory> */
     use HasFactory;
 
+    protected $connection = 'mysql';
+
     protected $guarded = ['id'];
 }

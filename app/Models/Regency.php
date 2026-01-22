@@ -19,6 +19,8 @@ class Regency extends Model
 {
     use RegencyTrait;
 
+    protected $connection = 'mysql';
+
     /**
      * Table name.
      *

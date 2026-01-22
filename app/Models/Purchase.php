@@ -11,6 +11,8 @@ class Purchase extends Model
     /** @use HasFactory<\Database\Factories\PurchaseFactory> */
     use HasFactory,  Sluggable;
 
+    protected $connection = 'mysql';
+
     /**
      * Return the sluggable configuration array for this model.
      *

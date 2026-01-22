@@ -10,6 +10,8 @@ class PurchaseItem extends Model
     /** @use HasFactory<\Database\Factories\PurchaseItemFactory> */
     use HasFactory;
 
+    protected $connection = 'mysql';
+
     protected $guarded = ['id'];
 
     public function purchase()
