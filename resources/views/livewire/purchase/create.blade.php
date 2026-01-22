@@ -8,7 +8,6 @@
                 <option value="cash">Cash</option>
                 <option value="credit">Credit</option>
             </flux:select>
-            <flux:input wire:model='name' label="Supplier Name" type="text" required></flux:input>
         </div>
 
         <div class="mt-4">
