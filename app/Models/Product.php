@@ -41,7 +41,7 @@ class Product extends Model
         return $this->sell_price;
     }
 
-    
+
 
     protected $with = ['review', 'cart'];
     protected $perPage = 24;
@@ -74,20 +74,23 @@ class Product extends Model
     public function scopeFilters(Builder $query, array $filters)
     {
         $query->when($filters["search"] ?? false, function ($query, $search) {
-            return $query->where("name", "like", "%$search%")->orWhere("description", "LIKE", "%$search%");
+            return $query->where(function ($q) use ($search) {
+                $q->where("name", "like", "%$search%")
+                    ->orWhere("description", "LIKE", "%$search%");
+            });
         });
 
-        $query->when($filters["min"] ?? false, function ($query, $search) {
-            return $query->where("price", ">=", $search);
+        $query->when($filters["min"] ?? false, function ($query, $min) {
+            return $query->where("price", ">=", $min);
         });
 
-        $query->when($filters["max"] ?? false, function ($query, $search) {
-            return $query->where("price", "<=", $search);
+        $query->when($filters["max"] ?? false, function ($query, $max) {
+            return $query->where("price", "<=", $max);
         });
 
-        $query->when($filters["category"] ?? false, function ($query, $search) {
-            return $query->whereHas("category", function ($query) use ($search) {
-                $query->where("slug", $search);
+        $query->when($filters["category"] ?? false, function ($query, $category) {
+            return $query->whereHas("category", function ($q) use ($category) {
+                $q->where("slug", $category);
             });
         });
     }

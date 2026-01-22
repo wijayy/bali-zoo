@@ -65,9 +65,6 @@ class Create extends Component
     #[Validate('required')]
     public $payment_method = '';
 
-    #[Validate('required')]
-    public $name = '';
-
     public function mount()
     {
         $this->products = \App\Models\Product::all();

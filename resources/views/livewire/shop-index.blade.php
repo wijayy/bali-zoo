@@ -15,11 +15,25 @@
         <div class="">
             <div class="text-center font-semibold text-lg">Filters</div>
 
-            <flux:radio.group wire:model.live='category' label="By Category">
-                @foreach ($categories as $item)
-                <flux:radio value="{{ $item->slug }}" label="{{ $item->name }}"></flux:radio>
-                @endforeach
-            </flux:radio.group>
+            <div class="mb-4">
+                <flux:label>By Category</flux:label>
+                <div class="mt-2">
+                    <div class="">
+
+                        <input type="radio" wire:model.live="category" value="" id="category-all"
+                            class="mr-2">
+                        <label for="category-all" class="mr-4">All</label>
+                    </div>
+                    @foreach ($categories as $item)
+                        <div class="">
+
+                            <input type="radio" wire:model.live="category" value="{{ $item->slug }}"
+                                id="category-{{ $item->slug }}" class="mr-2">
+                            <label for="category-{{ $item->slug }}" class="mr-4">{{ $item->name }}</label>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
             <div class="mt-4"></div>
             <flux:label>By Price</flux:label>
             <div class="flex gap-4 mt-4">
