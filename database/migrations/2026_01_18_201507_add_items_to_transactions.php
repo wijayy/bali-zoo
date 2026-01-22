@@ -10,7 +10,7 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::table('transactions', function (Blueprint $table) {
+        Schema::connection('mysql')->table('transactions', function (Blueprint $table) {
             $table->integer('subtotal')->default(0);
             $table->integer('shipping_cost')->default(0);
             $table->integer('discount')->default(0);
@@ -22,7 +22,7 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::table('transactions', function (Blueprint $table) {
+        Schema::connection('mysql')->table('transactions', function (Blueprint $table) {
             //
         });
     }
