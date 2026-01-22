@@ -17,11 +17,11 @@
             items: [
                 { file: '{{ $product->image1 ?? false ? asset("storage/$product->image1") : '' }}' }, { file: '{{ $product->image2 ?? false ? asset("storage/$product->image2") : '' }}' }, { file: '{{ $product->image3 ?? false ? asset("storage/$product->image3") : '' }}' }, { file: '{{ $product->image4 ?? false ? asset("storage/$product->image4") : '' }}' }
             ],
-
+        
             addItem() {
                 this.items.push({
                     file: '',
-
+        
                 });
             },
             removeItem(index) {
@@ -156,16 +156,24 @@
                     <x-input-error for="weight" class="mt-2" />
                 </div>
             </div>
-            <div class="grid gap-4 grid-cols-2">
+            <div class="grid gap-4 grid-cols-3 col-span-2">
                 <div class="">
-                    <x-label required="true" for="price" value="{{ __('price') }}" />
-                    <x-input value="{{ old('price', $product->price ?? false) }}" id="price" type="text"
-                        class="mt-1 block w-full" name="price" required autocomplete="price" />
-                    <x-input-error for="price" class="mt-2" />
+                    <x-label required="true" for="sell_price" value="{{ __('sell price') }}" />
+                    <x-input value="{{ old('sell_price', $product->sell_price ?? false) }}" id="sell_price"
+                        type="text" class="mt-1 block w-full" name="sell_price" required
+                        autocomplete="sell_price" />
+                    <x-input-error for="sell_price" class="mt-2" />
+                </div>
+                <div class="">
+                    <x-label required="true" for="buy_price" value="{{ __('buy price') }}" />
+                    <x-input value="{{ old('buy_price', $product->buy_price ?? false) }}" id="buy_price"
+                        type="text" class="mt-1 block w-full" name="buy_price" required
+                        autocomplete="buy_price" />
+                    <x-input-error for="buy_price" class="mt-2" />
                 </div>
                 <div class="">
                     <x-label required="true" for="stock" value="{{ __('stock') }}" />
-                    <x-input value="{{ old('stock', $product->stock ?? false) }}" id="stock" type="text"
+                    <x-input value="{{ old('stock', $product->stock ?? 0) }}" id="stock" readonly type="text"
                         class="mt-1 block w-full" name="stock" required autocomplete="stock" />
                     <x-input-error for="stock" class="mt-2" />
                 </div>

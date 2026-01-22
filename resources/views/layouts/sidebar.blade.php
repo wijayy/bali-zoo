@@ -27,6 +27,8 @@
                     wire:navigate>{{ __('Categories') }}</flux:navlist.item>
                 <flux:navlist.item :href="route('products.index')" :current="request()->routeIs('products.*')"
                     wire:navigate>{{ __('Products') }}</flux:navlist.item>
+                <flux:navlist.item :href="route('purchase.index')" :current="request()->routeIs('purchase.*')"
+                    wire:navigate>{{ __('Purchase') }}</flux:navlist.item>
                 <flux:navlist.item :href="route('transaction.index')" :current="request()->routeIs('transaction.*')"
                     wire:navigate>{{ __('Transaction') }}</flux:navlist.item>
                 <flux:navlist.item :href="route('coupon.index')" :current="request()->routeIs('coupon.*')"

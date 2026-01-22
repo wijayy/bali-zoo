@@ -35,7 +35,7 @@ class ProductSeeder extends Seeder
             Product::factory()->recycle([Supplier::all()])->create([
                 'name' => $item['name'],
                 'category_id' => $item['category_id'],
-                'price' => $item['price'],
+                'sell_price' => $item['price'],
                 'stock' => mt_rand(10, 20),
                 'image1' => $item['image1'],
             ]);

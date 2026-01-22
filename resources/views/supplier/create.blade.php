@@ -1,4 +1,4 @@
-<form enctype="multipart/form-data" wire:submit='save' class="bg-white rounded-lg p-4">
+<form enctype="multipart/form-data" wire:submit='save' class="bg-white rounded-lg p-4 dark:bg-neutral-800">
     <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
         <flux:input wire:model='name' label="Name" type="text" required></flux:input>
         <flux:input wire:model='address' label="Address" type="text" required></flux:input>

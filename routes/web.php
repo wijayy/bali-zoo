@@ -9,6 +9,8 @@ use App\Http\Controllers\ShopController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
 use App\Livewire\Products;
+use App\Livewire\Purchase\Create;
+use App\Livewire\Purchase\Index;
 use App\Livewire\Supplier\Create as SupplierCreate;
 use App\Models\Category;
 use App\Models\Product;
@@ -47,7 +49,6 @@ Route::middleware(['auth', config('jetstream.auth_session'), 'verified'])
             Volt::route('checkout', componentName: 'checkout')->name('checkout.index');
             Volt::route('payment/{slug}', componentName: 'payment')->name('payment.index');
             Volt::route('invoice/{slug}', componentName: 'payment')->name('invoice');
-
         }
     );
 
@@ -74,7 +75,8 @@ Route::middleware(['auth', config('jetstream.auth_session'), 'verified', 'admin'
         Volt::route('settings/password', 'update-password')->name('settings.password');
         Volt::route('settings/appearance', 'appearence')->name('settings.appearance');
 
-
+        Volt::route('purchase', Index::class)->name('purchase.index');
+        Volt::route('purchase/add', Create::class)->name('purchase.create');
 
         Volt::route('transaction', 'transaction-index')->name('transaction.index');
     }
