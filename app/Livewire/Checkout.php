@@ -11,6 +11,7 @@ use Livewire\Component;
 use App\Models\District;
 use App\Models\Pembayaran;
 use App\Models\Pengiriman;
+use App\Models\Product;
 use App\Models\Province;
 use App\Models\Transaction;
 use AzisHapidin\IndoRegion\RawDataGetter;
@@ -84,9 +85,7 @@ class Checkout extends Component
         return 0;
     }
 
-    public $shipments = [
-
-    ];
+    public $shipments = [];
 
     /**
      * The available provinces.
@@ -259,7 +258,7 @@ class Checkout extends Component
     public function updatedVillageId($value)
     {
         // dd($this->province_id, $this->regency_id, $this->district_id, $value);
-        $village =$this->villages->firstWhere('id', $value);
+        $village = $this->villages->firstWhere('id', $value);
         $this->postal_code = $village ? $village['zip_code'] : '';
     }
 
@@ -303,7 +302,6 @@ class Checkout extends Component
         });
         // Tentukan berat yang ditagihkan (chargeable)
         $this->chargeable_weight = max($this->total_actual_weight, $this->total_volumetric_weight);
-
     }
 
     public function getShipment()
@@ -372,6 +370,8 @@ class Checkout extends Component
                     'price' => $value->product->price,
                     'subtotal' => $value->product->price * $value->qty,
                 ]);
+
+                Product::find($value->product->id)->decrement('stock', $value->qty);
             }
 
             Pengiriman::create([

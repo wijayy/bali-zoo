@@ -10,7 +10,7 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('coupons', function (Blueprint $table) {
+        Schema::connection('mysql2')->create('coupons', function (Blueprint $table) {
             $table->id();
             $table->string('code');
             $table->string('slug')->unique();
@@ -31,6 +31,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('coupons');
+        Schema::connection('mysql2')->dropIfExists('coupons');
     }
 };

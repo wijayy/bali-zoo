@@ -12,10 +12,10 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('coupon_products', function (Blueprint $table) {
+        Schema::connection('mysql2')->create('coupon_products', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Coupon::class)->constrained();
-            $table->foreignIdFor(Product::class)->constrained();
+            $table->foreignIdFor(Product::class);
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('coupon_products');
+        Schema::connection('mysql2')->dropIfExists('coupon_products');
     }
 };

@@ -15,7 +15,19 @@ class DatabaseSeeder extends Seeder
     /**
      * Seed the application's database.
      */
+
     public function run(): void
+    {
+        $this->seedMainDatabase();
+        $this->seedSecondDatabase();
+    }
+
+    public function seedSecondDatabase(): void
+    {
+        $this->call(CouponSeeder::class);
+    }
+
+    public function seedMainDatabase(): void
     {
         // User::factory(10)->create();
 
@@ -55,6 +67,5 @@ class DatabaseSeeder extends Seeder
 
         // $this->call(TransactionSeeder::class);
 
-        $this->call(CouponSeeder::class);
     }
 }

@@ -13,6 +13,8 @@ class Coupon extends Model
     /** @use HasFactory<\Database\Factories\CouponFactory> */
     use HasFactory, Sluggable, SoftDeletes;
 
+    protected $connection = 'mysql2';
+
     /**
      * Return the sluggable configuration array for this model.
      *
