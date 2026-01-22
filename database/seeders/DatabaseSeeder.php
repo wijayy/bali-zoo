@@ -24,7 +24,11 @@ class DatabaseSeeder extends Seeder
 
     public function seedSecondDatabase(): void
     {
+        // Set connection to mysql2 for coupon seeding
+        config(['database.default' => 'mysql2']);
         $this->call(CouponSeeder::class);
+        // Reset back to mysql
+        config(['database.default' => 'mysql']);
     }
 
     public function seedMainDatabase(): void
