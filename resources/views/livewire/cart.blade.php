@@ -22,7 +22,7 @@
                         <div class="w-10">{{ $loop->iteration }}</div>
                         <div class="">{{ $item['product']['name'] }}</div>
                     </div>
-                    <div class="text-center">Rp. {{ number_format($item['product']['price'], 0, ',', '.') }}</div>
+                    <div class="text-center">Rp. {{ number_format($item['product']['sell_price'], 0, ',', '.') }}</div>
                     <div class="text-center">
                         <input type="number" min="1"
                             wire:input="updateQty({{ $item['id'] }}, $event.target.value)" value="{{ $item['qty'] }}"
@@ -30,7 +30,7 @@
                         {{-- <div class="">{{ $item['qty'] }}</div> --}}
                     </div>
                     <div class="text-center">Rp.
-                        {{ number_format($item['product']['price'] * $item['qty'], 0, ',', '.') }}</div>
+                        {{ number_format($item['product']['sell_price'] * $item['qty'], 0, ',', '.') }}</div>
                     <div class="flex justify-center">
                         <flux:button wire:click="delete({{ $item['id'] }})" variant="danger" icon="trash"
                             size="sm"></flux:button>

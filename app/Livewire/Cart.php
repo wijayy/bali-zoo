@@ -24,7 +24,7 @@ class Cart extends Component
         $this->subtotal = 0;
 
         array_walk($this->carts, function (&$item) {
-            $this->subtotal += $item['qty'] * $item['product']['price'];
+            $this->subtotal += $item['qty'] * $item['product']['sell_price'];
         });
     }
 

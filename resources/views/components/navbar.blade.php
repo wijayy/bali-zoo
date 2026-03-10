@@ -2,10 +2,11 @@
 
 {{-- @dd(Auth::user()->profile_picture) --}}
 
-<nav x-data="{ open: false, scrolled: false }"
-    x-init="@if ($header) window.addEventListener('scroll', () => scrolled = window.scrollY > 50) @endif" :class="(scrolled || {{ $header ? 'false' : 'true' }}) ?
+<nav x-data="{ open: false, scrolled: false }" x-init="@if ($header) window.addEventListener('scroll', () => scrolled = window.scrollY > 50) @endif"
+    :class="(scrolled || {{ $header ? 'false' : 'true' }}) ?
     'bg-white text-black shadow-md' :
-    'bg-transparent text-white'" class="fixed z-50 w-full transition-all duration-75">
+    'bg-transparent text-white'"
+    class="fixed z-50 w-full transition-all duration-75">
 
     <!-- Primary Navigation Menu -->
     <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -23,40 +24,44 @@
                 <x-nav-link href="{{ route('shop.index') }}" :active="request()->is('shop')">Shop</x-nav-link>
                 <x-nav-link href="{{ route('contact') }}" :active="request()->routeIs('contact')">Contact</x-nav-link>
                 @auth
-                <x-nav-link href="{{ route('history.index') }}" :active="request()->is('history.*')">History
-                </x-nav-link>
-                @if (Auth::user()->is_admin)
-                <x-nav-link href="{{ route('dashboard') }}">Dashboard
-                </x-nav-link>
-
-                @endif
+                    <x-nav-link href="{{ route('history.index') }}" :active="request()->is('history.*')">History
+                    </x-nav-link>
+                    @if (Auth::user()->is_admin)
+                        <x-nav-link href="{{ route('dashboard') }}">Dashboard
+                        </x-nav-link>
+                    @endif
                 @endauth
             </div>
             <div class="flex items-center gap-4">
                 <x-nav-icon :label="'cart'" href="{{ route('cart.index') }}">
                     <i class='text-xl bx text-inherit bx-cart-alt'></i>
                     @auth
-                    <div class="absolute size-5 bg-rose-400 top-1/2 -translate-y-full translate-x-full text-xs right-1/2 text-center leading-5 rounded-full">{{ Auth::user()->cart->count() }} </div>
+                        <div
+                            class="absolute size-5 bg-rose-400 top-1/2 -translate-y-full translate-x-full text-xs right-1/2 text-center leading-5 rounded-full">
+                            {{ Auth::user()->cart->count() }} </div>
                     @endauth
                 </x-nav-icon>
                 @auth
-                <x-nav-icon :label="'profile'" href="{{ route('profile.show') }}">
-                    <img src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}"
-                        class="rounded-sm size-5 object-cover">
-                </x-nav-icon>
-
-                <form action="{{ route('logout') }}" method="post">
-                    @csrf
-                    <x-nav-icon :label="'logout'" href="{{ route('logout') }}"
-                        @click.prevent="$el.closest('form').submit()">
-                        <i class='text-xl bx text-inherit bx-log-out'></i>
+                    <x-nav-icon :label="'profile'" href="{{ route('profile.show') }}">
+                        <img src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}"
+                            class="rounded-sm size-5 object-cover">
                     </x-nav-icon>
-                </form>
+
+                    <form action="{{ route('logout') }}" method="post">
+                        @csrf
+                        <x-nav-icon :label="'logout'" href="{{ route('logout') }}"
+                            @click.prevent="$el.closest('form').submit()">
+                            <i class='text-xl bx text-inherit bx-log-out'></i>
+                        </x-nav-icon>
+                    </form>
                 @endauth
                 @guest
-                <x-nav-icon :label="'login'" href="{{ route('login') }}">
-                    <i class='text-xl bx text-inherit bx-log-in'></i>
-                </x-nav-icon>
+                    <x-nav-link href="{{ route('register') }}" :active="request()->routeIs('register')">
+                        <flux:icon icon="arrow-right-end-on-rectangle" variant="mini"></flux:icon> <span>Register</span>
+                    </x-nav-link>
+                    <x-nav-link href="{{ route('login') }}" :active="request()->routeIs('login')">
+                        <flux:icon icon="arrow-right-end-on-rectangle" variant="mini"></flux:icon> <span>Login</span>
+                    </x-nav-link>
                 @endguest
                 <div class="block md:hidden" href="" @click="open = !open">
                     <i class='text-xl bx text-inherit bx-menu'></i>
@@ -72,12 +77,10 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link href="{{ route('shop.index') }}" :active="request()->is('shop')">Shop
             </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('about') }}" :active="request()->routeIs('about')">About
-            </x-responsive-nav-link>
             <x-responsive-nav-link href="{{ route('contact') }}" :active="request()->routeIs('contact')">Contact
             </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('transaction.index') }}" :active="request()->is('transaction')">
-                Transaction</x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('history.index') }}" :active="request()->is('history.*')">
+                History</x-responsive-nav-link>
         </div>
     </div>
 </nav>

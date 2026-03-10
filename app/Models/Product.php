@@ -43,8 +43,6 @@ class Product extends Model
         return $this->sell_price;
     }
 
-
-
     protected $with = ['review', 'cart'];
     protected $perPage = 24;
     public function review(): HasMany

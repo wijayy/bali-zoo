@@ -1,6 +1,6 @@
 <div class="bg-white dark:bg-neutral-800 rounded-lg gap-4">
     <form wire:submit="save" class="p-4">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <flux:input wire:model='purchase_number' label="Purchase Number" type="text" readonly required></flux:input>
             <flux:input wire:model='purchase_date' label="Purchase Date" type="date" required></flux:input>
             <flux:select wire:model='payment_method' label="Payment Method" required>
