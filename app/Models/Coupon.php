@@ -25,7 +25,8 @@ class Coupon extends Model
         return [
             'slug' => [
                 'onUpdate' => true,
-                'source' => 'code'
+                'source' => 'code',
+                'includeTrashed' => true,
             ]
         ];
     }
