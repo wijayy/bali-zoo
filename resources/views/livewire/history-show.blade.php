@@ -13,6 +13,12 @@
                 <div class="text-sm text-gray-600 mb-4">Payment: -</div>
             @endif
 
+            @if (!$transaction->payment && $transaction->status == 'ordered')
+                <div class="mt-2">
+                    <flux:button wire:click="cancel" variant="danger" size="sm">Cancel Order</flux:button>
+                </div>
+            @endif
+
             <flux:separator text="Shipping Information"></flux:separator>
             <div class="space-y-1 text-sm my-4">
                 <div>{{ $transaction->pengiriman->name }} / {{ $transaction->pengiriman->phone }}</div>

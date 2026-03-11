@@ -15,6 +15,12 @@ class CouponIndex extends Component
 
     public function mount()
     {
+        $this->getCoupon();
+    }
+
+    public function getCoupon()
+    {
+
         $this->coupons = Coupon::all();
     }
 
@@ -22,12 +28,14 @@ class CouponIndex extends Component
     {
         try {
             DB::beginTransaction();
-            $coupon = Coupon::find($id);
+            $coupon = Coupon::where('id', $id)->first();
 
             if ($coupon) {
                 $coupon->delete();
             }
             DB::commit();
+            $this->dispatch('modal-close')
+            $this->getCoupon();
         } catch (\Throwable $th) {
             DB::rollBack();
             if (config('app.debug') == true) {

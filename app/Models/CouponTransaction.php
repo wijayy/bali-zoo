@@ -13,4 +13,12 @@ class CouponTransaction extends Model
     protected $connection = 'mysql2';
 
     protected $guarded = ['id'];
+
+    public function coupon() {
+        return $this->belongsTo(Coupon::class);
+    }
+
+    public function transaction() {
+        return $this->belongsTo(Transaction::class);
+    }
 }

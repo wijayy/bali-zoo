@@ -13,4 +13,6 @@ class CouponProduct extends Model
     protected $connection = 'mysql2';
 
     protected $guarded = ['id'];
+
+
 }

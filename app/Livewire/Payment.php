@@ -18,7 +18,9 @@ class Payment extends Component
     public function mount($slug)
     {
         try {
-            $this->transaction = Transaction::where('slug', $slug)->first();
+            $this->transaction = Transaction::with('couponUsage')->where('slug', $slug)->first();
+
+
 
             // dd($this->transaction);
 

@@ -64,24 +64,31 @@ class Checkout extends Component
             return 0;
         }
 
-        if ($this->subtotal > $this->c->minimum) {
+        if ($this->subtotal >= $this->c->minimum) {
+
             if ($this->c->type == 'fixed') {
                 return $this->c->amount;
-            } else {
-                $discount = 0;
-                foreach ($this->carts as $key => $item) {
-                    $link = CouponProduct::where('coupon_id', $this->c->id)->where('product_id', $item->product->id)->first();
-
-                    if ($link) {
-                        $discount += $this->c->amount / 100 * $item->product->price * $item->qty;
-                    }
-                }
-                if ($this->c->maximum > 0) {
-                    $discount = min($discount, $this->c->maximum);
-                }
-                return $discount;
             }
+
+            $discount = 0;
+
+            $productIds = CouponProduct::where('coupon_id', $this->c->id)
+                ->pluck('product_id')
+                ->toArray();
+
+            foreach ($this->carts as $item) {
+                if (in_array($item->product->id, $productIds)) {
+                    $discount += ($this->c->amount / 100) * $item->product->price * $item->qty;
+                }
+            }
+
+            if ($this->c->maximum > 0) {
+                $discount = min($discount, $this->c->maximum);
+            }
+
+            return $discount;
         }
+
         return 0;
     }
 
@@ -387,6 +394,14 @@ class Checkout extends Component
                 'postal_code' => $this->postal_code,
                 'status' => 'ordered'
             ]);
+
+            if ($this->c) {
+                $transaksi->couponUsage()->create([
+                    'coupon_id' => $this->c->id,
+                    'discount_amount' => $this->countDiscount(),
+                ]);
+            }
+            
 
             DB::commit();
 

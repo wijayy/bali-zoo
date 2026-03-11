@@ -43,7 +43,7 @@ class Coupon extends Model
 
     public function products()
     {
-        return $this->belongsToMany(Product::class, 'coupon_products');
+        return $this->belongsToMany(Product::class,   'bali-zoo-coupon.coupon_products');
     }
 
     public function is_active()

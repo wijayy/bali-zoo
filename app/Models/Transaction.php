@@ -72,6 +72,8 @@ class Transaction extends Model
         return $this->hasOne(CouponTransaction::class);
     }
 
+    
+
     /**
      * Apply array-based filters (mimicking product.scopeFilters template).
      * Allowed keys: 'date' (created_at), 'number' (transaction_number contains).

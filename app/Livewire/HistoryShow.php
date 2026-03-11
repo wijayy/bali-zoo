@@ -3,6 +3,9 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use App\Models\Product;
 
 class HistoryShow extends Component
 {
@@ -63,6 +66,35 @@ class HistoryShow extends Component
     {
         return view('livewire.history-show')
             ->layout('layouts.app', ['title' => 'Order Detail', 'header' => false]);
+    }
+
+    public function cancel()
+    {
+        $transaction = $this->transaction; // already loaded via mount
+
+        if ($transaction && $transaction->user_id == Auth::id() && $transaction->status == 'ordered') {
+            DB::transaction(function () use ($transaction) {
+                $transaction->status = 'canceled';
+                $transaction->save();
+
+                foreach ($transaction->items as $item) {
+                    Product::find($item->product_id)->increment('stock', $item->qty);
+                }
+
+                if ($transaction->pengiriman) {
+                    $transaction->pengiriman->status = 'canceled';
+                    $transaction->pengiriman->save();
+                }
+
+                if ($transaction->couponUsage) {
+                    $transaction->couponUsage->delete();
+                }
+            });
+
+            // refresh local copy
+            $this->transaction->refresh();
+            session()->flash('success', 'Transaction has been cancelled.');
+        }
     }
 
     public function loadTracking()

@@ -44,7 +44,7 @@
         @if ($transaction->couponUsage)
             <div class="flex justify-between items-center">
                 <div class="">Coupon</div>
-                <div class="">{{ $transaction->usage->code }}</div>
+                <div class="">{{ $transaction->couponUsage->coupon->code }}</div>
             </div>
             <div class="flex justify-between items-center">
                 <div class="">Discount</div>

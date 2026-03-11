@@ -18,7 +18,7 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::all();
-        return view("product.index", compact( "products"));
+        return view("product.index", compact("products"));
     }
 
     /**
@@ -78,7 +78,7 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         $categories = Category::all();
-                $suppliers = Supplier::all();
+        $suppliers = Supplier::all();
         return view("product.create", compact("categories", "product", 'suppliers'));
     }
 

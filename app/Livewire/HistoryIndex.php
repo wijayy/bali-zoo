@@ -24,8 +24,6 @@ class HistoryIndex extends Component
     public function mount()
     {
         $this->transactions = collect();
-        $this->dateFilter = null;
-        $this->numberFilter = null;
         $this->loadTransactions();
     }
 
@@ -46,10 +44,6 @@ class HistoryIndex extends Component
             'couponUsage.coupon',
         ])
             ->where('user_id', Auth::id())
-            ->filters([
-                'date' => $this->dateFilter,
-                'number' => $this->numberFilter,
-            ])
             ->orderBy('created_at', 'desc');
 
         $chunk = $query->skip(($this->page - 1) * $this->perPage)
@@ -83,7 +77,6 @@ class HistoryIndex extends Component
         $this->loadTransactions();
     }
 
-
     public function render()
     {
         return view('livewire.history-index')->layout('layouts.app', ['title' => $this->title, 'header' => false]);
@@ -106,4 +99,5 @@ class HistoryIndex extends Component
         $this->hasMore = true;
         $this->loadTransactions();
     }
+
 }
