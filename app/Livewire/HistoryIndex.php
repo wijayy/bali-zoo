@@ -16,6 +16,7 @@ class HistoryIndex extends Component
     public $hasMore = true;
     public $isLoading = false;
 
+
     protected $listeners = [
         'loadMoreHistory' => 'loadMore',
     ];
@@ -23,6 +24,8 @@ class HistoryIndex extends Component
     public function mount()
     {
         $this->transactions = collect();
+        $this->dateFilter = null;
+        $this->numberFilter = null;
         $this->loadTransactions();
     }
 
@@ -36,8 +39,17 @@ class HistoryIndex extends Component
 
         $this->isLoading = true;
 
-        $query = Transaction::with(['pengiriman', 'items.product'])
+        $query = Transaction::with([
+            'pengiriman',
+            'items.product',
+            'payment',
+            'couponUsage.coupon',
+        ])
             ->where('user_id', Auth::id())
+            ->filters([
+                'date' => $this->dateFilter,
+                'number' => $this->numberFilter,
+            ])
             ->orderBy('created_at', 'desc');
 
         $chunk = $query->skip(($this->page - 1) * $this->perPage)
@@ -75,5 +87,23 @@ class HistoryIndex extends Component
     public function render()
     {
         return view('livewire.history-index')->layout('layouts.app', ['title' => $this->title, 'header' => false]);
+    }
+
+    public function updatedDateFilter()
+    {
+        $this->resetPageAndReload();
+    }
+
+    public function updatedNumberFilter()
+    {
+        $this->resetPageAndReload();
+    }
+
+    protected function resetPageAndReload()
+    {
+        $this->page = 1;
+        $this->transactions = collect();
+        $this->hasMore = true;
+        $this->loadTransactions();
     }
 }

@@ -21,9 +21,9 @@ $classes = Flux::classes('border-0 [print-color-adjust:exact]')
     ;
 @endphp
 
-<?php if ($slot): ?>
+<?php if ($text || $slot ): ?>
     <div data-orientation="{{ $orientation }}" class="flex items-center w-full" role="none" data-flux-separator>
-        <span class="shrink font-medium text-sm text-zinc-500 dark:text-zinc-300 whitespace-nowrap">{{ $slot }}</span>
+        <span class="shrink font-medium text-sm text-zinc-500 dark:text-zinc-300 whitespace-nowrap">{{ $text ?? $slot }}</span>
 
         <div {{ $attributes->class([$classes, 'grow']) }}></div>
     </div>

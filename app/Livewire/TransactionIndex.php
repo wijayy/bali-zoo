@@ -9,16 +9,29 @@ use Livewire\Component;
 class TransactionIndex extends Component
 {
     #[Url(except: '')]
-    public $date;
+    public $date, $search = '';
 
     public $transactions, $title = "All Transaction";
 
     public function mount()
     {
-        $this->date = $this->date ?? date("Y-m-d");
-        $this->transactions = Transaction::whereDate('created_at', $this->date)->get();
+        // $this->transactions = Transaction::whereDate('created_at', $this->date)->get();
+        $this->transactions = $this->getTransaction();
 
         // dd($this->date,$this->transactions);
+
+    }
+
+    public function updatedDate() {
+        $this->transactions = $this->getTransaction();
+    }
+
+    public function updatedSearch() {
+        $this->transactions = $this->getTransaction();
+    }
+
+    public function getTransaction() {
+        return Transaction::filters(['date' => $this->date, 'number' => $this->search])->get();
     }
 
     public function render()

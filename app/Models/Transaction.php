@@ -71,4 +71,23 @@ class Transaction extends Model
     {
         return $this->hasOne(CouponTransaction::class);
     }
+
+    /**
+     * Apply array-based filters (mimicking product.scopeFilters template).
+     * Allowed keys: 'date' (created_at), 'number' (transaction_number contains).
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  array  $filters
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeFilters($query, array $filters)
+    {
+        $query->when($filters['date'] ?? false, function ($q, $date) {
+            return $q->whereDate('created_at', $date);
+        });
+
+        $query->when($filters['number'] ?? false, function ($q, $number) {
+            return $q->where('transaction_number', 'like', "%{$number}%");
+        });
+    }
 }

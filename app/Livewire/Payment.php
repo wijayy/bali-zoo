@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Pembayaran;
 use App\Models\Transaction;
 use Exception;
 use Livewire\Attributes\On;
@@ -61,6 +62,16 @@ class Payment extends Component
 
         }
 
+    }
+
+    public function pay() {
+        Pembayaran::create([
+            'transaction_id' => $this->transaction->id,
+            'metode_pembayaran' => 'Midtrans',
+            'status' => 'paid',
+        ]);
+
+        return redirect(route('history.index'))->with('success', 'Payment successful!');
     }
 
     public function render()

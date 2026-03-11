@@ -32,7 +32,6 @@ Route::resource('cart', CartController::class)->except(['index'])->middleware('a
 Route::resource('shop', ShopController::class)->only(['show']);
 
 Volt::route('shop', 'shop-index')->name('shop.index');
-Volt::route('history', 'history-index')->name('history.index');
 
 
 Route::middleware(['auth', config('jetstream.auth_session'), 'verified'])
@@ -44,6 +43,8 @@ Route::middleware(['auth', config('jetstream.auth_session'), 'verified'])
             // Volt::route('settings/profile', 'settings.profile')->name('settings.profile');
             // Volt::route('settings/password', 'settings.password')->name('settings.password');
             // Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
+            Volt::route('history', 'history-index')->name('history.index');
+            Volt::route('history/{slug}', 'history-show')->name('history.show');
 
             Volt::route('cart', 'cart')->name('cart.index');
             Volt::route('checkout', componentName: 'checkout')->name('checkout.index');
@@ -79,5 +80,7 @@ Route::middleware(['auth', config('jetstream.auth_session'), 'verified', 'admin'
         Volt::route('purchase/add', Create::class)->name('purchase.create');
 
         Volt::route('transaction', 'transaction-index')->name('transaction.index');
+        Volt::route('transaction/{slug}/request-shipping', \App\Livewire\TransactionRequestShipping::class)
+            ->name('transaction.request-shipping');
     }
 );

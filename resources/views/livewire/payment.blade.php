@@ -61,7 +61,7 @@
 
 
     <div class="flex mt-4 justify-center">
-        <flux:button id="pay-button" size="sm" variant="primary" class="">Pay
+        <flux:button wire:click='pay()' size="sm" variant="primary" class="">Pay
         </flux:button>
     </div>
 

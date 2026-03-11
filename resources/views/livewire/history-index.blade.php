@@ -51,6 +51,12 @@
                             <div class="col-span-2">{{ ucfirst($item->status) }}
                             </div>
                         </div>
+                        @if ($item->payment)
+                            <div class="flex justify-between">
+                                <div>Payment</div>
+                                <div class="col-span-2">{{ ucfirst($item->payment->status) }} ({{ $item->payment->metode_pembayaran }})</div>
+                            </div>
+                        @endif
                         <div class="flex justify-between">
                             <div class="">Subtotal</div>
                             <div class="col-span-2">Rp. {{ number_format($item->subtotal, 0, ',', '.') }}
@@ -73,12 +79,19 @@
                             <div class="col-span-2">Rp. {{ number_format($item->total, 0, ',', '.') }}
                             </div>
                         </div>
-                        @if (!$item->payment && $item->status == 'ordered')
-                            <div class="flex justify-center mt-4 gap-4">
-                                <flux:button href="{{ route('payment.index', ['slug' => $item->slug]) }}" variant="primary">Pay</flux:button>
-                                <flux:button wire:click='cancel({{ $item->id }})' variant="danger">Cancel</flux:button>
-                            </div>
-                        @endif
+
+
+                        <div class="flex justify-center mt-4 gap-4">
+                            <flux:button href="{{ route('history.show', ['slug' => $item->slug]) }}">Detail</flux:button>
+                            @if (!$item->payment && $item->status == 'ordered')
+                                <flux:button href="{{ route('payment.index', ['slug' => $item->slug]) }}"
+                                    variant="primary">Pay</flux:button>
+                                <flux:button wire:click='cancel({{ $item->id }})' variant="danger">Cancel
+                                </flux:button>
+                            @endif
+                        </div>
+                        <div class="flex justify-center mt-4 gap-4">
+                        </div>
                     </div>
                 </div>
             @endforeach

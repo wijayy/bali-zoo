@@ -1,7 +1,8 @@
 <div>
     <div class="flex gap-4 items-center">
-        <div class="">
-            <flux:input wire:model='date' type="date"></flux:input>
+        <div class="flex gap-4">
+            <flux:input wire:model.live='search' type="text" placeholder="Search Transaction Number"></flux:input>
+            <flux:input wire:model.live='date' type="date"></flux:input>
         </div>
         <div class="">Summary</div>
     </div>
@@ -71,6 +72,13 @@
                         <div class="col-span-2">Rp. {{ number_format($item->total, 0, ',', '.') }}
                         </div>
                     </div>
+                    @if (!$item->pengiriman->awb ?? false)
+                        <div class="mt-2 flex justify-end">
+                            <flux:button size="sm" as
+                                href="{{ route('transaction.request-shipping', ['slug' => $item->slug]) }}"
+                                variant="primary">Input AWB / RESI</flux:button>
+                        </div>
+                    @endif
                 </div>
             </div>
         @endforeach
