@@ -34,7 +34,6 @@ class CouponIndex extends Component
                 $coupon->delete();
             }
             DB::commit();
-            $this->dispatch('modal-close')
             $this->getCoupon();
         } catch (\Throwable $th) {
             DB::rollBack();
