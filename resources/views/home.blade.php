@@ -7,7 +7,7 @@
                 <div class="text-xl md:text-3xl text-mine-400">Discover Our New Collection</div>
                 <div class="text-xs md:text-sm">Bring the magic of the zoo into your life with our exclusive merchandise
                     collection. Every purchase supports wildlife conservation!</div>
-                <x-a>Buy Now</x-a>
+                <x-a href="{{ route('shop.index')}}">Buy Now</x-a>
             </div>
         </div>
     </div>

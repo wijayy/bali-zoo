@@ -36,7 +36,7 @@
                         <flux:input wire:model.live="qty" type="number" value="1" class="w-12" min="1"
                             max="{{ $product->stock }}"></flux:input>
                     </div>
-                    <flux:button variant='underline' type="submit" class="">Add to cart</flux:button>
+                    <flux:button variant='primary' type="submit" class="">Add to cart</flux:button>
                 </form>
 
                 <div class=" mt-4">{{ $product->description }}</div>
