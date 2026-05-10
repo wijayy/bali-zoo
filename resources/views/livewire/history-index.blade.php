@@ -1,4 +1,4 @@
-<div wire:poll.10s="refreshTransactions">
+<div>
     <flux:container>
 
         <div class="h-20"></div>
@@ -7,10 +7,6 @@
         <flux:text position="center">View details of your orders, shipping progress, and payment confirmations all in one
             place.
         </flux:text>
-
-        <div class="mt-4 flex justify-center">
-            <flux:button size="sm" wire:click="refreshTransactions">Refresh</flux:button>
-        </div>
 
         <div class="grid mt-4 grid-cols-1 md:grid-cols-2  gap-4">
             @foreach ($transactions as $item)
