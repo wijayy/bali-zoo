@@ -4,26 +4,24 @@
     </div>
     <div class="flex gap-4 py-2 text-black w-full dark:text-white">
         <div class="w-8 ">#</div>
-        <div class="w-2/7">Supplier Name</div>
-        <div class="w-1/7 text-center">Address</div>
-        <div class="w-1/7 text-center">Contact Person</div>
-        <div class="w-1/7 text-center">Email</div>
-        <div class="w-1/7 text-center">Phone Number</div>
-        <div class="w-1/7 text-center">Product Related</div>
-        <div class="w-1/7 text-center">Action</div>
+        <div class="w-2/6">Supplier Name</div>
+        <div class="w-1/6 text-center">Address</div>
+        <div class="w-1/6 text-center">Contact Person</div>
+        <div class="w-1/6 text-center">Email</div>
+        <div class="w-1/6 text-center">Phone Number</div>
+        <div class="w-1/6 text-center">Action</div>
     </div>
     @foreach ($suppliers as $key => $item)
         <div class="flex items-center gap-4 py-2 text-black w-full dark:text-white">
             <div class="w-8 ">{{ $key + 1 }}</div>
-            <div class="w-2/7 flex items-center gap-2">
+            <div class="w-2/6 flex items-center gap-2">
                 <div class="">{{ $item->name }}</div>
             </div>
-            <div class="w-1/7 text-center">{{ $item->address }}</div>
-            <div class="w-1/7 text-center">{{ $item->person }}</div>
-            <div class="w-1/7 text-center">{{ $item->email }}</div>
-            <a href="https://wa.me/{{ $item->phone }}" class="w-1/7 text-center">{{ $item->phone }}</a>
-            <div class="w-1/7 text-center">{{ $item->product->count() }}</div>
-            <div class="w-1/7 flex gap-2 justify-center">
+            <div class="w-1/6 text-center">{{ $item->address }}</div>
+            <div class="w-1/6 text-center">{{ $item->person }}</div>
+            <div class="w-1/6 text-center">{{ $item->email }}</div>
+            <a href="https://wa.me/{{ $item->phone }}" class="w-1/6 text-center">{{ $item->phone }}</a>
+            <div class="w-1/6 flex gap-2 justify-center">
                 <flux:tooltip content="Edit Supplier">
                     <flux:button size="sm" as href="{{ route('suppliers.edit', $item->slug) }}"
                         icon="pencil-square"></flux:button>
