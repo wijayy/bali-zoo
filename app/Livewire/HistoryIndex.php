@@ -74,7 +74,13 @@ class HistoryIndex extends Component
         if ($transaction && $transaction->user_id == Auth::id() && $transaction->status == 'ordered') {
             $transaction->update(['status' => 'canceled']);
         }
-        $this->loadTransactions();
+
+        $this->refreshTransactions();
+    }
+
+    public function refreshTransactions()
+    {
+        $this->resetPageAndReload();
     }
 
     public function render()
