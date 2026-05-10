@@ -61,44 +61,10 @@
 
 
     <div class="flex mt-4 justify-center">
-        <flux:button wire:click='pay()' size="sm" variant="primary" class="">Pay
-        </flux:button>
+        @if ($paymentUrl)
+            <flux:button href="{{ $paymentUrl }}" size="sm" variant="primary">Pay with Xendit</flux:button>
+        @else
+            <flux:button size="sm" variant="primary" disabled>Payment unavailable</flux:button>
+        @endif
     </div>
-
-    <script src="{{ env('MIDTRANS_TARGET_LINK') }}" data-client-key="{{ config('midtrans.clientKey') }}">
-    </script>
-    <script type="text/javascript">
-        document.getElementById('pay-button').addEventListener('click', function() {
-            window.snap.pay('{{ $snapToken }}', {
-                onSuccess: function(result) {
-                    console.log("Midtrans result:", result);
-
-                    fetch("{{ url('/api/midtrans/callback') }}", {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json"
-                            },
-                            body: JSON.stringify(result)
-                        })
-                        // .then(response => response.json())
-                        .then(data => {
-                            console.log("Server response:", data);
-                            window.location.href =
-                                "{{ route('history.index') }}";
-                        })
-                        .catch(error => {
-                            console.error("Fetch error:", error);
-                        });
-                },
-                onPending: function(result) {
-                    console.log("Pembayaran Pending");
-                },
-                onError: function(result) {
-                    alert("Pembayaran gagal, silakan coba lagi.");
-                },
-                onClose: function() {
-                }
-            });
-        });
-    </script>
 </div>
