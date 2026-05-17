@@ -69,7 +69,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call(IndoRegionSeeder::class);
 
+        $this->call(BannerSeeder::class);
         // $this->call(TransactionSeeder::class);
-
     }
 }

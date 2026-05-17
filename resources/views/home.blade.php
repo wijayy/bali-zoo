@@ -7,7 +7,7 @@
                 <div class="text-xl md:text-3xl text-mine-400">Discover Our New Collection</div>
                 <div class="text-xs md:text-sm">Bring the magic of the zoo into your life with our exclusive merchandise
                     collection. Every purchase supports wildlife conservation!</div>
-                <x-a href="{{ route('shop.index')}}">Buy Now</x-a>
+                <x-a href="{{ route('shop.index') }}">Buy Now</x-a>
             </div>
         </div>
     </div>
@@ -34,7 +34,8 @@
     <div class="">
         <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div class="text-center font-semibold text-lg">Our Recomendation</div>
-            <div class="text-sm text-center w-4/5 mx-auto">Step into the world of Bali Zoo through our handpicked recommendations —
+            <div class="text-sm text-center w-4/5 mx-auto">Step into the world of Bali Zoo through our handpicked
+                recommendations —
                 featuring merchandise inspired by the animals you love and the moments you cherish. From sustainable
                 lifestyle products to adorable keepsakes, each item tells a story of nature, conservation, and the joy
                 of connecting with wildlife</div>
@@ -83,6 +84,8 @@
 
         </div>
     </div>
+
+    @livewire('banner-show')
 
     @livewire('follow-instagram')
     @livewire('newslatter')

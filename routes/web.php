@@ -8,6 +8,8 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
+use App\Livewire\BannerCreate;
+use App\Livewire\BannerIndex;
 use App\Livewire\Products;
 use App\Livewire\Purchase\Create;
 use App\Livewire\Purchase\Index;
@@ -82,5 +84,9 @@ Route::middleware(['auth', config('jetstream.auth_session'), 'verified', 'admin'
         Volt::route('transaction', 'transaction-index')->name('transaction.index');
         Volt::route('transaction/{slug}/request-shipping', \App\Livewire\TransactionRequestShipping::class)
             ->name('transaction.request-shipping');
+
+        Route::get('banners', BannerIndex::class)->name('banners.index');
+        Route::get('banners/create', BannerCreate::class)->name('banners.create');
+        Route::get('banners/{slug}/edit', BannerCreate::class)->name('banners.edit');
     }
 );
