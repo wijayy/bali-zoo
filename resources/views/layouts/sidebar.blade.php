@@ -33,8 +33,8 @@
                     wire:navigate>{{ __('Transaction') }}</flux:navlist.item>
                 <flux:navlist.item :href="route('coupon.index')" :current="request()->routeIs('coupon.*')"
                     wire:navigate>{{ __('Coupon') }}</flux:navlist.item>
-                <flux:navlist.item :href="route('banners.index')" :current="request()->routeIs('banners.*')"
-                    wire:navigate>{{ __('Banners') }}</flux:navlist.item>
+                {{-- <flux:navlist.item :href="route('banners.index')" :current="request()->routeIs('banners.*')"
+                    wire:navigate>{{ __('Banners') }}</flux:navlist.item> --}}
             </flux:navlist.group>
         </flux:navlist>
 
