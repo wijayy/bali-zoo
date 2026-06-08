@@ -4,258 +4,247 @@
     <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
 
         <div class="flex flex-col md:flex-row gap-3">
-            <flux:input wire:model.live='search' type="text" placeholder="Search transaction number..."
-                class="min-w-[280px]" />
+            <flux:input wire:model.live='search' type="text" placeholder="Search transaction number..." />
 
             <flux:input wire:model.live='date' type="date" />
         </div>
 
-        <div class="flex items-center gap-3">
-            <div class="text-sm text-zinc-500">
-                Total Transaction
-            </div>
-
-            <div
-                class="h-11 min-w-11 px-4 rounded-xl bg-black text-white flex items-center justify-center font-semibold">
+        <div class="text-sm text-zinc-500">
+            Total Transactions :
+            <span class="font-semibold text-zinc-800">
                 {{ $transactions->count() }}
-            </div>
+            </span>
         </div>
     </div>
 
-    {{-- TRANSACTIONS --}}
-    <div class="space-y-5">
+    {{-- TABLE --}}
+    <div class="bg-white border border-zinc-200 rounded-3xl overflow-hidden">
 
-        @foreach ($transactions as $item)
-            <div
-                class="bg-white border border-zinc-200 rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300">
+        {{-- HEADER --}}
+        <div
+            class="hidden md:grid grid-cols-12 gap-4 px-6 py-4 bg-zinc-50 border-b border-zinc-200 text-sm font-semibold text-zinc-600">
 
-                {{-- HEADER --}}
-                <div
-                    class="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-4 px-6 py-5 border-b border-zinc-100 bg-zinc-50">
+            <div class="col-span-3">
+                Transaction Number
+            </div>
 
-                    <div>
-                        <div class="text-xs uppercase tracking-widest text-zinc-400">
+            <div class="col-span-2 text-center">
+                Items
+            </div>
+
+            <div class="col-span-2 text-end">
+                Subtotal
+            </div>
+
+            <div class="col-span-2 text-end">
+                Shipping
+            </div>
+
+            <div class="col-span-2 text-end">
+                Total
+            </div>
+
+            <div class="col-span-1 text-center">
+                Action
+            </div>
+        </div>
+
+        {{-- BODY --}}
+        <div class="divide-y divide-zinc-100">
+
+            @foreach ($transactions as $item)
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 px-6 py-5 hover:bg-zinc-50 transition">
+
+                    {{-- TRANSACTION --}}
+                    <div class="md:col-span-3">
+
+                        <div class="md:hidden text-xs text-zinc-400 mb-1">
                             Transaction Number
                         </div>
 
-                        <div class="text-xl font-bold text-zinc-800">
+                        <div class="font-semibold text-zinc-800">
                             {{ $item->transaction_number }}
                         </div>
-                    </div>
 
-                    <div class="flex flex-wrap items-center gap-3">
+                        <div class="mt-2">
+                            <span
+                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium
 
-                        {{-- STATUS --}}
-                        <div
-                            class="px-4 py-2 rounded-full text-sm font-semibold
-                            @if ($item->status == 'pending') bg-yellow-100 text-yellow-700
-                            @elseif($item->status == 'paid') bg-blue-100 text-blue-700
-                            @elseif($item->status == 'completed') bg-green-100 text-green-700
-                            @elseif($item->status == 'cancelled') bg-red-100 text-red-700
-                            @else bg-zinc-100 text-zinc-700 @endif">
-
-                            {{ ucfirst($item->status) }}
-                        </div>
-
-                        {{-- TOTAL --}}
-                        <div class="bg-black text-white rounded-2xl px-5 py-3">
-
-                            <div class="text-xs text-zinc-300">
-                                Total Payment
-                            </div>
-
-                            <div class="font-bold text-lg">
-                                Rp {{ number_format($item->total, 0, ',', '.') }}
-                            </div>
+                                @if ($item->status == 'pending') bg-yellow-100 text-yellow-700
+                                @elseif($item->status == 'paid')
+                                    bg-blue-100 text-blue-700
+                                @elseif($item->status == 'completed')
+                                    bg-green-100 text-green-700
+                                @elseif($item->status == 'cancelled')
+                                    bg-red-100 text-red-700
+                                @else
+                                    bg-zinc-100 text-zinc-700 @endif
+                            ">
+                                {{ ucfirst($item->status) }}
+                            </span>
                         </div>
                     </div>
-                </div>
 
-                {{-- CONTENT --}}
-                <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 p-6">
+                    {{-- ITEMS --}}
+                    <div class="md:col-span-2 md:text-center flex md:block justify-between">
+
+                        <div class="md:hidden text-sm text-zinc-500">
+                            Items
+                        </div>
+
+                        <div class="font-medium text-zinc-800">
+                            {{ $item->items->count() }} Item
+                        </div>
+                    </div>
+
+                    {{-- SUBTOTAL --}}
+                    <div class="md:col-span-2 md:text-end flex md:block justify-between">
+
+                        <div class="md:hidden text-sm text-zinc-500">
+                            Subtotal
+                        </div>
+
+                        <div class="font-medium text-zinc-700">
+                            Rp {{ number_format($item->subtotal, 0, ',', '.') }}
+                        </div>
+                    </div>
 
                     {{-- SHIPPING --}}
-                    <div class="xl:col-span-3">
+                    <div class="md:col-span-2 md:text-end flex md:block justify-between">
 
-                        <div class="rounded-2xl border border-zinc-200 p-5 h-full">
+                        <div class="md:hidden text-sm text-zinc-500">
+                            Shipping
+                        </div>
 
-                            <div class="text-sm font-semibold mb-4 text-zinc-800">
-                                Shipping Information
-                            </div>
+                        <div class="text-zinc-700">
+                            Rp {{ number_format($item->shipping_cost, 0, ',', '.') }}
+                        </div>
+                    </div>
 
+                    {{-- TOTAL --}}
+                    <div class="md:col-span-2 md:text-end flex md:block justify-between">
+
+                        <div class="md:hidden text-sm text-zinc-500">
+                            Total
+                        </div>
+
+                        <div class="font-bold text-zinc-900">
+                            Rp {{ number_format($item->total, 0, ',', '.') }}
+                        </div>
+                    </div>
+
+                    {{-- ACTION --}}
+                    <div class="md:col-span-1 flex md:justify-center">
+
+                        <flux:button size="sm" variant="ghost" wire:click="show('{{ $item->id }}')">
+
+                            Show
+                        </flux:button>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+    @if ($showModal && $selectedTransaction)
+        <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+            <div class="bg-white w-full max-w-6xl rounded-3xl overflow-hidden shadow-2xl max-h-[90vh] overflow-y-auto">
+                {{-- HEADER --}} <div
+                    class="flex items-center justify-between px-6 py-5 border-b border-zinc-200 sticky top-0 bg-white z-10">
+                    <div>
+                        <div class="text-xs uppercase tracking-widest text-zinc-400"> Transaction Detail </div>
+                        <div class="text-2xl font-bold text-zinc-800"> {{ $selectedTransaction->transaction_number }}
+                        </div>
+                    </div> <button wire:click="$set('showModal', false)"
+                        class="w-10 h-10 rounded-full hover:bg-zinc-100 text-xl"> ✕ </button>
+                </div> {{-- CONTENT --}} <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 p-6">
+                    {{-- SHIPPING --}} <div class="xl:col-span-3">
+                        <div class="border border-zinc-200 rounded-2xl p-5 h-full">
+                            <div class="font-semibold text-zinc-800 mb-5"> Shipping Information </div>
                             <div class="space-y-4">
-
                                 <div>
-                                    <div class="font-medium text-zinc-800">
-                                        {{ $item->pengiriman->name }}
+                                    <div class="font-medium text-zinc-800"> {{ $selectedTransaction->pengiriman->name }}
                                     </div>
-
-                                    <div class="text-sm text-zinc-500">
-                                        {{ $item->pengiriman->phone }}
+                                    <div class="text-sm text-zinc-500"> {{ $selectedTransaction->pengiriman->phone }}
                                     </div>
                                 </div>
-
                                 <div class="text-sm leading-relaxed text-zinc-600">
-
-                                    {{ $item->pengiriman->address }},
-                                    {{ $item->pengiriman->village }},
-                                    {{ $item->pengiriman->district }},
-                                    {{ $item->pengiriman->city }},
-                                    {{ $item->pengiriman->province }}
-                                </div>
-
-                                @if ($item->payment)
-                                    @if ($item->pengiriman->awb ?? false)
-                                        <div class="bg-green-50 border border-green-200 rounded-xl p-3">
-
-                                            <div class="text-xs text-green-600 mb-1">
-                                                AWB / RESI
-                                            </div>
-
-                                            <div class="font-semibold text-green-700">
-                                                {{ $item->pengiriman->awb }}
-                                            </div>
-                                        </div>
-                                    @else
-                                        <div class="pt-2">
-                                            <flux:button as
-                                                href="{{ route('transaction.request-shipping', ['slug' => $item->slug]) }}"
-                                                variant="primary" class="w-full">
-
-                                                Input AWB / RESI
-                                            </flux:button>
-                                        </div>
-                                    @endif
+                                    {{ $selectedTransaction->pengiriman->address }},
+                                    {{ $selectedTransaction->pengiriman->village }},
+                                    {{ $selectedTransaction->pengiriman->district }},
+                                    {{ $selectedTransaction->pengiriman->city }},
+                                    {{ $selectedTransaction->pengiriman->province }} </div>
+                                @if ($selectedTransaction->pengiriman->awb)
+                                    <div class="bg-green-50 border border-green-200 rounded-xl p-4">
+                                        <div class="text-xs text-green-600 mb-1"> AWB / RESI </div>
+                                        <div class="font-semibold text-green-700">
+                                            {{ $selectedTransaction->pengiriman->awb }} </div>
+                                    </div>
                                 @endif
                             </div>
                         </div>
-                    </div>
-
-                    {{-- PRODUCTS --}}
-                    <div class="xl:col-span-6">
-
-                        <div class="rounded-2xl border border-zinc-200 overflow-hidden">
-
-                            <div class="px-5 py-4 border-b border-zinc-200 font-semibold text-zinc-800">
-
-                                Ordered Items
+                    </div> {{-- ITEMS --}} <div class="xl:col-span-6">
+                        <div class="border border-zinc-200 rounded-2xl overflow-hidden">
+                            <div class="px-5 py-4 border-b border-zinc-200 font-semibold text-zinc-800"> Ordered Items
                             </div>
-
                             <div class="divide-y divide-zinc-100">
-
-                                @foreach ($item->items as $itm)
-                                    <a href="{{ route('products.show', ['product' => $itm->product->slug]) }}"
-                                        class="flex gap-4 p-5 hover:bg-zinc-50 transition">
-
-                                        {{-- IMAGE --}}
-                                        <div class="w-24 h-24 rounded-2xl overflow-hidden shrink-0 bg-zinc-100">
-
+                                @foreach ($selectedTransaction->items as $itm)
+                                    <div class="flex gap-4 p-5"> {{-- IMAGE --}} <div
+                                            class="w-24 h-24 rounded-2xl overflow-hidden shrink-0 bg-zinc-100">
                                             <div class="w-full h-full bg-cover bg-center"
                                                 style="background-image: url('{{ asset('storage/' . $itm->product->image1) }}')">
                                             </div>
+                                        </div> {{-- PRODUCT --}} <div class="flex-1">
+                                            <div class="font-semibold text-zinc-800"> {{ $itm->product->name }} </div>
+                                            <div class="text-sm text-zinc-500 mt-1"> Quantity : {{ $itm->qty }}
+                                            </div>
+                                            <div class="mt-3 inline-flex px-3 py-1 rounded-lg bg-zinc-100 text-xs"> Rp
+                                                {{ number_format($itm->subtotal / $itm->qty, 0, ',', '.') }} / item
+                                            </div>
+                                        </div> {{-- SUBTOTAL --}} <div class="text-end">
+                                            <div class="text-xs text-zinc-400 mb-1"> Subtotal </div>
+                                            <div class="font-bold text-zinc-800"> Rp
+                                                {{ number_format($itm->subtotal, 0, ',', '.') }} </div>
                                         </div>
-
-                                        {{-- PRODUCT --}}
-                                        <div class="flex-1 min-w-0">
-
-                                            <div class="font-semibold text-zinc-800 line-clamp-2">
-
-                                                {{ $itm->product->name }}
-                                            </div>
-
-                                            <div class="text-sm text-zinc-500 mt-1">
-                                                Quantity :
-                                                {{ $itm->qty }}
-                                            </div>
-
-                                            <div
-                                                class="mt-3 inline-flex px-3 py-1 rounded-lg bg-zinc-100 text-xs text-zinc-600">
-
-                                                Rp
-                                                {{ number_format($itm->subtotal / $itm->qty, 0, ',', '.') }}
-                                                / item
-                                            </div>
-                                        </div>
-
-                                        {{-- SUBTOTAL --}}
-                                        <div class="text-end shrink-0">
-
-                                            <div class="text-xs text-zinc-400 mb-1">
-                                                Subtotal
-                                            </div>
-
-                                            <div class="font-bold text-zinc-800">
-
-                                                Rp
-                                                {{ number_format($itm->subtotal, 0, ',', '.') }}
-                                            </div>
-                                        </div>
-                                    </a>
+                                    </div>
                                 @endforeach
                             </div>
                         </div>
-                    </div>
-
-                    {{-- PAYMENT --}}
-                    <div class="xl:col-span-3">
-
-                        <div class="rounded-2xl border border-zinc-200 p-5 h-full">
-
-                            <div class="font-semibold text-zinc-800 mb-5">
-                                Payment Summary
-                            </div>
-
+                    </div> {{-- PAYMENT --}} <div class="xl:col-span-3">
+                        <div class="border border-zinc-200 rounded-2xl p-5">
+                            <div class="font-semibold text-zinc-800 mb-5"> Payment Summary </div>
                             <div class="space-y-4 text-sm">
-
-                                <div class="flex justify-between">
-                                    <span class="text-zinc-500">
-                                        Subtotal
-                                    </span>
-
-                                    <span class="font-medium">
-                                        Rp {{ number_format($item->subtotal, 0, ',', '.') }}
-                                    </span>
+                                <div class="flex justify-between"> <span class="text-zinc-500"> Status </span> <span
+                                        class="font-semibold"> {{ ucfirst($selectedTransaction->status) }} </span>
                                 </div>
-
-                                @if ($item->couponUsage)
-                                    <div class="flex justify-between text-red-500">
-                                        <span>
-                                            Discount
-                                        </span>
-
-                                        <span>
-                                            - Rp {{ number_format($item->discount, 0, ',', '.') }}
-                                        </span>
+                                <div class="flex justify-between"> <span class="text-zinc-500"> Subtotal </span> <span>
+                                        Rp {{ number_format($selectedTransaction->subtotal, 0, ',', '.') }} </span>
+                                </div>
+                                @if ($selectedTransaction->couponUsage)
+                                    <div class="flex justify-between text-red-500"> <span> Discount </span> <span> - Rp
+                                            {{ number_format($selectedTransaction->discount, 0, ',', '.') }} </span>
                                     </div>
                                 @endif
-
-                                <div class="flex justify-between">
-                                    <span class="text-zinc-500">
-                                        Shipping
-                                    </span>
-
-                                    <span class="font-medium">
-                                        Rp {{ number_format($item->shipping_cost, 0, ',', '.') }}
-                                    </span>
-                                </div>
-
-                                <div class="border-t border-dashed pt-4 flex justify-between items-center">
-
-                                    <span class="font-semibold text-zinc-800">
-                                        Grand Total
-                                    </span>
-
-                                    <span class="text-2xl font-bold text-zinc-900">
-
-                                        Rp {{ number_format($item->total, 0, ',', '.') }}
-                                    </span>
+                                <div class="flex justify-between"> <span class="text-zinc-500"> Shipping
+                                    </span> <span> Rp
+                                        {{ number_format($selectedTransaction->shipping_cost, 0, ',', '.') }}
+                                    </span> </div>
+                                <div class="border-t pt-4 flex justify-between items-center"> <span
+                                        class="font-semibold text-zinc-800"> Grand Total </span> <span
+                                        class="text-2xl font-bold text-zinc-900"> Rp
+                                        {{ number_format($selectedTransaction->total, 0, ',', '.') }} </span>
                                 </div>
                             </div>
+                            @if (!$selectedTransaction->pengiriman->awb ?? false)
+                                <div class="mt-6">
+                                    <flux:button as
+                                        href="{{ route('transaction.request-shipping', ['slug' => $selectedTransaction->slug]) }}"
+                                        variant="primary" class="w-full"> Input AWB / RESI </flux:button>
+                                </div>
+                            @endif
                         </div>
-
                     </div>
                 </div>
             </div>
-        @endforeach
-    </div>
+        </div>
+    @endif
 </div>

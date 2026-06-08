@@ -11,6 +11,9 @@ class TransactionIndex extends Component
     #[Url(except: '')]
     public $date, $search = '';
 
+    public $selectedTransaction = null;
+    public $showModal = false;
+
     public $transactions, $title = "All Transaction";
 
     public function mount()
@@ -22,16 +25,25 @@ class TransactionIndex extends Component
 
     }
 
-    public function updatedDate() {
+    public function updatedDate()
+    {
         $this->transactions = $this->getTransaction();
     }
 
-    public function updatedSearch() {
+    public function updatedSearch()
+    {
         $this->transactions = $this->getTransaction();
     }
 
-    public function getTransaction() {
+    public function getTransaction()
+    {
         return Transaction::filters(['date' => $this->date, 'number' => $this->search])->get();
+    }
+
+    public function show($id)
+    {
+        $this->selectedTransaction = Transaction::with(['items.product', 'pengiriman', 'couponUsage.coupon'])->findOrFail($id);
+        $this->showModal = true;
     }
 
     public function render()
