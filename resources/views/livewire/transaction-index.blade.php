@@ -22,7 +22,7 @@
 
         {{-- HEADER --}}
         <div
-            class="hidden md:grid grid-cols-12 gap-4 px-6 py-4 bg-zinc-50 border-b border-zinc-200 text-sm font-semibold text-zinc-600">
+            class="hidden md:grid grid-cols-13 gap-4 px-6 py-4 bg-zinc-50 border-b border-zinc-200 text-sm font-semibold text-zinc-600">
 
             <div class="col-span-3">
                 Transaction Number
@@ -44,7 +44,7 @@
                 Total
             </div>
 
-            <div class="col-span-1 text-center">
+            <div class="col-span-2 text-center">
                 Action
             </div>
         </div>
@@ -53,7 +53,7 @@
         <div class="divide-y divide-zinc-100">
 
             @foreach ($transactions as $item)
-                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 px-6 py-5 hover:bg-zinc-50 transition">
+                <div class="grid grid-cols-1 md:grid-cols-13 gap-4 px-6 py-5 hover:bg-zinc-50 transition">
 
                     {{-- TRANSACTION --}}
                     <div class="md:col-span-3">
@@ -134,12 +134,16 @@
                     </div>
 
                     {{-- ACTION --}}
-                    <div class="md:col-span-1 flex md:justify-center">
+                    <div class="md:col-span-2 gap-2 flex md:justify-center">
 
                         <flux:button size="sm" variant="ghost" wire:click="show('{{ $item->id }}')">
 
                             Show
                         </flux:button>
+                        @if (!$item->pengiriman->awb ?? false)
+                            <flux:button as href="{{ route('transaction.request-shipping', ['slug' => $item->slug]) }}"
+                                variant="ghost" size="sm" class=""> Input AWB / RESI </flux:button>
+                        @endif
                     </div>
                 </div>
             @endforeach
@@ -162,7 +166,8 @@
                             <div class="font-semibold text-zinc-800 mb-5"> Shipping Information </div>
                             <div class="space-y-4">
                                 <div>
-                                    <div class="font-medium text-zinc-800"> {{ $selectedTransaction->pengiriman->name }}
+                                    <div class="font-medium text-zinc-800">
+                                        {{ $selectedTransaction->pengiriman->name }}
                                     </div>
                                     <div class="text-sm text-zinc-500"> {{ $selectedTransaction->pengiriman->phone }}
                                     </div>
