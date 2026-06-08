@@ -15,6 +15,7 @@ class HistoryIndex extends Component
     public $page = 1;
     public $hasMore = true;
     public $isLoading = false;
+    public $transaction, $id;
 
 
     protected $listeners = [
@@ -69,7 +70,8 @@ class HistoryIndex extends Component
         $this->loadTransactions();
     }
 
-    public function cancel($id) {
+    public function cancel($id)
+    {
         $transaction = Transaction::find($id);
         if ($transaction && $transaction->user_id == Auth::id() && $transaction->status == 'ordered') {
             $transaction->update(['status' => 'canceled']);
@@ -98,6 +100,27 @@ class HistoryIndex extends Component
         $this->resetPageAndReload();
     }
 
+    public function showOrderReceivedConfirmation($id)
+    {
+        $this->transaction = Transaction::find($id);
+        $this->id = $id;
+        $this->dispatch('modal-show', name: 'orderReceivedModal');
+    }
+
+    public function orderReceived($id)
+    {
+        $this->transaction = Transaction::find($id);
+        $this->id = $id;
+
+
+        $this->transaction->update(['status' => 'received']);
+        $this->transaction->pengiriman->update(['status' => 'received']);
+
+        $this->dispatch('modal-close', name: 'orderReceivedModal');
+
+        $this->refreshTransactions();
+    }
+
     protected function resetPageAndReload()
     {
         $this->page = 1;
@@ -105,5 +128,4 @@ class HistoryIndex extends Component
         $this->hasMore = true;
         $this->loadTransactions();
     }
-
 }

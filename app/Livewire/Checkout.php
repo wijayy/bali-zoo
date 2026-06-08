@@ -129,7 +129,7 @@ class Checkout extends Component
      */
     public function mount()
     {
-        // dd(RawDataGetter::getProvinces());
+        // dd(env('RAJAONGKIR_SHIPPING_COST'));
         $user = Auth::user();
 
         $this->name = $user->name;
@@ -401,7 +401,7 @@ class Checkout extends Component
                     'discount_amount' => $this->countDiscount(),
                 ]);
             }
-            
+
 
             DB::commit();
 

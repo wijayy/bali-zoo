@@ -17,19 +17,19 @@
 
         <div class="mt-4 grid grid-cols-1 md:grid-cols-6 gap-4 rounded p-4 bg-white dark:bg-neutral-700">
             <div class="md:col-span-2">
-                <flux:input wire:model.blur='name' label="Name"></flux:input>
+                <flux:input wire:model.blur='name' label="Nama"></flux:input>
             </div>
             <div class="md:col-span-2">
-                <flux:input wire:model.blur='phone' label="Phone Number"></flux:input>
+                <flux:input wire:model.blur='phone' label="Nomor Telepon"></flux:input>
             </div>
             <div class="md:col-span-2">
                 <flux:input wire:model.blur='email' label="Email"></flux:input>
             </div>
             <div class="md:col-span-3">
-                <flux:input wire:model.live='address' label="Address"></flux:input>
+                <flux:input wire:model.live='address' label="Alamat"></flux:input>
             </div>
             <div class="md:col-span-3">
-                <flux:select wire:model.live='province_id' label="Province">
+                <flux:select wire:model.live='province_id' label="Provinsi">
                     <flux:select.option value="">-- Select Province --</flux:select.option>
                     @foreach ($provinces as $item)
                         <flux:select.option value="{{ $item['id'] }}">{{ $item['name'] }}</flux:select.option>
@@ -37,7 +37,7 @@
                 </flux:select>
             </div>
             <div class="md:col-span-3">
-                <flux:select wire:model.live='regency_id' label="City/Regency">
+                <flux:select wire:model.live='regency_id' label="Kabupaten/Kota">
                     <flux:select.option value="">-- Select City/Regency --</flux:select.option>
                     @foreach ($regencies as $item)
                         <flux:select.option value="{{ $item['id'] }}">{{ $item['name'] }}</flux:select.option>
@@ -45,7 +45,7 @@
                 </flux:select>
             </div>
             <div class="md:col-span-3">
-                <flux:select wire:model.live='district_id' label="District">
+                <flux:select wire:model.live='district_id' label="Kecamatan">
                     <flux:select.option value="">-- Select District --</flux:select.option>
                     @foreach ($districts as $item)
                         <flux:select.option value="{{ $item['id'] }}">{{ $item['name'] }}
@@ -54,7 +54,7 @@
                 </flux:select>
             </div>
             <div class="md:col-span-3">
-                <flux:select wire:model.live='village_id' label="District">
+                <flux:select wire:model.live='village_id' label="Desa/Kelurahan">
                     <flux:select.option value="">-- Select Village --</flux:select.option>
                     @foreach ($villages as $item)
                         <flux:select.option value="{{ $item['id'] }}">{{ $item['name'] }}
@@ -63,7 +63,7 @@
                 </flux:select>
             </div>
             <div class="md:col-span-3">
-                <flux:input wire:model.live='postal_code' readonly label="Postal Code"></flux:input>
+                <flux:input wire:model.live='postal_code' readonly label="Kode Pos"></flux:input>
             </div>
         </div>
 

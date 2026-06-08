@@ -54,7 +54,8 @@
                         @if ($item->payment)
                             <div class="flex justify-between">
                                 <div>Payment</div>
-                                <div class="col-span-2">{{ ucfirst($item->payment->status) }} ({{ $item->payment->metode_pembayaran }})</div>
+                                <div class="col-span-2">{{ ucfirst($item->payment->status) }}
+                                    ({{ $item->payment->metode_pembayaran }})</div>
                             </div>
                         @endif
                         <div class="flex justify-between">
@@ -82,11 +83,18 @@
 
 
                         <div class="flex justify-center mt-4 gap-4">
-                            <flux:button href="{{ route('history.show', ['slug' => $item->slug]) }}">Detail</flux:button>
+                            <flux:button href="{{ route('history.show', ['slug' => $item->slug]) }}">Detail
+                            </flux:button>
                             @if (!$item->payment && $item->status == 'ordered')
                                 <flux:button href="{{ route('payment.index', ['slug' => $item->slug]) }}"
                                     variant="primary">Pay</flux:button>
                                 <flux:button wire:click='cancel({{ $item->id }})' variant="danger">Cancel
+                                </flux:button>
+                            @endif
+
+                            @if ($item->payment && $item->payment->status == 'paid' && !$item->status == 'received')
+                                <flux:button wire:click='showOrderReceivedConfirmation({{ $item->id }})'
+                                    variant="primary">Order Received
                                 </flux:button>
                             @endif
                         </div>
@@ -115,6 +123,19 @@
         @if ($hasMore)
             <div id="history-load-more" style="height:1px"></div>
         @endif
+
+        <div class="relative">
+
+            <flux:modal name="orderReceivedModal" class="fixed inset-0 m-auto h-fit w-[calc(100vw-2rem)] max-w-md">
+                <div class="">Have you received the order with number {{ $transaction?->transaction_number }}?
+                </div>
+                <div class="mt-4">
+                    <flux:button wire:click='orderReceived({{ $id }})' variant="primary">
+                        Order Received
+                    </flux:button>
+                </div>
+            </flux:modal>
+        </div>
 
         <script>
             document.addEventListener('livewire:load', function() {

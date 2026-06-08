@@ -59,7 +59,6 @@ Route::middleware(['auth', config('jetstream.auth_session'), 'verified', 'admin'
     function () {
         Route::get('dashboard', App\Livewire\Dashboard::class)->name('dashboard');
 
-        Route::resource('dashboard/products', ProductController::class);
         Route::get('analytics', [AnalyticsController::class, 'index'])->name('analytics');
         Route::resource('/products', ProductController::class);
         Route::resource('/categories', CategoryController::class);

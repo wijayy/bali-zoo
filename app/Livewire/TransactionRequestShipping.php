@@ -17,7 +17,8 @@ class TransactionRequestShipping extends Component
         $this->transaction = \App\Models\Transaction::where('slug', $slug)->firstOrFail();
     }
 
-    public function save() {
+    public function save()
+    {
         $this->validate();
 
         // for simplicity, we just update the AWB and set status to 'picked-up'
@@ -29,8 +30,12 @@ class TransactionRequestShipping extends Component
         }
 
         $pengiriman->awb = $this->awb;
-        $pengiriman->status = 'picked-up';
+        $pengiriman->status = 'shipping';
         $pengiriman->save();
+
+        $this->transaction->status = 'shipping';
+        $this->transaction->save();
+
 
         session()->flash('success', "AWB updated and shipping status transaction {$this->transaction->transaction_number} set to picked-up.");
         return redirect()->route('transaction.index');
