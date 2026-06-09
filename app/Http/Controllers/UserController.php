@@ -28,7 +28,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view("user.create");
+        return view("user.create", ['user' => null]);
     }
 
     /**
@@ -41,6 +41,7 @@ class UserController extends Controller
                 "name" => "required|string",
                 'email' => 'required|email|unique:users,email',
                 'password' => 'required|confirmed',
+                'is_superadmin' => 'required'
             ]
         );
 
@@ -63,34 +64,57 @@ class UserController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(User $user)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
+    public function edit(User $admin)
     {
-        //
+        return view("user.create", ['user' => $admin]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, User $admin)
     {
-        //
+        $validated = $request->validate(
+            [
+                "name" => "required|string",
+                'email' => 'required|email|unique:users,email,' . $admin->id,
+                'is_superadmin' => 'required',
+                'password' => 'nullable|confirmed'
+            ]
+        );
+
+
+        try {
+            DB::beginTransaction();
+            if (isset($validated['password'])) {
+                $validated['password'] = Hash::make($validated['password']);
+            } else {
+                $validated['password'] = $admin->password;
+            }
+            $validated['is_admin'] = 1;
+            $admin->update($validated);
+            DB::commit();
+            return redirect(route('admin.index'))
+                ->with('success', 'Admin Updated');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            if (config('app.debug') == true) {
+                throw $th;
+            } else {
+                return back()->with('error', $th->getMessage());
+            }
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
+    public function destroy(User $admin)
     {
-        //
+        $admin->delete();
+        return redirect(route('admin.index'))
+            ->with('success', 'Admin Deleted');
     }
 }

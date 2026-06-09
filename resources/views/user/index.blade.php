@@ -8,24 +8,27 @@
         <div class="mt-4 w-full">
             <div class="flex gap-2 py-2 border-y border-black lg:gap-4 w-full items-center">
                 <div class="w-12 text-center">#</div>
-                <div class="w-1/3">Name</div>
-                <div class="w-1/3">Email</div>
-                <div class="w-1/3 text-center">Verified</div>
-                <div class="w-24 text-center">Actions</div>
+                <div class="w-1/4">Name</div>
+                <div class="w-1/4">Email</div>
+                <div class="w-1/4 text-center">Verified</div>
+                <div class="w-1/4 text-center">Actions</div>
             </div>
             @foreach ($users as $key => $item)
                 <div class="flex gap-2 py-2 last:border-b border-black lg:gap-4 w-full items-center">
                     <div class="w-12 text-center">{{ $key + 1 }} </div>
-                    <div class="w-1/3">{{ $item->name }}</div>
-                    <div class="w-1/3">{{ $item->email }}</div>
-                    <div class="w-1/3 flex justify-center items-center">
+                    <div class="w-1/4">{{ $item->name }}</div>
+                    <div class="w-1/4">{{ $item->email }}</div>
+                    <div class="w-1/4 flex justify-center items-center">
                         @if ($item->email_verified_at ?? false)
                             <i class="bx bx-check text-3xl text-green-500"></i>
                         @else
                             <i class="bx bx-x text-3xl text-rose-500"></i>
                         @endif
                     </div>
-                    <div class="w-24 text-center">
+                    <div class="w-1/4 text-center flex gap-2 justify-center items-center">
+                        <x-button as href="{{ route('admin.edit', ['admin' => $item->id]) }}"
+                            class="pb-0! border-b! hover:border-yellow-400">
+                            Edit</x-button>
                         <form action="{{ route('admin.destroy', ['admin' => $item->id]) }}" method="post">
                             @csrf
                             @method('delete')

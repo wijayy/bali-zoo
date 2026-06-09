@@ -66,7 +66,7 @@ Route::middleware(['auth', config('jetstream.auth_session'), 'verified', 'admin'
         Volt::route('suppliers/add', SupplierCreate::class)->name('suppliers.create');
         Volt::route('suppliers/{slug}/edit', SupplierCreate::class)->name('suppliers.edit');
 
-        Route::resource('/admin', UserController::class)->except(['edit', 'update']);
+        Route::resource('/admin', UserController::class)->except(['show']);
 
         Volt::route('coupon', 'coupon-index')->name('coupon.index');
         Volt::route('coupon/add', 'coupon-create')->name('coupon.create');
@@ -87,5 +87,11 @@ Route::middleware(['auth', config('jetstream.auth_session'), 'verified', 'admin'
         Route::get('banners', BannerIndex::class)->name('banners.index');
         Route::get('banners/create', BannerCreate::class)->name('banners.create');
         Route::get('banners/{slug}/edit', BannerCreate::class)->name('banners.edit');
+    }
+);
+
+Route::middleware(['auth', config('jetstream.auth_session'), 'verified', 'superadmin'])->group(
+    function () {
+        Route::resource('/admin', UserController::class)->except(['show']);
     }
 );
