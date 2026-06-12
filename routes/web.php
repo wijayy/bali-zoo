@@ -84,6 +84,10 @@ Route::middleware(['auth', config('jetstream.auth_session'), 'verified', 'admin'
         Volt::route('transaction/{slug}/request-shipping', \App\Livewire\TransactionRequestShipping::class)
             ->name('transaction.request-shipping');
 
+        Route::get('report', App\Livewire\Report\Index::class)->name('report.index');
+        Route::get('report/transaction', App\Livewire\Report\Transaction::class)->name('report.transaction');
+        Route::get('report/purchase', App\Livewire\Report\Purchase::class)->name('report.purchase');
+
         Route::get('banners', BannerIndex::class)->name('banners.index');
         Route::get('banners/create', BannerCreate::class)->name('banners.create');
         Route::get('banners/{slug}/edit', BannerCreate::class)->name('banners.edit');

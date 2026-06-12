@@ -64,24 +64,6 @@ class Dashboard extends Component
             $this->revenueLabels[] = now()->subMonths($i)->format('M Y');
             $this->revenueData[] = (int) ($revenues[$monthKey] ?? 0);
         }
-
-        // dd(
-        //     Transaction::latest()
-        //         ->first([
-        //             'id',
-        //             'status',
-        //             'total',
-        //             'created_at'
-        //         ])
-        // );
-
-        // dd(
-        //     $this->revenueLabels,
-        //     $this->revenueData,
-        //     $revenues,
-        //     $start->format('Y-m-d H:i:s'),
-        //     $end->format('Y-m-d H:i:s')
-        // );
     }
 
     public function render()
