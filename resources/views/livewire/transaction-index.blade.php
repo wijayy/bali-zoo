@@ -22,10 +22,13 @@
 
         {{-- HEADER --}}
         <div
-            class="hidden md:grid grid-cols-13 gap-4 px-6 py-4 bg-zinc-50 border-b border-zinc-200 text-sm font-semibold text-zinc-600">
+            class="hidden md:grid grid-cols-15 gap-4 px-6 py-4 bg-zinc-50 border-b border-zinc-200 text-sm font-semibold text-zinc-600">
 
             <div class="col-span-3">
                 Transaction Number
+            </div>
+            <div class="col-span-2 text-center">
+                Transaction Time
             </div>
 
             <div class="col-span-2 text-center">
@@ -53,7 +56,7 @@
         <div class="divide-y divide-zinc-100">
 
             @foreach ($transactions as $item)
-                <div class="grid grid-cols-1 md:grid-cols-13 gap-4 px-6 py-5 hover:bg-zinc-50 transition">
+                <div class="grid grid-cols-1 md:grid-cols-15 gap-4 px-6 py-5 hover:bg-zinc-50 transition">
 
                     {{-- TRANSACTION --}}
                     <div class="md:col-span-3">
@@ -83,6 +86,10 @@
                                 {{ ucfirst($item->status) }}
                             </span>
                         </div>
+                    </div>
+
+                    <div class="col-span-2 text-center">
+                        {{ $item->created_at->format('d M Y, H:i') }}
                     </div>
 
                     {{-- ITEMS --}}
@@ -135,14 +142,13 @@
 
                     {{-- ACTION --}}
                     <div class="md:col-span-2 gap-2 flex md:justify-center">
-
-                        <flux:button size="sm" variant="ghost" wire:click="show('{{ $item->id }}')">
-
+                        <flux:button size="sm" variant="primary" wire:click="show('{{ $item->id }}')">
                             Show
                         </flux:button>
-                        @if (!$item->pengiriman->awb ?? false)
+                        @if (!$item->pengiriman?->awb && $item->payment && $item->payment?->status == 'paid')
                             <flux:button as href="{{ route('transaction.request-shipping', ['slug' => $item->slug]) }}"
-                                variant="ghost" size="sm" class=""> Input AWB / RESI </flux:button>
+                                variant="primary" size="sm" color="emerald" class="ho">Input RESI
+                            </flux:button>
                         @endif
                     </div>
                 </div>
@@ -239,7 +245,10 @@
                                         {{ number_format($selectedTransaction->total, 0, ',', '.') }} </span>
                                 </div>
                             </div>
-                            @if (!$selectedTransaction->pengiriman->awb ?? false)
+                            @if (
+                                !$selectedTransaction->pengiriman?->awb &&
+                                    $selectedTransaction->payment &&
+                                    $selectedTransaction->payment?->status == 'paid')
                                 <div class="mt-6">
                                     <flux:button as
                                         href="{{ route('transaction.request-shipping', ['slug' => $selectedTransaction->slug]) }}"
