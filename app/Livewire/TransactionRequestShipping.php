@@ -24,6 +24,8 @@ class TransactionRequestShipping extends Component
         // for simplicity, we just update the AWB and set status to 'picked-up'
         // in a real app, you would have more complex logic and validation here
         $pengiriman = $this->transaction->pengiriman;
+
+        // dd($pengiriman);
         if (!$pengiriman) {
             session()->flash('error', 'Shipping information not found for this transaction.');
             return;

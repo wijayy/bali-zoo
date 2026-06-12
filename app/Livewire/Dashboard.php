@@ -45,25 +45,43 @@ class Dashboard extends Component
 
     protected function loadRevenueChart()
     {
-        $start = now()->subMonths(11)->startOfMonth();
-        $end = now()->endOfMonth();
+        $start = now()->subMonths(3)->startOfMonth();
+        $end = now()->addMonths(9)->endOfMonth();
 
         $revenues = Transaction::select(
             DB::raw("DATE_FORMAT(created_at, '%Y-%m') as month"),
             DB::raw('SUM(total) as revenue')
         )
-            ->where('status', 'completed')
+            ->whereIn('status', ['received', 'shipping'])
             ->whereBetween('created_at', [$start, $end])
             ->groupBy('month')
             ->orderBy('month')
             ->pluck('revenue', 'month');
 
         // Pastikan 12 bulan selalu ada (walau 0)
-        for ($i = 11; $i >= 0; $i--) {
+        for ($i = -3; $i <= 9; $i++) {
             $monthKey = now()->subMonths($i)->format('Y-m');
             $this->revenueLabels[] = now()->subMonths($i)->format('M Y');
             $this->revenueData[] = (int) ($revenues[$monthKey] ?? 0);
         }
+
+        // dd(
+        //     Transaction::latest()
+        //         ->first([
+        //             'id',
+        //             'status',
+        //             'total',
+        //             'created_at'
+        //         ])
+        // );
+
+        // dd(
+        //     $this->revenueLabels,
+        //     $this->revenueData,
+        //     $revenues,
+        //     $start->format('Y-m-d H:i:s'),
+        //     $end->format('Y-m-d H:i:s')
+        // );
     }
 
     public function render()
