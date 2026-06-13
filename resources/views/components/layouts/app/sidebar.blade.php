@@ -35,10 +35,6 @@
                     wire:navigate>{{ __('Report') }}</flux:navlist.item>
                 <flux:navlist.item :href="route('coupon.index')" :current="request()->routeIs('coupon.*')"
                     wire:navigate>{{ __('Coupon') }}</flux:navlist.item>
-                @if (auth()->user()->is_superadmin)
-                    <flux:navlist.item :href="route('admin.index')" :current="request()->routeIs('admin.*')"
-                        wire:navigate>{{ __('Admin') }}</flux:navlist.item>
-                @endif
             </flux:navlist.group>
         </flux:navlist>
 
