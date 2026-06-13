@@ -93,9 +93,3 @@ Route::middleware(['auth', config('jetstream.auth_session'), 'verified', 'admin'
         Route::get('banners/{slug}/edit', BannerCreate::class)->name('banners.edit');
     }
 );
-
-Route::middleware(['auth', config('jetstream.auth_session'), 'verified', 'superadmin'])->group(
-    function () {
-        Route::resource('/admin', UserController::class)->except(['show']);
-    }
-);
