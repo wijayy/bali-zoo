@@ -85,7 +85,8 @@
         </div>
     </div>
 
-    @livewire('banner-show')
+
+
 
     @livewire('follow-instagram')
     @livewire('newslatter')
