@@ -92,7 +92,7 @@
                                 </flux:button>
                             @endif
 
-                            @if ($item->payment && $item->payment->status == 'paid' && !$item->status == 'received')
+                            @if ($item->payment && $item->payment->status == 'paid' && $item->status == 'shipping')
                                 <flux:button wire:click='showOrderReceivedConfirmation({{ $item->id }})'
                                     variant="primary">Order Received
                                 </flux:button>

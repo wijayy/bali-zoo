@@ -184,16 +184,12 @@
                                     {{ $selectedTransaction->pengiriman->district }},
                                     {{ $selectedTransaction->pengiriman->city }},
                                     {{ $selectedTransaction->pengiriman->province }} </div>
-                                @if ($selectedTransaction->pengiriman->awb)
-                                    <div class="bg-green-50 border border-green-200 rounded-xl p-4">
-                                        <div class="text-xs text-green-600 mb-1"> AWB / RESI </div>
-                                        <div class="font-semibold text-green-700">
-                                            {{ $selectedTransaction->pengiriman->awb }} </div>
-                                    </div>
-                                @endif
+
                             </div>
                         </div>
-                    </div> {{-- ITEMS --}} <div class="xl:col-span-6">
+                    </div> {{-- ITEMS --}}
+                    <div class="xl:col-span-6 space-y-4">
+
                         <div class="border border-zinc-200 rounded-2xl overflow-hidden">
                             <div class="px-5 py-4 border-b border-zinc-200 font-semibold text-zinc-800"> Ordered Items
                             </div>
@@ -220,14 +216,151 @@
                                 @endforeach
                             </div>
                         </div>
-                    </div> {{-- PAYMENT --}} <div class="xl:col-span-3">
+                        {{-- <flux:separator text="Tracking"></flux:separator> --}}
+                        @if (optional($selectedTransaction->pengiriman)->awb)
+
+                            <div class="border border-zinc-200 rounded-2xl overflow-hidden ">
+                                <div class="px-5 py-4 border-b border-zinc-200 font-semibold text-zinc-800">Tracking
+                                </div>
+                                <div class="p-4">
+                                    @if (optional($selectedTransaction->pengiriman)->awb)
+                                        <div>AWB: <span
+                                                class="font-mono">{{ $selectedTransaction->pengiriman->awb }}</span>
+                                        </div>
+                                    @endif
+                                    @if (optional($selectedTransaction->pengiriman)->resi)
+                                        <div>Resi: <span
+                                                class="font-mono">{{ $selectedTransaction->pengiriman->resi }}</span>
+                                        </div>
+                                    @endif
+
+                                    {{-- waybill tracking from Rajaongkir --}}
+                                    @if ($trackingData)
+                                        <flux:separator text="Waybill Status"></flux:separator>
+
+                                        @if ($isSample)
+                                            <div class="text-xs text-gray-500 mb-1">(using sample/bypass data)</div>
+                                        @endif
+
+                                        @php
+                                            $result = data_get($trackingData, 'rajaongkir.result');
+                                            $manifest = collect(data_get($result, 'manifest', []))->reverse()->values();
+                                            $summary = data_get($result, 'summary', []);
+                                        @endphp
+
+                                        <div class="space-y-2 text-sm">
+
+                                            {{-- SUMMARY --}}
+                                            @if ($summary)
+                                                <div class="font-semibold">
+                                                    Status: {{ $summary['status'] ?? '-' }}
+                                                </div>
+
+                                                @if (!empty($summary['pod_date']))
+                                                    <div class="text-xs text-gray-600">
+                                                        POD:
+                                                        {{ \Carbon\Carbon::parse($summary['pod_date'] . ' ' . $summary['pod_time'])->format('d M Y H:i') }}
+                                                    </div>
+                                                @endif
+                                            @endif
+
+                                            {{-- TIMELINE --}}
+                                            @if ($manifest->count())
+                                                <ul class="border-l-2 border-gray-300 pl-4 mt-3">
+
+                                                    @foreach ($manifest as $entry)
+                                                        @php
+                                                            $dateTime = $entry['manifest_date'];
+                                                        @endphp
+
+                                                        <li class="mb-4 relative flex gap-4 items-center">
+
+                                                            <div
+                                                                class="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs">
+                                                                {{ $loop->iteration }}
+                                                            </div>
+                                                            <div class="">
+                                                                <div class="text-xs text-gray-500">
+                                                                    {{ \Carbon\Carbon::parse($dateTime)->format('d M Y H:i') }}
+                                                                </div>
+
+                                                                <div class="font-medium">
+                                                                    {{ $entry['manifest_description'] }}
+                                                                </div>
+
+                                                                @if (!empty($entry['city_name']))
+                                                                    <div class="text-xs text-gray-500">
+                                                                        {{ $entry['city_name'] }}
+                                                                    </div>
+                                                                @endif
+                                                            </div>
+
+                                                        </li>
+                                                    @endforeach
+
+                                                </ul>
+                                            @else
+                                                <div class="text-xs text-gray-500">
+                                                    No manifest records available.
+                                                </div>
+                                            @endif
+
+                                        </div>
+
+                                        {{-- reload button --}}
+                                        @if (optional($selectedTransaction->pengiriman)->awb)
+                                            <div class="mt-3">
+                                                <flux:button size="xs" wire:click="loadTracking">
+                                                    Reload real data
+                                                </flux:button>
+                                            </div>
+                                        @endif
+
+                                    @endif
+
+                                    {{-- stepper/timeline --}}
+                                    @if (count($trackingSteps))
+                                        <div class="mt-4">
+                                            <div class="flex items-center">
+                                                @foreach ($trackingSteps as $key => $label)
+                                                    <div class="flex items-center flex-1">
+                                                        <div
+                                                            class="w-8 h-8 flex items-center justify-center rounded-full text-xs font-semibold {{ $currentTrackingStep >= $loop->index ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600' }}">
+                                                            {{ $loop->index + 1 }}
+                                                        </div>
+                                                        @if (!$loop->last)
+                                                            <div
+                                                                class="flex-1 h-0.5 {{ $currentTrackingStep > $loop->index ? 'bg-blue-600' : 'bg-gray-200' }}">
+                                                            </div>
+                                                        @endif
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                            <div class="flex justify-between mt-2 text-xs">
+                                                @foreach ($trackingSteps as $label)
+                                                    <div class="flex-1 text-center">{{ $label }}</div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                        @endif
+
+                    </div>
+
+
+
+                    {{-- PAYMENT --}}
+                    <div class="xl:col-span-3">
                         <div class="border border-zinc-200 rounded-2xl p-5">
                             <div class="font-semibold text-zinc-800 mb-5"> Payment Summary </div>
                             <div class="space-y-4 text-sm">
                                 <div class="flex justify-between"> <span class="text-zinc-500"> Status </span> <span
                                         class="font-semibold"> {{ ucfirst($selectedTransaction->status) }} </span>
                                 </div>
-                                <div class="flex justify-between"> <span class="text-zinc-500"> Subtotal </span> <span>
+                                <div class="flex justify-between"> <span class="text-zinc-500"> Subtotal </span>
+                                    <span>
                                         Rp {{ number_format($selectedTransaction->subtotal, 0, ',', '.') }} </span>
                                 </div>
                                 @if ($selectedTransaction->couponUsage)

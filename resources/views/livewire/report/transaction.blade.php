@@ -1,5 +1,5 @@
 <div class="p-6 space-y-6">
-    <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+    <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between print:hidden">
         <div>
             <h1 class="text-2xl font-semibold text-zinc-900 dark:text-white">Transaction Report</h1>
             <p class="text-sm text-zinc-500">Filter transaksi berdasarkan tanggal dibuat.</p>
@@ -8,7 +8,16 @@
         <flux:button as href="{{ route('report.index') }}" variant="ghost" wire:navigate>Back to Report</flux:button>
     </div>
 
-    <div class="rounded-lg border border-zinc-200 bg-white p-4 dark:border-zinc-700 dark:bg-zinc-900">
+    <!-- Print Only Header -->
+    <div class="hidden print:block border-b border-zinc-200 pb-4 mb-4">
+        <h1 class="text-3xl font-bold text-zinc-900">Transaction Report</h1>
+        <p class="text-sm text-zinc-600 mt-2">
+            Period: {{ \Carbon\Carbon::parse($start_date)->format('d M Y') }} - {{ \Carbon\Carbon::parse($end_date)->format('d M Y') }}
+        </p>
+        <p class="text-sm text-zinc-600">Total Transactions: {{ $transactions->count() }}</p>
+    </div>
+
+    <div class="rounded-lg border border-zinc-200 bg-white p-4 dark:border-zinc-700 dark:bg-zinc-900 print:hidden">
         <div class="grid grid-cols-1 gap-4 md:grid-cols-4 md:items-end">
             <flux:input wire:model.live="start_date" label="Start Date" type="date" />
             <flux:input wire:model.live="end_date" label="End Date" type="date" />
@@ -18,7 +27,10 @@
                 <div class="text-xl font-semibold text-zinc-900 dark:text-white">{{ $transactions->count() }}</div>
             </div>
 
-            <flux:button wire:click="export" variant="primary" class="md:justify-self-end">Export Excel</flux:button>
+            <div class="flex gap-2 md:justify-self-end">
+                <flux:button wire:click="export" variant="primary">Export Excel</flux:button>
+                <flux:button onclick="window.print()" variant="filled" class="bg-emerald-600 hover:bg-emerald-700 text-white border-none">Export PDF</flux:button>
+            </div>
         </div>
 
         @error('end_date')

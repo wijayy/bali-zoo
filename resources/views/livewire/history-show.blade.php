@@ -10,7 +10,7 @@
                     ({{ $transaction->payment->metode_pembayaran }})
                 </div>
             @else
-                <div class="text-sm text-gray-600 mb-4">Payment: -</div>
+                <div class="text-sm text-gray-600 mb-4">Payment: Unpaid</div>
             @endif
 
             @if (!$transaction->payment && $transaction->status == 'ordered')

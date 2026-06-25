@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->string('slug');
             $table->string('snap_token')->nullable();
             $table->integer('total');
-            $table->string('status');
+            $table->enum('status', ['ordered', 'paid', 'shipping', 'received']);
             $table->timestamps();
         });
     }

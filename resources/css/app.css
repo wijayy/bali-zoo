@@ -77,3 +77,85 @@ select:focus[data-flux-control] {
 /* \[:where(&)\]:size-4 {
     @apply size-4;
 } */
+
+@media print {
+    /* Hide navigation sidebar, mobile header, back buttons, and filter forms */
+    flux-sidebar,
+    flux-header,
+    flux-session,
+    .print\:hidden {
+        display: none !important;
+    }
+
+    /* Reset background and padding/margin of containers */
+    body,
+    html,
+    main,
+    flux-main,
+    .min-h-screen,
+    .p-6,
+    .space-y-6 {
+        background: white !important;
+        background-color: white !important;
+        color: black !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-shadow: none !important;
+    }
+
+    /* Layout reset to ensure content spans full width */
+    flux-main,
+    .flux-main {
+        margin-left: 0 !important;
+        padding-left: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    /* Remove overflows and box shadows that cause scrollbars or truncation in tables */
+    .overflow-x-auto,
+    .overflow-hidden,
+    .overflow-auto,
+    table,
+    tbody,
+    thead,
+    tr {
+        overflow: visible !important;
+        box-shadow: none !important;
+    }
+
+    /* Set print margins */
+    @page {
+        size: auto;
+        margin: 15mm 10mm 15mm 10mm;
+    }
+
+    /* Table styling for neat printouts fitting standard pages */
+    table {
+        width: 100% !important;
+        table-layout: auto !important;
+        border-collapse: collapse !important;
+        margin-top: 15px !important;
+    }
+
+    th, td {
+        border: 1px solid #d4d4d4 !important;
+        padding: 6px 8px !important;
+        color: black !important;
+        text-align: left !important;
+        font-size: 11px !important;
+    }
+    
+    td.text-right, th.text-right {
+        text-align: right !important;
+    }
+
+    th {
+        background-color: #f5f5f5 !important;
+        font-weight: 600 !important;
+    }
+}
+
