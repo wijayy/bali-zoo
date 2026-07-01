@@ -28,8 +28,7 @@
             </div>
 
             <div class="flex gap-2 md:justify-self-end">
-                <flux:button wire:click="export" variant="primary">Export Excel</flux:button>
-                <flux:button onclick="window.print()" variant="filled" class="bg-emerald-600 hover:bg-emerald-700 text-white border-none">Export PDF</flux:button>
+                <flux:button onclick="window.print()" variant="filled" class="bg-emerald-600 hover:bg-emerald-700 text-white border-none">Cetak</flux:button>
             </div>
         </div>
 
