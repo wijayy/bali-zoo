@@ -1,7 +1,7 @@
 <div class="p-6 space-y-6">
     <div>
         <h1 class="text-2xl font-semibold text-zinc-900 dark:text-white">Report</h1>
-        <p class="text-sm text-zinc-500">Pilih report yang ingin ditarik dan export ke Excel.</p>
+        <p class="text-sm text-zinc-500">Pilih report yang ingin dilihat dan dicetak.</p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
