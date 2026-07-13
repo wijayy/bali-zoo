@@ -117,7 +117,7 @@
                 $variant // Text color...
             ) {
                 'primary' => 'text-[var(--color-accent-foreground)]',
-                'underline' => 'text-white dark:text-black',
+                'underline' => 'text-black dark:text-white',
                 'filled' => 'text-zinc-800 dark:text-white',
                 'outline' => 'text-zinc-800 dark:text-white',
                 'danger' => 'text-white',
