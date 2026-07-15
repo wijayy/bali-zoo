@@ -18,6 +18,10 @@ class Payment extends Component
                 ->where('slug', $slug)
                 ->firstOrFail();
 
+            if ($this->transaction->status !== 'ordered') {
+                return redirect(route('history.index'))->with('error', 'Transaction is no longer awaiting payment.');
+            }
+
             if (!$this->transaction->xendit_invoice_url) {
                 $this->createInvoice();
             }

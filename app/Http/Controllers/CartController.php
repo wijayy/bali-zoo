@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Models\Product;
 use App\Http\Requests\StoreCartRequest;
 use App\Http\Requests\UpdateCartRequest;
 use Illuminate\Support\Facades\Auth;
@@ -65,6 +66,25 @@ class CartController extends Controller
                 return back()->with('error', $th->getMessage());
             }
         }
+    }
+
+    /**
+     * Store a single product as a temporary checkout selection.
+     */
+    public function buyNow(\Illuminate\Http\Request $request, Product $product)
+    {
+        $validated = $request->validate([
+            'qty' => ['required', 'integer', 'min:1', 'max:' . $product->stock],
+        ]);
+
+        session([
+            'checkout.buy_now' => [
+                'product_id' => $product->id,
+                'qty' => $validated['qty'],
+            ],
+        ]);
+
+        return redirect()->route('checkout.index');
     }
 
     /**

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pembayaran;
+use App\Models\Product;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class XenditCallbackController extends Controller
 {
@@ -31,19 +33,45 @@ class XenditCallbackController extends Controller
         }
 
         if (in_array($status, ['PAID', 'SETTLED'], true)) {
-            Pembayaran::updateOrCreate(
-                ['transaction_id' => $transaction->id],
-                [
-                    'metode_pembayaran' => 'Xendit' . ($paymentMethod ? " ({$paymentMethod})" : ''),
-                    'status' => 'paid',
-                ]
-            );
+            DB::transaction(function () use ($transaction, $paymentMethod) {
+                $transaction = Transaction::lockForUpdate()->find($transaction->id);
 
-            $transaction->update(['status' => 'paid']);
+                if ($transaction->status !== 'ordered') {
+                    return;
+                }
+
+                Pembayaran::updateOrCreate(
+                    ['transaction_id' => $transaction->id],
+                    [
+                        'metode_pembayaran' => 'Xendit' . ($paymentMethod ? " ({$paymentMethod})" : ''),
+                        'status' => 'paid',
+                    ]
+                );
+
+                $transaction->update(['status' => 'paid']);
+            });
         }
 
-        if ($status === 'EXPIRED' && $transaction->status === 'ordered') {
-            $transaction->update(['status' => 'expired']);
+        if ($status === 'EXPIRED') {
+            DB::transaction(function () use ($transaction) {
+                $transaction = Transaction::with(['items', 'pengiriman'])
+                    ->lockForUpdate()
+                    ->find($transaction->id);
+
+                if ($transaction->status !== 'ordered') {
+                    return;
+                }
+
+                $transaction->update(['status' => 'expired']);
+
+                foreach ($transaction->items as $item) {
+                    Product::whereKey($item->product_id)->increment('stock', $item->qty);
+                }
+
+                if ($transaction->pengiriman) {
+                    $transaction->pengiriman->update(['status' => 'canceled']);
+                }
+            });
         }
 
         return response()->json(['message' => 'Webhook diterima']);

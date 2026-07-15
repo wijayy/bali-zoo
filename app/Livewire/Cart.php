@@ -55,6 +55,8 @@ class Cart extends Component
         $count = count($this->carts);
 
         if ($count > 0) {
+            session()->forget('checkout.buy_now');
+
             return redirect()->route('checkout.index');
         }
     }

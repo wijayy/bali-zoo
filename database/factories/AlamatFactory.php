@@ -16,7 +16,6 @@ class AlamatFactory extends Factory
      */
     public function definition(): array
     {
-        $village = \App\Models\Village::inRandomOrder()->first();
         return [
             'nama' => fake()->name(),
             'phone' => fake()->phoneNumber(),

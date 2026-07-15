@@ -33,10 +33,13 @@
                     @csrf
                     <input type="hidden" name="product_id" value="{{ $product->id }}">
                     <div class="">
-                        <flux:input wire:model.live="qty" type="number" value="1" class="w-12" min="1"
+                        <flux:input name="qty" type="number" value="1" class="w-12" min="1"
                             max="{{ $product->stock }}"></flux:input>
                     </div>
                     <flux:button variant='primary' type="submit" class="">Add to cart</flux:button>
+                    <flux:button type="submit" formaction="{{ route('shop.buy-now', $product) }}">
+                        Buy Now
+                    </flux:button>
                 </form>
 
                 <div class=" mt-4">{{ $product->description }}</div>

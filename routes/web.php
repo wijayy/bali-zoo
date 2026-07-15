@@ -51,6 +51,7 @@ Route::middleware(['auth', config('jetstream.auth_session'), 'verified'])
             Volt::route('address', 'address-index')->name('address.index');
 
             Volt::route('cart', 'cart')->name('cart.index');
+            Route::post('shop/{product}/buy-now', [CartController::class, 'buyNow'])->name('shop.buy-now');
             Volt::route('checkout', componentName: 'checkout')->name('checkout.index');
             Volt::route('payment/{slug}', componentName: 'payment')->name('payment.index');
             Volt::route('invoice/{slug}', componentName: 'payment')->name('invoice');

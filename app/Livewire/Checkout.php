@@ -21,6 +21,7 @@ class Checkout extends Component
 {
 
     public $title = "Checkout", $carts, $subtotal, $shipment = null, $client;
+    public $checkoutMode = 'cart';
     public $chargeable_weight = 0, $coupon, $message = '', $c, $weight = 0, $length = 0, $width = 0, $height = 0, $total_actual_weight = 0, $total_volumetric_weight = 0, $province, $city, $district, $village;
     public $totalLength = 0, $maxWidth = 0, $maxHeight = 0;
 
@@ -96,7 +97,9 @@ class Checkout extends Component
     {
         // dd(env('RAJAONGKIR_SHIPPING_COST'));
         $user = Auth::user();
-        $this->loadCarts();
+        if ($redirect = $this->loadCarts()) {
+            return $redirect;
+        }
 
         if (count($this->address()) == 0) {
             return redirect(route('alamat.index'));
@@ -110,6 +113,17 @@ class Checkout extends Component
 
 
         $this->getShipment();
+    }
+
+    /**
+     * Livewire does not retain relations on the unsaved Cart model used by Buy Now.
+     * Rebuild it from the session before handling subsequent component requests.
+     */
+    public function hydrate()
+    {
+        if ($this->checkoutMode === 'buy_now') {
+            $this->loadCarts();
+        }
     }
 
 
@@ -134,7 +148,30 @@ class Checkout extends Component
 
     public function loadCarts()
     {
-        $this->carts = Cart::with('product')->where('user_id', Auth::id())->get();
+        $buyNow = session('checkout.buy_now');
+
+        if ($buyNow) {
+            $product = Product::findOrFail($buyNow['product_id']);
+
+            if ($buyNow['qty'] > $product->stock) {
+                session()->forget('checkout.buy_now');
+
+                return redirect()->route('shop.show', $product);
+            }
+
+            $cart = new Cart([
+                'user_id' => Auth::id(),
+                'product_id' => $product->id,
+                'qty' => $buyNow['qty'],
+            ]);
+            $cart->setRelation('product', $product);
+
+            $this->checkoutMode = 'buy_now';
+            $this->carts = collect([$cart]);
+        } else {
+            $this->checkoutMode = 'cart';
+            $this->carts = Cart::with('product')->where('user_id', Auth::id())->get();
+        }
 
         $this->subtotal = 0;
         $this->total_actual_weight = 0;
@@ -265,7 +302,11 @@ class Checkout extends Component
 
             DB::commit();
 
-            Cart::where('user_id', Auth::id())->delete();
+            if ($this->checkoutMode === 'buy_now') {
+                session()->forget('checkout.buy_now');
+            } else {
+                Cart::where('user_id', Auth::id())->delete();
+            }
 
             return redirect(route('payment.index', $transaksi->slug));
         } catch (\Throwable $th) {

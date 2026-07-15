@@ -24,8 +24,8 @@ class StoreProductRequest extends FormRequest
         return [
             'name' => 'required|string',
             'description' => 'required',
-            'sell_price' => 'required|integer',
-            'buy_price' => 'required|integer',
+            'buy_price' => 'required|integer|min:0',
+            'sell_price' => 'required|integer|gt:buy_price',
             'stock' => 'required|integer',
             'length' => 'required|integer',
             'width' => 'required|integer',
@@ -39,4 +39,11 @@ class StoreProductRequest extends FormRequest
             'image4' => 'nullable|file|image',
         ];
     }
+
+    public function messages(): array
+{
+    return [
+        'sell_price.gt' => 'Harga jual harus lebih besar dari harga beli.',
+    ];
+}
 }
