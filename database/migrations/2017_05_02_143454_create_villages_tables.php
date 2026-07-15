@@ -22,7 +22,7 @@ class CreateVillagesTables extends Migration
     public function up()
     {
         Schema::connection('mysql')->create('villages', function (Blueprint $table) {
-            $table->char('id', 10)->index();
+            $table->char('id', 10)->primary();
             $table->foreignIdFor(District::class);
             $table->string('name', 50);
         });

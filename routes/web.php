@@ -48,6 +48,8 @@ Route::middleware(['auth', config('jetstream.auth_session'), 'verified'])
             Volt::route('history', 'history-index')->name('history.index');
             Volt::route('history/{slug}', 'history-show')->name('history.show');
 
+            Volt::route('address', 'address-index')->name('address.index');
+
             Volt::route('cart', 'cart')->name('cart.index');
             Volt::route('checkout', componentName: 'checkout')->name('checkout.index');
             Volt::route('payment/{slug}', componentName: 'payment')->name('payment.index');

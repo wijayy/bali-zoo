@@ -13,7 +13,7 @@
     $classes = Flux::classes()
         ->add(
             match ($variant) {
-                default => 'p-6 [:where(&)]:max-w-2xl shadow-lg rounded-xl',
+                default => 'p-6 [:where(&)]:max-w-2xl fixed inset-0 m-auto shadow-lg rounded-xl',
                 'flyout' => match ($position) {
                     'bottom'
                         => 'fixed m-0 p-8 min-w-[100vw] overflow-y-auto mt-auto [--fx-flyout-translate:translateY(50px)] border-t',
@@ -92,13 +92,6 @@
             x-on:modal-close.document="if (! $event.detail.name || ($event.detail.name === @js($name) && (! $event.detail.scope))) $el.close()" @endif>
         {{ $slot }}
 
-        <?php if ($closable): ?>
-        <div class="absolute top-0 end-0 mt-4 me-4">
-            <flux:modal.close>
-                <flux:button variant="ghost" icon="x-mark" size="sm" alt="Close modal"
-                    class="text-zinc-400! hover:text-zinc-800! dark:text-zinc-500! dark:hover:text-white!"></flux:button>
-            </flux:modal.close>
-        </div>
-        <?php endif; ?>
+
     </dialog>
 </ui-modal>

@@ -15,57 +15,40 @@
             </div>
         @endif
 
-        <div class="mt-4 grid grid-cols-1 md:grid-cols-6 gap-4 rounded p-4 bg-white dark:bg-neutral-700">
-            <div class="md:col-span-2">
-                <flux:input wire:model.blur='name' label="Nama"></flux:input>
-            </div>
-            <div class="md:col-span-2">
-                <flux:input wire:model.blur='phone' label="Nomor Telepon"></flux:input>
-            </div>
-            <div class="md:col-span-2">
-                <flux:input wire:model.blur='email' label="Email"></flux:input>
-            </div>
-            <div class="md:col-span-3">
-                <flux:input wire:model.live='address' label="Alamat"></flux:input>
-            </div>
-            <div class="md:col-span-3">
-                <flux:select wire:model.live='province_id' label="Provinsi">
-                    <flux:select.option value="">-- Select Province --</flux:select.option>
-                    @foreach ($provinces as $item)
-                        <flux:select.option value="{{ $item['id'] }}">{{ $item['name'] }}</flux:select.option>
-                    @endforeach
-                </flux:select>
-            </div>
-            <div class="md:col-span-3">
-                <flux:select wire:model.live='regency_id' label="Kabupaten/Kota">
-                    <flux:select.option value="">-- Select City/Regency --</flux:select.option>
-                    @foreach ($regencies as $item)
-                        <flux:select.option value="{{ $item['id'] }}">{{ $item['name'] }}</flux:select.option>
-                    @endforeach
-                </flux:select>
-            </div>
-            <div class="md:col-span-3">
-                <flux:select wire:model.live='district_id' label="Kecamatan">
-                    <flux:select.option value="">-- Select District --</flux:select.option>
-                    @foreach ($districts as $item)
-                        <flux:select.option value="{{ $item['id'] }}">{{ $item['name'] }}
-                        </flux:select.option>
-                    @endforeach
-                </flux:select>
-            </div>
-            <div class="md:col-span-3">
-                <flux:select wire:model.live='village_id' label="Desa/Kelurahan">
-                    <flux:select.option value="">-- Select Village --</flux:select.option>
-                    @foreach ($villages as $item)
-                        <flux:select.option value="{{ $item['id'] }}">{{ $item['name'] }}
-                        </flux:select.option>
-                    @endforeach
-                </flux:select>
-            </div>
-            <div class="md:col-span-3">
-                <flux:input wire:model.live='postal_code' readonly label="Kode Pos"></flux:input>
+        <div class="mt-4 grid grid-cols-1 gap-4 rounded p-4 bg-white dark:bg-neutral-700">
+            <div wire:click='openGantiAlamatModal' class="border rounded-lg bg-white p-4 ring-2 ring-mine-400">
+                <p>{{ $selectedAlamat->nama }}</p>
+                <p>{{ $selectedAlamat->phone }}</p>
+                <p>{{ $selectedAlamat->alamat }}</p>
+                <p>{{ $selectedAlamat->village }}, {{ $selectedAlamat->district }}
+                    {{ $selectedAlamat->regency }}
+                    {{ $selectedAlamat->province }}</p>
+
+                @if ($selectedAlamat->default)
+                    <div class="text-mine-400 text-sm font-semibold">Alamat Default</div>
+                @endif
             </div>
         </div>
+
+        <flux:modal name="ganti-alamat">
+            <div class="grid grid-cols-1 mt-4 gap-4">
+                @foreach ($this->address as $address)
+                    <div wire:click='gantiAlamat({{ $address->id }})'
+                        class="border rounded-lg bg-white p-4 {{ $address->default ? 'ring-2 ring-mine-400' : 'ring-mine-300 ring-2' }}">
+                        <p>{{ $address->nama }}</p>
+                        <p>{{ $address->phone }}</p>
+                        <p>{{ $address->alamat }}</p>
+                        <p>{{ $address->village }}, {{ $address->district }}
+                            {{ $address->regency }}
+                            {{ $address->province }}</p>
+
+                        @if ($address->default)
+                            <div class="text-mine-400 text-sm font-semibold">Alamat Default</div>
+                        @endif
+                    </div>
+                @endforeach
+            </div>
+        </flux:modal>
 
         <div class="mt-8 space-y-2 rounded p-4 bg-white dark:bg-neutral-700">
             <div class="grid grid-cols-4 text-center gap-4 p-2">

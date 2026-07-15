@@ -41,6 +41,14 @@ class DatabaseSeeder extends Seeder
             'is_admin' => 1,
         ]);
 
+        foreach (range(1, 10) as $key => $item) {
+            User::factory()->create([
+                'name' => "User $item",
+                'email' => "user$item@example.com",
+                'is_admin' => 0,
+            ]);
+        }
+
         $categories = [
             ['name' => "Boneka", 'image' => "category/swee.jpeg"],
             ['name' => "Payung", 'image' => "category/folded.jpeg"],
@@ -68,6 +76,7 @@ class DatabaseSeeder extends Seeder
         Review::factory(100)->recycle([User::all(), Product::all()])->create();
 
         $this->call(IndoRegionSeeder::class);
+        $this->call(AlamatSeeder::class);
 
         $this->call(BannerSeeder::class);
         // $this->call(TransactionSeeder::class);

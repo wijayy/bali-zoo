@@ -42,12 +42,14 @@
                 </div>
             @endforelse
 
-            <div class="flex mt-8 justify-center">
-                <div class="bg-mine-200 rounded p-4">
-                    <div class=" text-center mb-4">Rp. {{ number_format($subtotal, 0, ',', '.') }}</div>
-                    <flux:button variant="primary" class="rounded!" wire:click='checkout'>Checkout</flux:button>
+            @if (count($carts))
+                <div class="flex mt-8 justify-center">
+                    <div class="bg-mine-200 rounded p-4">
+                        <div class=" text-center mb-4">Rp. {{ number_format($subtotal, 0, ',', '.') }}</div>
+                        <flux:button variant="primary" class="rounded!" wire:click='checkout'>Checkout</flux:button>
+                    </div>
                 </div>
-            </div>
+            @endif
         </div>
     </flux:container>
 

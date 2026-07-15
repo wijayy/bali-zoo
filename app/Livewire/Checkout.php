@@ -2,22 +2,19 @@
 
 namespace App\Livewire;
 
+use App\Models\Alamat;
 use App\Models\Cart;
 use App\Models\Coupon;
 use App\Models\CouponProduct;
-use App\Models\Regency;
-use App\Models\Village;
+
 use Livewire\Component;
-use App\Models\District;
-use App\Models\Pembayaran;
+
 use App\Models\Pengiriman;
 use App\Models\Product;
-use App\Models\Province;
 use App\Models\Transaction;
-use AzisHapidin\IndoRegion\RawDataGetter;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Http;
+use Livewire\Attributes\Computed;
 use Livewire\Attributes\Validate;
 
 class Checkout extends Component
@@ -27,18 +24,12 @@ class Checkout extends Component
     public $chargeable_weight = 0, $coupon, $message = '', $c, $weight = 0, $length = 0, $width = 0, $height = 0, $total_actual_weight = 0, $total_volumetric_weight = 0, $province, $city, $district, $village;
     public $totalLength = 0, $maxWidth = 0, $maxHeight = 0;
 
-    #[Validate('required|string|max:255')]
-    public $name = '';
-
-    #[Validate('required|starts_with:0')]
-    public $phone = '';
-
-    #[Validate('required|email')]
-    public $email = '';
+    #[Validate("required")]
+    public Alamat $selectedAlamat;
 
 
-    #[Validate('required')]
-    public $shipment_id = '', $province_id, $regency_id, $district_id, $village_id, $address, $postal_code;
+    #[Validate('required', message: "Pilih ekspedisi terlebih dahulu")]
+    public $shipment_id = '';
 
     public function updatedCoupon()
     {
@@ -94,33 +85,7 @@ class Checkout extends Component
 
     public $shipments = [];
 
-    /**
-     * The available provinces.
-     *
-     * @var \Illuminate\Database\Eloquent\Collection
-     */
-    public $provinces;
 
-    /**
-     * The available regencies for the selected province.
-     *
-     * @var \Illuminate\Database\Eloquent\Collection
-     */
-    public $regencies = [];
-
-    /**
-     * The available districts for the selected regency.
-     *
-     * @var \Illuminate\Database\Eloquent\Collection
-     */
-    public $districts = [];
-
-    /**
-     * The available villages for the selected district.
-     *
-     * @var \Illuminate\Database\Eloquent\Collection
-     */
-    public $villages = [];
 
     /**
      * Mount the component and initialize the state.
@@ -131,144 +96,41 @@ class Checkout extends Component
     {
         // dd(env('RAJAONGKIR_SHIPPING_COST'));
         $user = Auth::user();
-
-        $this->name = $user->name;
-        $this->phone = $user->phone;
-
-        $client = new \GuzzleHttp\Client();
-        $response = $client->request('GET', 'https://rajaongkir.komerce.id/api/v1/destination/province', [
-            'headers' => [
-                'accept' => 'application/json',
-                'key' => env('RAJAONGKIR_SHIPPING_COST'),
-            ],
-        ]);
-
-        // Ambil body JSON
-        $body = $response->getBody()->getContents();
-
-        // Decode ke array
-        $result = json_decode($body, true);
-
-        // dd($result);
-
-        // Ambil bagian data
-        $this->provinces = collect($result['data']);
-
-        // $this->provinces = [];
-
         $this->loadCarts();
-    }
 
-    /**
-     * Handle event when the province is updated.
-     *
-     * @param  int|null  $value
-     * @return void
-     */
-    public function updatedProvinceId($value)
-    {
-
-        // dd($value);
-
-        logger('Province changed to: ' . $value);
-        $client = new \GuzzleHttp\Client();
-        $response = $client->request('GET', 'https://rajaongkir.komerce.id/api/v1/destination/city/' . $value, [
-            'headers' => [
-                'accept' => 'application/json',
-                'key' => env('RAJAONGKIR_SHIPPING_COST'),
-
-            ],
-        ]);
-
-        // Ambil body JSON
-        $body = $response->getBody()->getContents();
-
-        // Decode ke array
-        $result = json_decode($body, true);
+        if (count($this->address()) == 0) {
+            return redirect(route('alamat.index'));
+        }
+        if (count($this->carts) == 0) {
+            return redirect(route('shop.index'));
+        }
 
 
-
-        // Ambil bagian data
-        $this->regencies = collect($result['data']);
-
-        // $this->regencies = Regency::where('province_id', $value)->get();
-        $this->regency_id = null;
-        $this->districts = [];
-        $this->district_id = null;
-        $this->villages = [];
-        $this->village_id = null;
-    }
-
-    /**
-     * Handle event when the regency is updated.
-     *
-     * @param  int|null  $value
-     * @return void
-     */
-    public function updatedRegencyId($value)
-    {
-        $client = new \GuzzleHttp\Client();
-        $response = $client->request('GET', 'https://rajaongkir.komerce.id/api/v1/destination/district/' . $value, [
-            'headers' => [
-                'accept' => 'application/json',
-                'key' => env('RAJAONGKIR_SHIPPING_COST'),
-
-            ],
-        ]);
-
-        // Ambil body JSON
-        $body = $response->getBody()->getContents();
-
-        // Decode ke array
-        $result = json_decode($body, true);
+        $this->selectedAlamat = Auth::user()->default_alamat ?? $this->address->first();
 
 
-        // Ambil bagian data
-        $this->districts = collect($result['data']);
-        $this->district_id = null;
-        $this->villages = [];
-        $this->village_id = null;
-    }
-
-    /**
-     * Handle event when the district is updated.
-     *
-     * @param  int|null  $value
-     * @return void
-     */
-    public function updatedDistrictId($value)
-    {
         $this->getShipment();
-
-        $client = new \GuzzleHttp\Client();
-        $response = $client->request('GET', 'https://rajaongkir.komerce.id/api/v1/destination/sub-district/' . $value, [
-            'headers' => [
-                'accept' => 'application/json',
-                'key' => env('RAJAONGKIR_SHIPPING_COST'),
-
-            ],
-        ]);
-
-        // Ambil body JSON
-        $body = $response->getBody()->getContents();
-
-        // Decode ke array
-        $result = json_decode($body, true);
-
-
-        // Ambil bagian data
-        $this->villages = collect($result['data']);
-        // dd($this->villages);
-        $this->village_id = null;
     }
 
-    public function updatedVillageId($value)
+
+    #[Computed()]
+    public function address()
     {
-        // dd($this->province_id, $this->regency_id, $this->district_id, $value);
-        $village = $this->villages->firstWhere('id', $value);
-        $this->postal_code = $village ? $village['zip_code'] : '';
+        return Auth::user()->alamats;
     }
 
+    public function openGantiAlamatModal()
+    {
+        $this->dispatch('modal-show', name: 'ganti-alamat');
+        // dd('open');
+    }
+
+    public function gantiAlamat($id)
+    {
+        $this->selectedAlamat = Alamat::find($id);
+        $this->getShipment();
+        $this->dispatch('modal-close', name: 'ganti-alamat');
+    }
 
     public function loadCarts()
     {
@@ -324,7 +186,7 @@ class Checkout extends Component
             ],
             'form_params' => [ // <-- ini penting, karena content-type x-www-form-urlencoded
                 'origin' => '2193',
-                'destination' => $this->district_id,
+                'destination' => $this->selectedAlamat->district_id,
                 'weight' => "$this->chargeable_weight",
                 'courier' => 'jne:ninja:pos',
             ],
@@ -377,21 +239,20 @@ class Checkout extends Component
                     'price' => $value->product->price,
                     'subtotal' => $value->product->price * $value->qty,
                 ]);
-
                 Product::find($value->product->id)->decrement('stock', $value->qty);
             }
 
             Pengiriman::create([
                 'transaction_id' => $transaksi->id,
-                'name' => $this->name,
-                'phone' => $this->phone,
-                'address' => $this->address,
-                'province' => $this->provinces->firstWhere('id', $this->province_id)['name'],
-                'city' => $this->regencies->firstWhere('id', $this->regency_id)['name'],
-                'district' => $this->districts->firstWhere('id', $this->district_id)['name'],
-                'district_id' => $this->district_id,
-                'village' => $this->villages->firstWhere('id', $this->village_id)['name'],
-                'postal_code' => $this->postal_code,
+                'name' => $this->selectedAlamat->nama,
+                'phone' => $this->selectedAlamat->phone,
+                'address' => $this->selectedAlamat->alamat,
+                'province' => $this->selectedAlamat->province,
+                'city' => $this->selectedAlamat->regency,
+                'district' => $this->selectedAlamat->district,
+                'district_id' => $this->selectedAlamat->district_id,
+                'village' => $this->selectedAlamat->village,
+                'postal_code' => $this->selectedAlamat->postal_code,
                 'status' => 'ordered'
             ]);
 
@@ -401,7 +262,6 @@ class Checkout extends Component
                     'discount_amount' => $this->countDiscount(),
                 ]);
             }
-
 
             DB::commit();
 
