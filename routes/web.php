@@ -50,6 +50,10 @@ Route::middleware(['auth', config('jetstream.auth_session'), 'verified'])
 
             Volt::route('address', 'address-index')->name('address.index');
 
+            Volt::route('settings/profile', 'profile')->name('settings.profile');
+            Volt::route('settings/password', 'update-password')->name('settings.password');
+            Volt::route('settings/appearance', 'appearence')->name('settings.appearance');
+
             Volt::route('cart', 'cart')->name('cart.index');
             Route::post('shop/{product}/buy-now', [CartController::class, 'buyNow'])->name('shop.buy-now');
             Volt::route('checkout', componentName: 'checkout')->name('checkout.index');
@@ -75,11 +79,6 @@ Route::middleware(['auth', config('jetstream.auth_session'), 'verified', 'admin'
         Volt::route('coupon', 'coupon-index')->name('coupon.index');
         Volt::route('coupon/add', 'coupon-create')->name('coupon.create');
         Volt::route('coupon/{slug}/edit', 'coupon-create')->name('coupon.edit');
-
-        Volt::route('settings/profile', 'profile')->name('settings.profile');
-        Volt::route('settings/address', 'update-address')->name('settings.address');
-        Volt::route('settings/password', 'update-password')->name('settings.password');
-        Volt::route('settings/appearance', 'appearence')->name('settings.appearance');
 
         Volt::route('purchase', Index::class)->name('purchase.index');
         Volt::route('purchase/add', Create::class)->name('purchase.create');

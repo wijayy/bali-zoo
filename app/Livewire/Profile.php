@@ -74,6 +74,6 @@ class Profile extends Component
 
     public function render()
     {
-        return view('livewire.profile')->layout('layouts.auth', ['title' => "My Profile"]);
+        return view('livewire.profile')->layout('layouts.app', ['title' => "My Profile", 'header' => false]);
     }
 }

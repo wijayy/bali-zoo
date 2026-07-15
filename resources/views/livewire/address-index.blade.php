@@ -1,20 +1,15 @@
-<div>
-    <flux:container>
+<section class="w-full">
+    @include('partials.settings-heading')
 
-        <div class="h-20"></div>
-
-        <flux:text position="center" size="xl">My Addresses</flux:text>
-        <flux:text position="center">View and manage your saved addresses for quick checkout and delivery.
-        </flux:text>
-
-        <div class="">
+    <x-settings.layout :heading="__('My Address')" :subheading="__('View and manage your saved addresses for quick checkout and delivery.')">
+        <div class="flex justify-end">
             <flux:button variant="primary" icon="plus" wire:click="tambahAlamat">Tambah Alamat</flux:button>
         </div>
 
-        <div class="grid grid-cols-1 mt-4 gap-4">
+        <div class="mt-4 grid grid-cols-1 gap-4">
             @foreach ($this->address as $address)
                 <div wire:click='editAlamat({{ $address->id }})'
-                    class="border rounded-lg bg-white p-4 {{ $address->default ? 'ring-2 ring-mine-400' : 'ring-mine-300 ring-2' }}">
+                    class="cursor-pointer border rounded-lg bg-white p-4 {{ $address->default ? 'ring-2 ring-mine-400' : 'ring-mine-300 ring-2' }}">
                     <p>{{ $address->nama }}</p>
                     <p>{{ $address->phone }}</p>
                     <p>{{ $address->alamat }}</p>
@@ -28,7 +23,7 @@
                 </div>
             @endforeach
         </div>
-    </flux:container>
+    </x-settings.layout>
 
     @livewire('address-create')
-</div>
+</section>

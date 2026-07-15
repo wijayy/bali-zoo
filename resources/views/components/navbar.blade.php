@@ -24,8 +24,6 @@
                 <x-nav-link href="{{ route('shop.index') }}" :active="request()->is('shop')">Shop</x-nav-link>
                 <x-nav-link href="{{ route('contact') }}" :active="request()->routeIs('contact')">Contact</x-nav-link>
                 @auth
-                    <x-nav-link href="{{ route('address.index') }}" :active="request()->is('address.*')">Address
-                    </x-nav-link>
                     <x-nav-link href="{{ route('history.index') }}" :active="request()->is('history.*')">History
                     </x-nav-link>
                     @if (Auth::user()->is_admin)
@@ -84,8 +82,6 @@
             @auth
                 <x-responsive-nav-link href="{{ route('history.index') }}" :active="request()->is('history.*')">
                     History</x-responsive-nav-link>
-                <x-responsive-nav-link href="{{ route('address.index') }}" :active="request()->is('address.*')">
-                    Address</x-responsive-nav-link>
                 @if (Auth::user()->is_admin)
                     <x-responsive-nav-link href="{{ route('dashboard') }}">Dashboard</x-responsive-nav-link>
                 @endif

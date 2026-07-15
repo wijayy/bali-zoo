@@ -11,6 +11,6 @@ class Appearence extends Component
 
     public function render()
     {
-        return view('livewire.appearence')->layout('layouts.auth', ['title' => "Appearence"]);
+        return view('livewire.appearence')->layout('layouts.app', ['title' => "Appearance", 'header' => false]);
     }
 }

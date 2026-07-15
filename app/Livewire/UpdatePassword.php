@@ -41,6 +41,6 @@ class UpdatePassword extends Component
     }
     public function render()
     {
-        return view('livewire.update-password')->layout('layouts.auth', ['title' => "Update Password"]);
+        return view('livewire.update-password')->layout('layouts.app', ['title' => "Update Password", 'header' => false]);
     }
 }

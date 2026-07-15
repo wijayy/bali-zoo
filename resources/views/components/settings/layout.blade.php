@@ -1,17 +1,24 @@
-<div class="flex items-start max-md:flex-col">
-    <div class="me-10 w-full pb-4 md:w-[220px]">
-        <flux:navlist>
-            <flux:navlist.item :href="route('settings.profile')" wire:navigate>{{ __('Profile') }}</flux:navlist.item>
+<div class="mx-auto grid max-w-7xl grid-cols-1 items-start gap-8 px-4 sm:px-6 md:grid-cols-5 lg:px-8">
+    <aside class="w-full rounded-xl border border-zinc-200 bg-white p-2 shadow-sm md:sticky md:top-20">
+        <flux:navlist variant="outline">
+            <flux:navlist.item :href="route('settings.profile')" :current="request()->routeIs('settings.profile')"
+                wire:navigate>{{ __('Profile') }}</flux:navlist.item>
             {{-- <flux:navlist.item :href="route('settings.bussiness-info')" wire:navigate>{{ __('Bussiness Info') }}</flux:navlist.item> --}}
-            <flux:navlist.item :href="route('settings.address')" wire:navigate>{{ __('My Address') }}</flux:navlist.item>
-            <flux:navlist.item :href="route('settings.password')" wire:navigate>{{ __('Password') }}</flux:navlist.item>
-            <flux:navlist.item :href="route('settings.appearance')" wire:navigate>{{ __('Appearance') }}</flux:navlist.item>
+            <flux:navlist.item :href="route('address.index')" :current="request()->routeIs('address.index')"
+                wire:navigate>{{ __('My Address') }}</flux:navlist.item>
+            <flux:navlist.item :href="route('settings.password')" :current="request()->routeIs('settings.password')"
+                wire:navigate>{{ __('Password') }}</flux:navlist.item>
+            <flux:navlist.item :href="route('settings.appearance')" :current="request()->routeIs('settings.appearance')"
+                wire:navigate>{{ __('Appearance') }}</flux:navlist.item>
         </flux:navlist>
+    </aside>
+
+    <div class="md:hidden">
+        <flux:separator />
+
     </div>
 
-    <flux:separator class="md:hidden" />
-
-    <div class="flex-1 self-stretch max-md:pt-6">
+    <div class="min-w-0 md:col-span-4 self-stretch">
         <flux:heading>{{ $heading ?? '' }}</flux:heading>
         <flux:subheading>{{ $subheading ?? '' }}</flux:subheading>
 
