@@ -13,6 +13,17 @@
                 <div class="text-sm text-gray-600 mb-4">Payment: Unpaid</div>
             @endif
 
+            @if ($transaction->status === 'ordered' && $transaction->payment_due_at)
+                <div class="mb-4 rounded-md bg-amber-50 px-3 py-2 text-sm text-amber-800">
+                    <div class="font-medium">Menunggu pembayaran</div>
+                    <div>
+                        Bayar sebelum
+                        {{ $transaction->payment_due_at->timezone(config('app.timezone'))->format('d/m/Y H:i') }}.
+                        Transaksi akan dibatalkan otomatis setelah waktu tersebut.
+                    </div>
+                </div>
+            @endif
+
             @if (!$transaction->payment && $transaction->status == 'ordered')
                 <div class="mt-2">
                     <flux:button wire:click="cancel" variant="danger" size="sm">Cancel Order</flux:button>

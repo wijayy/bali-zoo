@@ -7,6 +7,14 @@
     <div class="text-sm">{{ $transaction->pengiriman->name }} / {{ $transaction->pengiriman->phone }}</div>
     <div class="text-xs">{{ $transaction->pengiriman->address }}</div>
 
+    @if ($transaction->payment_due_at)
+        <div class="rounded-md bg-amber-50 px-3 py-2 text-sm text-amber-800">
+            <div class="font-medium">Selesaikan pembayaran sebelum</div>
+            <div>{{ $transaction->payment_due_at->timezone(config('app.timezone'))->format('d/m/Y H:i') }}.</div>
+            <div class="text-xs">Pesanan akan dibatalkan otomatis jika belum dibayar setelah waktu tersebut.</div>
+        </div>
+    @endif
+
     <flux:separator text="Products"></flux:separator>
     <div class="">
         @foreach ($transaction->items as $key => $itm)

@@ -15,7 +15,7 @@ class ExpireUnpaidTransactions extends Command
 
     public function handle(): int
     {
-        $expiredAt = now()->subHours(24);
+        $expiredAt = now()->subHours(Transaction::PAYMENT_EXPIRATION_HOURS);
         $expiredCount = 0;
 
         Transaction::query()

@@ -40,7 +40,7 @@ Route::middleware(['auth', config('jetstream.auth_session'), 'verified'])
     ->group(
         function () {
             // Route::post('checkout', [CheckoutController::class, 'index'])->name('checkout.index');
-            Route::redirect('settings', 'settings/profile');
+            Route::redirect('settings', '/profile');
 
             // Volt::route('settings/profile', 'settings.profile')->name('settings.profile');
             // Volt::route('settings/password', 'settings.password')->name('settings.password');

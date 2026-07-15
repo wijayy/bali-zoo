@@ -25,6 +25,16 @@ class Transaction extends Model
 
     protected $guarded = ['id'];
 
+    public const PAYMENT_EXPIRATION_HOURS = 24;
+
+    /**
+     * The deadline for an order that is still awaiting payment.
+     */
+    public function getPaymentDueAtAttribute(): ?Carbon
+    {
+        return $this->created_at?->copy()->addHours(self::PAYMENT_EXPIRATION_HOURS);
+    }
+
     public static function transactionNumberGenerator()
     {
         $date = Carbon::now()->format('Ymd');

@@ -58,6 +58,16 @@
                                     ({{ $item->payment->metode_pembayaran }})</div>
                             </div>
                         @endif
+                        @if ($item->status === 'ordered' && $item->payment_due_at)
+                            <div class="mt-3 rounded-md bg-amber-50 px-3 py-2 text-sm text-amber-800">
+                                <div class="font-medium">Menunggu pembayaran</div>
+                                <div>
+                                    Bayar sebelum
+                                    {{ $item->payment_due_at->timezone(config('app.timezone'))->format('d/m/Y H:i') }}.
+                                    Transaksi akan dibatalkan otomatis setelah waktu tersebut.
+                                </div>
+                            </div>
+                        @endif
                         <div class="flex justify-between">
                             <div class="">Subtotal</div>
                             <div class="col-span-2">Rp. {{ number_format($item->subtotal, 0, ',', '.') }}

@@ -42,7 +42,7 @@
                     @endauth
                 </x-nav-icon>
                 @auth
-                    <x-nav-icon :label="'profile'" href="{{ route('profile.show') }}">
+                    <x-nav-icon :label="'profile'" href="{{ route('settings.profile') }}">
                         <img src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}"
                             class="rounded-sm size-5 object-cover">
                     </x-nav-icon>
