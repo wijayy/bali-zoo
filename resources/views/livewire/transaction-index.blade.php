@@ -234,6 +234,10 @@
                                         </div>
                                     @endif
 
+                                    @if ($trackingError)
+                                        <div class="mt-2 text-sm text-red-600">{{ $trackingError }}</div>
+                                    @endif
+
                                     {{-- waybill tracking from Rajaongkir --}}
                                     @if ($trackingData)
                                         <flux:separator text="Waybill Status"></flux:separator>
@@ -310,7 +314,7 @@
                                         {{-- reload button --}}
                                         @if (optional($selectedTransaction->pengiriman)->awb)
                                             <div class="mt-3">
-                                                <flux:button size="xs" wire:click="loadTracking">
+                                                <flux:button size="xs" wire:click="loadTracking" wire:loading.attr="disabled">
                                                     Reload real data
                                                 </flux:button>
                                             </div>

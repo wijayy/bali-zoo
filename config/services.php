@@ -31,4 +31,8 @@ return [
         ],
     ],
 
+    'rajaongkir' => [
+        'key' => env('RAJAONGKIR_SHIPPING_COST'),
+    ],
+
 ];

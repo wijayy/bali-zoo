@@ -6,11 +6,13 @@ use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\Product;
+use App\Services\RajaOngkirTracking;
 
 class HistoryShow extends Component
 {
     public $transaction, $trackingSteps = [], $currentTrackingStep;
     public $trackingData = null; // response from Rajaongkir track API
+    public $trackingError = null;
     public $isSample = true; // whether we're showing bypass/sample data
 
     public $loadSampleData;
@@ -99,27 +101,22 @@ class HistoryShow extends Component
 
     public function loadTracking()
     {
-        // reset sample flag whenever we try to fetch live data
         $this->isSample = false;
+        $this->trackingError = null;
 
-        $awb = $this->transaction->pengiriman->awb;
-        // default courier; you may want to store this in pengiriman later
-        $courier = 'jne';
+        if (! $this->transaction?->pengiriman?->awb) {
+            return;
+        }
 
         try {
-            $curl = curl_init();
-            curl_setopt_array($curl, [
-                CURLOPT_URL => "https://rajaongkir.komerce.id/api/v1/track/waybill?awb={$awb}&courier={$courier}",
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_HTTPHEADER => ['key: ' . env('RAJAONGKIR_SHIPPING_COST')],
-            ]);
-
-            $response = curl_exec($curl);
-            curl_close($curl);
-
-            $this->trackingData = json_decode($response, true);
-        } catch (\Exception $e) {
-            // silently ignore or log
+            $this->trackingData = app(RajaOngkirTracking::class)->track(
+                $this->transaction->pengiriman->awb,
+                'jne',
+                $this->transaction->pengiriman->phone,
+            );
+        } catch (\Throwable $e) {
+            $this->trackingData = null;
+            $this->trackingError = 'Tracking tidak dapat dimuat: ' . $e->getMessage();
             logger()->error('Tracking load failed: ' . $e->getMessage());
         }
     }

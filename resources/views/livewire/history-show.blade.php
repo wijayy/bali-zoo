@@ -75,9 +75,13 @@
             <flux:separator text="Tracking"></flux:separator>
             <div class="text-sm space-y-1 mt-2">
                 <div>Status pengiriman: {{ ucfirst(optional($transaction->pengiriman)->status ?? '-') }}</div>
-                @if (optional($transaction->pengiriman)->awb)
-                    <div>AWB: <span class="font-mono">{{ $transaction->pengiriman->awb }}</span></div>
-                @endif
+                    @if (optional($transaction->pengiriman)->awb)
+                        <div>AWB: <span class="font-mono">{{ $transaction->pengiriman->awb }}</span></div>
+                    @endif
+
+                    @if ($trackingError)
+                        <div class="mt-2 text-sm text-red-600">{{ $trackingError }}</div>
+                    @endif
                 @if (optional($transaction->pengiriman)->resi)
                     <div>Resi: <span class="font-mono">{{ $transaction->pengiriman->resi }}</span></div>
                 @endif
@@ -158,7 +162,7 @@
                     {{-- reload button --}}
                     @if (optional($transaction->pengiriman)->awb)
                         <div class="mt-3">
-                            <flux:button size="xs" wire:click="loadTracking">
+                            <flux:button size="xs" wire:click="loadTracking" wire:loading.attr="disabled">
                                 Reload real data
                             </flux:button>
                         </div>

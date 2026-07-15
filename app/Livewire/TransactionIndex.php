@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Transaction;
+use App\Services\RajaOngkirTracking;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 
@@ -27,6 +28,7 @@ class TransactionIndex extends Component
 
     public $trackingSteps = [], $currentTrackingStep;
     public $trackingData = null; // response from Rajaongkir track API
+    public $trackingError = null;
     public $isSample = true; // whether we're showing bypass/sample data
 
     public $loadSampleData;
@@ -88,27 +90,22 @@ class TransactionIndex extends Component
 
     public function loadTracking()
     {
-        // reset sample flag whenever we try to fetch live data
         $this->isSample = false;
+        $this->trackingError = null;
 
-        $awb = $this->selectedTransaction->pengiriman->awb;
-        // default courier; you may want to store this in pengiriman later
-        $courier = 'jne';
+        if (! $this->selectedTransaction?->pengiriman?->awb) {
+            return;
+        }
 
         try {
-            $curl = curl_init();
-            curl_setopt_array($curl, [
-                CURLOPT_URL => "https://rajaongkir.komerce.id/api/v1/track/waybill?awb={$awb}&courier={$courier}",
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_HTTPHEADER => ['key: ' . env('RAJAONGKIR_SHIPPING_COST')],
-            ]);
-
-            $response = curl_exec($curl);
-            curl_close($curl);
-
-            $this->trackingData = json_decode($response, true);
-        } catch (\Exception $e) {
-            // silently ignore or log
+            $this->trackingData = app(RajaOngkirTracking::class)->track(
+                $this->selectedTransaction->pengiriman->awb,
+                'jne',
+                $this->selectedTransaction->pengiriman->phone,
+            );
+        } catch (\Throwable $e) {
+            $this->trackingData = null;
+            $this->trackingError = 'Tracking tidak dapat dimuat: ' . $e->getMessage();
             logger()->error('Tracking load failed: ' . $e->getMessage());
         }
     }
