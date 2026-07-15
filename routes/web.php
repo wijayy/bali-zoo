@@ -61,6 +61,7 @@ Route::middleware(['auth', config('jetstream.auth_session'), 'verified'])
 Route::middleware(['auth', config('jetstream.auth_session'), 'verified', 'admin'])->group(
     function () {
         Route::get('dashboard', App\Livewire\Dashboard::class)->name('dashboard');
+        Route::get('tracking-test', App\Livewire\TrackingTest::class)->name('tracking.test');
 
         Route::get('analytics', [AnalyticsController::class, 'index'])->name('analytics');
         Route::resource('/products', ProductController::class);

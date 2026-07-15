@@ -31,6 +31,7 @@ class RajaOngkirTracking
         $response = Http::acceptJson()
             ->withHeaders(['key' => $apiKey])
             ->timeout(15)
+            ->asForm()
             ->post($url, $payload);
 
         if ($response->failed()) {

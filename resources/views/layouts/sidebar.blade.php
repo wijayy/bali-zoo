@@ -31,6 +31,8 @@
                     wire:navigate>{{ __('Purchase') }}</flux:navlist.item>
                 <flux:navlist.item :href="route('transaction.index')" :current="request()->routeIs('transaction.*')"
                     wire:navigate>{{ __('Transaction') }}</flux:navlist.item>
+                <flux:navlist.item :href="route('tracking.test')" :current="request()->routeIs('tracking.test')"
+                    wire:navigate>{{ __('Tracking Test') }}</flux:navlist.item>
                 <flux:navlist.item :href="route('report.index')" :current="request()->routeIs('report.*')"
                     wire:navigate>{{ __('Report') }}</flux:navlist.item>
                 <flux:navlist.item :href="route('coupon.index')" :current="request()->routeIs('coupon.*')"
