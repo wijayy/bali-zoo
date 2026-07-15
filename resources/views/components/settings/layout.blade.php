@@ -1,5 +1,5 @@
 <div class="mx-auto grid max-w-7xl grid-cols-1 items-start gap-8 px-4 sm:px-6 md:grid-cols-5 lg:px-8">
-    <aside class="w-full rounded-xl border border-zinc-200 bg-white p-2 shadow-sm md:sticky md:top-20">
+    <aside class="w-full rounded-xl  p-2 shadow-sm md:sticky md:top-20">
         <flux:navlist variant="outline">
             <flux:navlist.item :href="route('settings.profile')" :current="request()->routeIs('settings.profile')"
                 wire:navigate>{{ __('Profile') }}</flux:navlist.item>
