@@ -102,7 +102,7 @@ class Checkout extends Component
         }
 
         if (count($this->address()) == 0) {
-            return redirect(route('alamat.index'));
+            return redirect(route('address.index'));
         }
         if (count($this->carts) == 0) {
             return redirect(route('shop.index'));

@@ -4,8 +4,8 @@
         <form wire:submit='save' class="space-y-4">
             <div class="flex items-start justify-between gap-4">
                 <div>
-                    <h2 class="text-xl font-semibold">Tambah Produk</h2>
-                    <p class="text-sm text-slate-500">Masukkan data produk baru di sini.</p>
+                    <h2 class="text-xl font-semibold">{{ $title }}</h2>
+                    <p class="text-sm text-slate-500">Masukkan data alamat disini.</p>
                 </div>
                 <flux:button variant="ghost" icon="x-mark" wire:click='tutupModal' size="sm" alt="Tutup modal">
                 </flux:button>

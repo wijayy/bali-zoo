@@ -139,7 +139,7 @@ class AddressCreate extends Component
     {
         $this->reset(['nama', 'phone', 'alamat', 'province', 'regency', 'district', 'village', 'postal_code', 'default', 'province_id', 'regency_id', 'district_id', 'village_id']);
         $this->id = null;
-        $this->provinces = [];
+        $this->getProvinceData();
         $this->regencies = [];
         $this->districts = [];
         $this->villages = [];
